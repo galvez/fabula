@@ -12,22 +12,19 @@ export function getConnection(settings) {
     conn.on('error', reject)
     conn.on('ready', () => resolve(conn))
     conn.connect(settings)
-  }
+  })
 }
 
 export function runCommand(cmd) {
   return new Promise((resolve, reject) => {
-    let stdout, stderr
-    try {
-      const stream = await conn.exec(cmd)
-    } catch (err) {
-      reject(err)
-    }
+    let stdout
+    let stderr
+    const stream = await conn.exec(cmd).catch(reject)
     stream.on('close', (code, signal) => {
       resolve({ stdout, stderr })
     })
-    stream.on('data', (data) => stdout += data)
-    stream.stderr.on('data', (data) => stderr += data)
+    stream.on('data', (data) => { stdout += data })
+    stream.stderr.on('data', (data) => { stderr += data })
   })
 }
 
