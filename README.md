@@ -5,7 +5,7 @@
 
 Write server deployment scripts the Nuxt way.
 
-**nuxt.configjs**:
+**nuxt.config.js**:
 
 ```js
 export default {
