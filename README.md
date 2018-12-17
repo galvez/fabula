@@ -41,7 +41,8 @@ echo $HOME/.ssh/config:
     StrictHostKeyChecking no
 ```
 
+Run using [upcoming module commands](https://github.com/nuxt/nuxt.js/pull/4314):
+
 ```sh
 nuxt ops run setup-ssh
 ```
-
