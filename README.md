@@ -26,7 +26,7 @@ export default {
         host: '192.168.100.100',
         port: 22,
         username: 'username',
-        privateKey: /here/is/my/key'
+        privateKey: '/here/is/my/key'
       }
     }
   }
