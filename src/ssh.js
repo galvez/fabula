@@ -1,3 +1,5 @@
+
+import { readFileSync } from 'fs'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { Client } from 'ssh2'
@@ -15,7 +17,10 @@ export function getConnection(settings) {
     }
     conn.on('error', reject)
     conn.on('ready', () => resolve(conn))
-    conn.connect(settings)
+    conn.connect({
+      ...settings,
+      privateKey: readFileSync(privateKey).toString()
+    })
   })
 }
 

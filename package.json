@@ -16,6 +16,7 @@
   "dependencies": {
     "consola": "^2.3.0",
     "esm": "^3.0.84",
+    "lodash.template": "^4.4.0",
     "ssh2": "^0.6.1"
   },
   "devDependencies": {

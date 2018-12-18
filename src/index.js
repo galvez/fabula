@@ -1,4 +1,5 @@
 
+import template from 'lodash.template'
 import { readFileSync } from 'fs'
 import consola from 'consola'
 import {
@@ -16,7 +17,14 @@ import {
 
 // const resolvePath = (base, ...args) => resolve(base, ...args)
 
-function compile(cmd) {
+function compileTemplate(cmd, settings) {
+  const cmdTemplate = template(cmd, {
+    interpolate: /<%=([\s\S]+?)%>/g
+  })
+  return cmdTemplate(settings)
+}
+
+function compileAST(cmd) {
   cmd = cmd.toString()
   const lines = cmd.split(/\n/g)
   const commands = []
@@ -79,8 +87,17 @@ export function run(config, task) {
   }
 }
 
+const sampleSettings = {
+  hostname: 'my-server',
+  host: '192.168.100.100',
+  port: 22,
+  username: 'username',
+  privateKey: '/here/is/my/key'
+}
+
 if (require.main === module) {
-  const tree = compile(readFileSync('test/fixtures/setup-ssh.sh'))
+  const template = compileTemplate(readFileSync('test/fixtures/setup-ssh.sh'), sampleSettings)
+  const tree = compileAST(template)
   console.log('AST:')
   console.log(tree)
   const commands = commandsFromAST(tree)

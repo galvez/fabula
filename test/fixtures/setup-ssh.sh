@@ -10,5 +10,5 @@ echo $HOME/.ssh/config:
     Hostname <%= hostname %>
     Port <%= port %>
     IdentityFile $HOME/.keys/deploy_key
-    User <%= user %>
+    User <%= username %>
     StrictHostKeyChecking no
