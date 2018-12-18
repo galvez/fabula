@@ -45,7 +45,7 @@ function compileAST(cmd) {
     } else if (line.startsWith('local')) {
       commands.push(['local', parts.slice(1).join(' ')])
     } else if (line.startsWith('put')) {
-      commands.push(['put', parts])
+      commands.push(['put', parts.slice(1)])
     // eslint-disable-next-line no-cond-assign
     } else if (match = line.trim().match(/^echo\s+(.+?):$/)) {
       commands.push(['echo', match[1]])
