@@ -8,6 +8,7 @@ export function getConnection(settings) {
     if (!conn) {
       conn = new Client()
       conn.exec = promisify(conn.exec).bind(conn)
+      conn.sftp = promisify(conn.sftp).bind(conn)
     }
     conn.on('error', reject)
     conn.on('ready', () => resolve(conn))
@@ -15,13 +16,19 @@ export function getConnection(settings) {
   })
 }
 
-export function runEcho(cmd) {
-  const filePath = cmd[1]
-  const match = cmd[2].match(/^\s+/)
+export async function runEcho(cmd) {
+  const filePath = cmd[0]
+  const match = cmd[1].match(/^\s+/)
   const indentation = match ? match[0].length : 0
-  const dedented = cmd.slice(2).map(line => line.slice(indentation))
+  const dedented = cmd.slice(1).map(line => line.slice(indentation))
   const fileContents = dedented.join('\n')
-  console.log(fileContents)
+  const stream = await conn.sftp().catch(reject)
+  return stream.writeFile(filePath, fileContents).catch(reject)
+}
+
+export function runPut(cmd) {
+  const stream = await conn.sftp().catch(reject)
+  return stream.fastPut(cmd).catch(reject)
 }
 
 export function runCommand(cmd) {
@@ -30,7 +37,7 @@ export function runCommand(cmd) {
     let stderr
     const stream = await conn.exec(cmd).catch(reject)
     stream.on('close', (code, signal) => {
-      resolve({ stdout, stderr })
+      resolve({ stdout, stderr, code, signal })
     })
     stream.on('data', (data) => { stdout += data })
     stream.stderr.on('data', (data) => { stderr += data })

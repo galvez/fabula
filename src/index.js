@@ -1,7 +1,7 @@
 
 import { readFileSync } from 'fs'
 import consola from 'consola'
-import { getConnection } from './ssh'
+import { getConnection, runCommand, runEcho } from './ssh'
 
 // import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 // import { join, resolve, parse } from 'path'
@@ -26,7 +26,7 @@ function compile(cmd) {
         commands[echoIndex].push(line)
       }
     } else if (line.startsWith('local')) {
-      commands.push(parts.slice(1))
+      commands.push(['local', ...parts.slice(1)])
     // eslint-disable-next-line no-cond-assign
     } else if (match = line.trim().match(/^echo\s+(.+?):$/)) {
       commands.push(['echo', match[1]])
@@ -36,7 +36,15 @@ function compile(cmd) {
       commands.push(line)
     }
   }
-  return commands
+  return commands.map((command) => {
+    if (Array.isArray(command)) {
+      if (command[0] === 'local') {
+        return () => runLocalCommand(command.slice(1))
+      } else (command[0] === 'echo') {
+        return () => runEcho(command.slice(1))
+      } 
+    }
+  })
 }
 
 export function run(config, task) {
