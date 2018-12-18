@@ -2,8 +2,7 @@
 import { readFileSync } from 'fs'
 import {
   compileTemplate,
-  compileAST,
-  commandsFromAST
+  compileAST
 } from '../../src/index'
 
 describe('task compilation', () => {
@@ -22,7 +21,6 @@ describe('task compilation', () => {
 
     const template = compileTemplate(templateFile, sampleSettings)
     const tree = compileAST(template)
-    const commands = commandsFromAST(tree)
     expect(JSON.stringify(tree, null, 2)).toMatchSnapshot()
   })
 })
