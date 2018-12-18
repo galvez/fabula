@@ -29,8 +29,9 @@ function compile(cmd) {
       commands.push(parts.slice(1))
     // eslint-disable-next-line no-cond-assign
     } else if (match = line.trim().match(/^echo\s+(.+?):$/)) {
-      commands.push([match[0]])
-      echoIndex = commands.length
+      commands.push(['echo', match[1]])
+      echoIndex = commands.length - 1
+      echo = true
     } else {
       commands.push(line)
     }
