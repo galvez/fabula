@@ -40,10 +40,14 @@ function compile(cmd) {
       commands.push(['echo', match[1]])
       echoIndex = commands.length - 1
       echo = true
-    } else {
+    } else if (line.trim().length > 0) {
       commands.push(line)
     }
   }
+  return commands
+}
+
+function commandsFromAST(commands) { 
   return commands.map((command) => {
     if (Array.isArray(command)) {
       if (command[0] === 'local') {
@@ -73,7 +77,11 @@ export function run(config, task) {
 }
 
 if (require.main === module) {
-  console.log( // eslint-disable-line
-    compile(readFileSync('test/fixtures/setup-ssh.sh'))
-  )
+  const tree = compile(readFileSync('test/fixtures/setup-ssh.sh'))
+  console.log('AST:')
+  console.log(tree)
+  const commands = commandsFromAST(tree)
+  console.log()
+  console.log('Command tree:')
+  console.log(commands.map(cmd => cmd.toString()))
 }

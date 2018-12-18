@@ -19,7 +19,7 @@ export function getConnection(settings) {
   })
 }
 
-export runLocalCommand(cmd) {
+export function runLocalCommand(cmd) {
   return execAsync(cmd)
 }
 
@@ -33,7 +33,7 @@ export async function runEcho(cmd) {
   return stream.writeFile(filePath, fileContents).catch(reject)
 }
 
-export function runPut(cmd) {
+export async function runPut(cmd) {
   const stream = await conn.sftp().catch(reject)
   return stream.fastPut(cmd).catch(reject)
 }
