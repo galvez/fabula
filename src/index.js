@@ -11,12 +11,13 @@ import { getConnection } from './ssh'
 // const resolvePath = (base, ...args) => resolve(base, ...args)
 
 function compile(cmd) {
+  cmd = cmd.toString()
   const lines = cmd.split(/\n/g)
   const commands = []
   let match
   let echoIndex
   let echo = false
-  for (const line in lines) {
+  for (const line of lines) {
     const parts = line.split()
     if (echo) {
       if (!/^\s+/.test(line)) {
@@ -27,9 +28,11 @@ function compile(cmd) {
     } else if (line.startsWith('local')) {
       commands.push(parts.slice(1))
     // eslint-disable-next-line no-cond-assign
-    } else if (match = line.trim().match(/echo\s+(.+?):$/)) {
+    } else if (match = line.trim().match(/^echo\s+(.+?):$/)) {
       commands.push([match[0]])
       echoIndex = commands.length
+    } else {
+      commands.push(line)
     }
   }
   return commands
@@ -50,6 +53,6 @@ export function run(config, task) {
 
 if (require.main === module) {
   console.log( // eslint-disable-line
-    compile(readFileSync('test/fixtures/create-ssh'))
+    compile(readFileSync('test/fixtures/setup-ssh.sh'))
   )
 }
