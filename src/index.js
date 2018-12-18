@@ -48,9 +48,9 @@ function compile(cmd) {
     if (Array.isArray(command)) {
       if (command[0] === 'local') {
         return () => runLocalCommand(command[1])
-      } else (command[0] === 'echo') {
+      } else if (command[0] === 'echo') {
         return () => runEcho(command.slice(1))
-      } else (command[0] === 'put') {
+      } else if (command[0] === 'put') {
         return () => runPut(command.slice(1))
       }
     } else {
