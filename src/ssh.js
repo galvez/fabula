@@ -16,13 +16,10 @@ export function getConnection(settings) {
 }
 
 export function runEcho(cmd) {
-  let match
-
   const filePath = cmd[1]
-  const indentation = (match = cmd[2].match(/^\s+/))
-    ? match[0].length
-    : 0
-  const dedented = cmd.slice(2).map((line) => line.slice(indentation))
+  const match = cmd[2].match(/^\s+/)
+  const indentation = match ? match[0].length : 0
+  const dedented = cmd.slice(2).map(line => line.slice(indentation))
   const fileContents = dedented.join('\n')
   console.log(fileContents)
 }
