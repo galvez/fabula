@@ -29,15 +29,15 @@ rm -rf /instance $HOME/.keys $HOME/.ssh/config
 mkdir -p /instance/ $HOME/.keys
 chown -R ubuntu /instance/ $HOME/.keys
 chmod 755 $HOME/.keys
-put <%= config.instance.privateKey %> $HOME/.keys/deploy_key
+put <%= privateKey %> $HOME/.keys/deploy_key
 chmod 400 $HOME/.keys/deploy_key
 
 echo $HOME/.ssh/config:
-  Host <%= config.instance.host %>
-    Hostname <%= config.instance.name %>
-    Port <%= config.instance.port %>
+  Host <%= host %>
+    Hostname <%= hostname %>
+    Port <%= port %>
     IdentityFile $HOME/.keys/deploy_key
-    User <%= config.instance.user %>
+    User <%= user %>
     StrictHostKeyChecking no
 ```
 
