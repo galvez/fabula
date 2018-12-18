@@ -29,12 +29,15 @@ function compile(cmd) {
       if (!/^\s+/.test(line)) {
         echo = false
       } else {
-        commands[echoIndex].push(line)
+        if (!commands[echoIndex][2]) {
+          commands[echoIndex][2] = []
+        }
+        commands[echoIndex][2].push(line)
       }
     } else if (line.startsWith('local')) {
       commands.push(['local', parts.slice(1).join(' ')])
     } else if (line.startsWith('put')) {
-      commands.push(['put', parts.slice(1)])
+      commands.push(['put', parts])
     // eslint-disable-next-line no-cond-assign
     } else if (match = line.trim().match(/^echo\s+(.+?):$/)) {
       commands.push(['echo', match[1]])
@@ -55,7 +58,7 @@ function commandsFromAST(commands) {
       } else if (command[0] === 'echo') {
         return () => runEcho(command.slice(1))
       } else if (command[0] === 'put') {
-        return () => runPut(command.slice(1))
+        return () => runPut(command)
       }
     } else {
       return () => runCommand(command)

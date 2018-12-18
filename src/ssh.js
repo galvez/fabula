@@ -40,8 +40,8 @@ export async function runPut(cmd) {
 
 export function runCommand(cmd) {
   return new Promise(async (resolve, reject) => {
-    let stdout
-    let stderr
+    let stdout = ''
+    let stderr = ''
     const stream = await conn.exec(cmd).catch(reject)
     stream.on('close', (code, signal) => {
       resolve({ stdout, stderr, code, signal })
