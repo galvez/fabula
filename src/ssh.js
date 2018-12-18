@@ -1,5 +1,8 @@
+import { exec } from 'child_process'
 import { promisify } from 'util'
 import { Client } from 'ssh2'
+
+const execAsync = promisify(exec)
 
 let conn
 
@@ -14,6 +17,10 @@ export function getConnection(settings) {
     conn.on('ready', () => resolve(conn))
     conn.connect(settings)
   })
+}
+
+export runLocalCommand(cmd) {
+  return execAsync(cmd)
 }
 
 export async function runEcho(cmd) {
