@@ -11,7 +11,8 @@
     "nuxt-ops-run": "bin/run"
   },
   "scripts": {
-    "lint": "$(npm bin)/eslint --fix --ext .js,.vue src"
+    "test": "jest",
+    "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
     "consola": "^2.3.0",
