@@ -58,29 +58,42 @@ function compileAST(cmd) {
   return commands
 }
 
+function makeCommand(command, method) {
+  const func = () => method(command)
+  func.meta = command
+  return func
+}
+
 function commandsFromAST(commands) { 
   return commands.map((command) => {
     if (Array.isArray(command)) {
       if (command[0] === 'local') {
-        return () => runLocalCommand(command[1])
+        return makeCommand(command[1], runLocalCommand)
       } else if (command[0] === 'echo') {
-        return () => runEcho(command.slice(1))
+        return makeCommand(command.slice(1), runEcho)
       } else if (command[0] === 'put') {
-        return () => runPut(command)
+        return makeCommand(command, runPut)
       }
     } else {
-      return () => runCommand(command)
+      return makeCommand(command, runCommand)
     }
   })
 }
 
-export function run(config, task) {
+export async function run(config, task) {
   const base = config.srcDir
   const servers = (config.ops || {}).servers || {}
   task = readFileSync(base, 'tasks', task)
 
   for (const server in servers) {
-    getConnection(servers[server])
+    const conn = getConnection(server, servers[server])
+    const template = compileTemplate(task, servers[server])
+    const tree = compileAST(template)
+    const commands = commandsFromAST(tree)
+    for (const command of commands) {
+      consola.info('Running command:', command.meta)
+      await command()
+    }
   }
   if (servers.length === 0) {
     consola.warn('No servers configured.')

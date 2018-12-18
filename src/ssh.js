@@ -56,9 +56,9 @@ export function runCommand(cmd) {
   })
 }
 
-// const conn = await getConnection({
+// const conn = await getConnection('my-server', {
 //   host: '192.168.100.100',
 //   port: 22,
 //   username: 'username',
-//   privateKey: readFileSync('/here/is/my/key')
+//   privateKey: '/here/is/my/key'
 // })
