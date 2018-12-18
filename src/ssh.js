@@ -16,7 +16,7 @@ export function getConnection(settings) {
 }
 
 export function runCommand(cmd) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let stdout
     let stderr
     const stream = await conn.exec(cmd).catch(reject)

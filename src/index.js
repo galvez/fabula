@@ -1,24 +1,55 @@
 
+import { readFileSync } from 'fs'
 import consola from 'consola'
-import { runCommand } from './ssh'
+import { getConnection } from './ssh'
 
 // import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 // import { join, resolve, parse } from 'path'
 // import klawSync from 'klaw-sync'
 // import defaults from './defaults'
 
-const resolvePath = (base, ...args) => resolve(base, ...args)
+// const resolvePath = (base, ...args) => resolve(base, ...args)
 
-export function run (config, task) {
+function compile(cmd) {
+  const lines = cmd.split(/\n/g)
+  const commands = []
+  let match
+  let echoIndex
+  let echo = false
+  for (const line in lines) {
+    const parts = line.split()
+    if (echo) {
+      if (!/^\s+/.test(line)) {
+        echo = false
+      } else {
+        commands[echoIndex].push(line)
+      }
+    } else if (line.startsWith('local')) {
+      commands.push(parts.slice(1))
+    // eslint-disable-next-line no-cond-assign
+    } else if (match = line.trim().match(/echo\s+(.+?):$/)) {
+      commands.push([match[0]])
+      echoIndex = commands.length
+    }
+  }
+  return commands
+}
+
+export function run(config, task) {
   const base = config.srcDir
-  const servers = (ctx.ops || {}).servers || {}
-  const task = readFileSync(base, 'tasks', task)
+  const servers = (config.ops || {}).servers || {}
+  task = readFileSync(base, 'tasks', task)
 
-  let conn
   for (const server in servers) {
-    conn = getConnection(servers[server])
+    getConnection(servers[server])
   }
   if (servers.length === 0) {
     consola.warn('No servers configured.')
   }
+}
+
+if (require.main === module) {
+  console.log( // eslint-disable-line
+    compile(readFileSync('test/fixtures/create-ssh'))
+  )
 }
