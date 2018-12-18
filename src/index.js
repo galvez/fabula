@@ -1,12 +1,24 @@
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { join, resolve, parse } from 'path'
-import klawSync from 'klaw-sync'
-import defaults from './defaults'
+import consola from 'consola'
+import { runCommand } from './ssh'
 
-const resolvePath = (...args) => resolve(__dirname, ...args)
+// import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+// import { join, resolve, parse } from 'path'
+// import klawSync from 'klaw-sync'
+// import defaults from './defaults'
 
-export default function (ctx) {
-  const base = this.options.srcDir
-  const servers = ctx.servers
+const resolvePath = (base, ...args) => resolve(base, ...args)
+
+export function run (config, task) {
+  const base = config.srcDir
+  const servers = (ctx.ops || {}).servers || {}
+  const task = readFileSync(base, 'tasks', task)
+
+  let conn
+  for (const server in servers) {
+    conn = getConnection(servers[server])
+  }
+  if (servers.length === 0) {
+    consola.warn('No servers configured.')
+  }
 }
