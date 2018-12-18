@@ -5,13 +5,13 @@ import { promisify } from 'util'
 import { Client } from 'ssh2'
 
 const execAsync = promisify(exec)
+export const connections = {}
 
-let conn
-
-export function getConnection(settings) {
+export function getConnection(server, settings) {
   return new Promise((resolve, reject) => {
-    if (!conn) {
-      conn = new Client()
+    if (!connections[server]) {
+      const conn = new Client()
+      connections[server] = conn
       conn.exec = promisify(conn.exec).bind(conn)
       conn.sftp = promisify(conn.sftp).bind(conn)
     }
