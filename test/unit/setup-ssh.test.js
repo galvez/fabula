@@ -1,19 +1,28 @@
 
-// const sampleSettings = {
-//   hostname: 'my-server',
-//   host: '192.168.100.100',
-//   port: 22,
-//   username: 'username',
-//   privateKey: '/here/is/my/key'
-// }
+import { readFileSync } from 'fs'
+import {
+  compileTemplate,
+  compileAST,
+  commandsFromAST
+} from '../../src/index'
 
-// if (require.main === module) {
-//   const template = compileTemplate(readFileSync('test/fixtures/setup-ssh.sh'), sampleSettings)
-//   const tree = compileAST(template)
-//   console.log('AST:')
-//   console.log(tree)
-//   const commands = commandsFromAST(tree)
-//   console.log()
-//   console.log('Command tree:')
-//   console.log(commands.map(cmd => cmd.toString()))
-// }
+describe('task compilation', () => {
+
+  test('create-setup.sh', () => {
+
+    const templateFile = readFileSync('test/fixtures/setup-ssh.sh')
+
+    const sampleSettings = {
+      hostname: 'my-server',
+      host: '192.168.100.100',
+      port: 22,
+      username: 'username',
+      privateKey: '/here/is/my/key'
+    }
+
+    const template = compileTemplate(templateFile, sampleSettings)
+    const tree = compileAST(template)
+    const commands = commandsFromAST(tree)
+    expect(JSON.stringify(tree, null, 2)).toMatchSnapshot()
+  })
+})
