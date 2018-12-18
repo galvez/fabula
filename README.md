@@ -22,17 +22,18 @@ export default {
   ops: {
     servers: {
       instance: {
+        // All properties here are available to the tasks templates
         host: '192.168.100.100',
         port: 22,
         username: 'username',
-        privateKey: readFileSync('/here/is/my/key')
+        privateKey: /here/is/my/key'
       }
     }
   }
 }
 ```
 
-**server/tasks/setup-ssh**:
+**tasks/setup-ssh**:
 
 ```sh
 rm -rf /instance $HOME/.keys $HOME/.ssh/config
