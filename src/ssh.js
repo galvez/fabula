@@ -30,8 +30,8 @@ export function runLocalCommand(cmd) {
 
 export async function runEcho(cmd) {
   const { filePath, fileContents } = runEcho.parseCommand(cmd)
-  const stream = await conn.sftp().catch(reject)
-  return stream.writeFile(filePath, fileContents).catch(reject)
+  const stream = await conn.sftp()
+  return stream.writeFile(filePath, fileContents)
 }
 
 runEcho.parseCommand = function(cmd) {
@@ -49,18 +49,14 @@ export async function runPut(cmd) {
 }
 
 export function runCommand(cmd) {
-  let stdout = ''
-  let stderr = ''
-  try {
-    const stream = await conn.exec(cmd)
+  return new Promise(async (resolve, reject) => {
+    let stdout = ''
+    let stderr = ''
+    const stream = await conn.exec(cmd).catch(reject)
+    stream.on('close', (code, signal) => {
+      resolve({ stdout, stderr, code, signal })
+    })
     stream.on('data', (data) => { stdout += data })
     stream.stderr.on('data', (data) => { stderr += data })
-    await new Promise((resolve) => {
-      stream.on('close', (code, signal) => {
-        resolve({ stdout, stderr, code, signal })
-      })
-    })
-  } catch (err) {
-    console.fatal(err)
-  }
+  })
 }
