@@ -1,9 +1,6 @@
 
 import { readFileSync } from 'fs'
-import {
-  compileTemplate,
-  compileAST
-} from '../../src/index'
+import { compileCommand } from '../util'
 
 describe('task compilation', () => {
 
@@ -19,8 +16,7 @@ describe('task compilation', () => {
       privateKey: '/here/is/my/key'
     }
 
-    const template = compileTemplate(templateFile, sampleSettings)
-    const tree = compileAST(template)
-    expect(JSON.stringify(tree, null, 2)).toMatchSnapshot()
+    const compiled = compileCommand(templateFile, sampleSettings)
+    expect(JSON.stringify(compiled, null, 2)).toMatchSnapshot()
   })
 })

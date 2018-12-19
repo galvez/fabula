@@ -19,7 +19,7 @@ See `test/unit/basic.test.js` for now.
 
 ```js
 export default {
-  ops: {
+  operations: {
     servers: {
       instance: {
         // All properties here are available to the tasks templates
