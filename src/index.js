@@ -1,6 +1,6 @@
 
-import template from 'lodash.template'
 import { readFileSync } from 'fs'
+import template from 'lodash.template'
 import consola from 'consola'
 import {
   getConnection,
@@ -57,7 +57,7 @@ function makeCommand(command, method) {
   return func
 }
 
-export function commandsFromAST(commands) { 
+export function commandsFromAST(commands) {
   return commands.map((command) => {
     if (Array.isArray(command)) {
       if (command[0] === 'local') {
@@ -92,4 +92,3 @@ export async function run(config, task) {
     consola.warn('No servers configured.')
   }
 }
-

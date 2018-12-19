@@ -34,7 +34,7 @@ export async function runEcho(cmd) {
   return stream.writeFile(filePath, fileContents)
 }
 
-runEcho.parseCommand = function(cmd) {
+runEcho.parseCommand = function (cmd) {
   const filePath = cmd[0]
   const match = cmd[1][0].match(/^\s+/)
   const indentation = match ? match[0].length : 0
