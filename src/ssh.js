@@ -44,26 +44,23 @@ runEcho.parseCommand = function(cmd) {
 }
 
 export async function runPut(cmd) {
-  const stream = await conn.sftp().catch(reject)
-  return stream.fastPut(cmd).catch(reject)
+  const stream = await conn.sftp()
+  return stream.fastPut(cmd)
 }
 
 export function runCommand(cmd) {
-  return new Promise(async (resolve, reject) => {
-    let stdout = ''
-    let stderr = ''
-    const stream = await conn.exec(cmd).catch(reject)
-    stream.on('close', (code, signal) => {
-      resolve({ stdout, stderr, code, signal })
-    })
+  let stdout = ''
+  let stderr = ''
+  try {
+    const stream = await conn.exec(cmd)
     stream.on('data', (data) => { stdout += data })
     stream.stderr.on('data', (data) => { stderr += data })
-  })
+    await new Promise((resolve) => {
+      stream.on('close', (code, signal) => {
+        resolve({ stdout, stderr, code, signal })
+      })
+    })
+  } catch (err) {
+    console.fatal(err)
+  }
 }
-
-// const conn = await getConnection('my-server', {
-//   host: '192.168.100.100',
-//   port: 22,
-//   username: 'username',
-//   privateKey: '/here/is/my/key'
-// })
