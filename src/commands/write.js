@@ -8,11 +8,12 @@ export default {
     }
   },
   line(ctx, next) {
+    console.log(ctx.source, ctx.first)
     if (ctx.first) {
       ctx.params.filePath = ctx.match[1], []
       ctx.params.fileContents = []
     } else if (!/^\s+/.test(ctx.line)) {
-      next()
+      next(false)
     } else {
       ctx.params.fileContents.push(ctx.line)
     }

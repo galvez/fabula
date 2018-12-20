@@ -20,6 +20,17 @@ compile.expandTildes = (argv) => argv.map((arg) => {
   return arg
 })
 
+compile.matchCommand = function(ctx, line) {
+  let match
+  return commands.find((cmd) => {
+    match = cmd.match(ctx, line)
+    if (match) {
+      ctx.match = match
+      return true
+    }
+  })
+}
+
 compile.context = () => ({
   params: {},
   source: [],
@@ -42,25 +53,30 @@ export function compile(source, settings) {
   for (const line of lines) {
     ctx.line = line
     ctx.source.push(line)
-    const next = () => {
-      Object.assign(command, ctx)
-      _commands.push(command)
-      ctx = compile.context()
-      command = null
+    const next = (add = true) => {
+      if (add) {
+        Object.assign(command, ctx)
+        _commands.push(command)
+        ctx = compile.context()
+        command = null
+      } else {
+        ctx.first = true
+        command = compile.matchCommand(ctx, line)
+        if (command) {
+          command = { ...command }
+          command.line(ctx, next)
+        }
+      }
     }
     if (command) {
+      console.log(ctx.source)
       ctx.first = false
       command.line(ctx, next)
     } else {
       ctx.first = true
       ctx.argv = compile.expandTildes(line.split(/\s+/))
-      command = commands.find((cmd) => {
-        match = cmd.match(ctx, line)
-        if (match) {
-          ctx.match = match
-          return true
-        }
-      })
+      command = compile.matchCommand(ctx, line)
+      // console.log(ctx, line, command)
       if (command) {
         command = { ...command }
         command.line(ctx, next)
