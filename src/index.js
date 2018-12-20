@@ -2,13 +2,8 @@
 import { readFileSync } from 'fs'
 import template from 'lodash.template'
 import consola from 'consola'
-import {
-  getConnection,
-  runLocalCommand,
-  runCommand,
-  runPut,
-  runEcho
-} from './ssh'
+import { getConnection } from './ssh'
+import { commands } from './commands'
 
 export function compileTemplate(cmd, settings) {
   const cmdTemplate = template(cmd, {
@@ -17,27 +12,21 @@ export function compileTemplate(cmd, settings) {
   return cmdTemplate(settings)
 }
 
-export function compileTree(cmd) {
-  cmd = cmd.toString()
+export function compileTree(source) {
   const lines = cmd.split(/\n/g)
-  const commands = []
-  let match
-  let echoIndex
-  let echo = false
+  const ctx = {
+    match: null,
+    argv: []
+  }
   for (const line of lines) {
-    const parts = line.split(/s+/)
+    ctx.argv = line.split(/s+/)
+    if (match = _commands.match(line)) {
+      await match.compile(commands)
+    }
     if (echo) {
-      if (!/^\s+/.test(line)) {
-        echo = false
-      } else {
-        if (!commands[echoIndex][2]) {
-          commands[echoIndex][2] = []
-        }
-        commands[echoIndex][2].push(line)
-      }
     } else if (line.startsWith('local')) {
       commands.push(['local', parts.slice(1).join(' ')])
-    } else if (line.startsWith('put')) {
+    } else if () {
       commands.push(['put', parts.slice(1)])
     // eslint-disable-next-line no-cond-assign
     } else if (match = line.trim().match(/^echo\s+(.+?):$/)) {

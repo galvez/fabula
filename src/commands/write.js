@@ -1,5 +1,8 @@
+import { runPut, runAppend } from '../ssh'
+
 export default {
-  match(line) {
+  match(ctx) {
+    ctx.argv = [ ...ctx.argv ]
     if (['append', 'echo'].includes(ctx.argv[0])) {
       return line.trim().match(
         new RegExp(`^${ctx.argv[0]}\s+(.+?):$`)
@@ -8,12 +11,11 @@ export default {
   },
   line(ctx, next) {
     if (ctx.first) {
-      ctx.commands.push(['append', ctx.match[1], []])
-      this.index = ctx.commands.length - 1
-    } else if (!/^\s+/.test(line)) {
+      this.args.push(ctx.match[1], [])
+    } else if (!/^\s+/.test(ctx.line)) {
       next()
     } else {
-      ctx.commands[this.index][2].push(line)
+      this.args[2].push(ctx.line)
     }
   },
   command(tree) {
