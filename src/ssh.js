@@ -28,9 +28,13 @@ export function runLocalCommand(cmd) {
   return execAsync(cmd)
 }
 
-export async function runEcho({ filePath, fileContents }) {
+export async function echo({ filePath, fileContents }) {
   const stream = await conn.sftp()
   return stream.writeFile(filePath, fileContents)
+}
+
+export async function append(cmd) {
+//
 }
 
 export async function put(cmd) {

@@ -23,8 +23,7 @@ export default {
     const match = ctx.params.fileContents[0].match(/^\s+/)
     const indentation = match ? match[0].length : 0
     const dedented = ctx.params.fileContents.map(line => line.slice(indentation))
-    const ops = 
-    return { append, echo }[ctx.op]({
+    return ({ append, echo })[ctx.op]({
       filePath: ctx.params.filePath,
       fileContents: dedented.join('\n')
     })
