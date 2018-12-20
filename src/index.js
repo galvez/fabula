@@ -21,6 +21,7 @@ compile.expandTildes = (argv) => argv.map((arg) => {
 })
 
 compile.context = () => ({
+  params: [],
   source: [],
   match: null,
   argv: []

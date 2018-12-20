@@ -5,11 +5,11 @@ export default {
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },
   line(ctx, next) {
-    this.sourcePath = ctx.match[1]
-    this.targetPath = ctx.match[2]
+    ctx.params.sourcePath = ctx.match[1]
+    ctx.params.targetPath = ctx.match[2]
     next()
   },
-  command() {
-    return put(this.sourcePath, this.targetPath)
+  command(ctx) {
+    return put(ctx.params.sourcePath, ctx.param.targetPath)
   }
 }

@@ -10,19 +10,21 @@ export default {
   },
   line(ctx, next) {
     if (ctx.first) {
-      this.args.push(ctx.match[1], [])
+      ctx.params.filePath = ctx.match[1], []
+      ctx.params.fileContents = []
     } else if (!/^\s+/.test(ctx.line)) {
       next()
     } else {
-      this.args[2].push(ctx.line)
+      ctx.params.fileContents.push(ctx.line)
     }
   },
-  command(tree) {
-    const filePath = tree[0]
-    const match = tree[1][0].match(/^\s+/)
+  command(ctx) {
+    const match = ctx.params.fileContents[0].match(/^\s+/)
     const indentation = match ? match[0].length : 0
-    const dedented = tree[1].map(line => line.slice(indentation))
-    const fileContents = dedented.join('\n')
-    return { filePath, fileContents }
+    const dedented = ctx.params.fileContents.map(line => line.slice(indentation))
+    return {
+      filePath: ctx.params.filePath,
+      fileContents: dedented.join('\n')
+    }
   }
 }
