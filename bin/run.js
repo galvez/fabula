@@ -1,3 +1,2 @@
-#!/usr/bin/env node -r esm
 
-import { run } from 'nuxt/operations'
+const { run } = require('nuxt/operations')

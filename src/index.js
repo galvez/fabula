@@ -92,3 +92,14 @@ export async function run(config, task) {
     consola.warn('No servers configured.')
   }
 }
+
+// Mostly temporary, for testing
+export async function runString(conn, str) {
+  const template = compileTemplate(task, servers[server])
+  const tree = compileAST(template)
+  const commands = commandsFromAST(tree)
+  for (const command of commands) {
+    consola.info('Running command:', command.meta)
+    await command()
+  }  
+}
