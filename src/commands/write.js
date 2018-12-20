@@ -9,7 +9,7 @@ export default {
   },
   line(ctx, next) {
     if (ctx.first) {
-      ctx.params.filePath = ctx.match[1], []
+      ctx.params.filePath = ctx.$match[1], []
       ctx.params.fileContents = []
     } else if (!/^\s+/.test(ctx.line)) {
       next(false)

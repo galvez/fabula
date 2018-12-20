@@ -25,7 +25,7 @@ compile.matchCommand = function(ctx, line) {
   return commands.find((cmd) => {
     match = cmd.match(ctx, line)
     if (match) {
-      ctx.match = match
+      ctx.$match = match
       return true
     }
   })
@@ -34,7 +34,7 @@ compile.matchCommand = function(ctx, line) {
 compile.context = () => ({
   params: {},
   source: [],
-  match: null,
+  $match: null,
   argv: []
 })
 
@@ -53,19 +53,31 @@ export function compile(source, settings) {
   for (const line of lines) {
     ctx.line = line
     const next = (add = true) => {
-      Object.assign(command, ctx)
-      _commands.push(command)
-      ctx = compile.context()
-      command = null
-      // } else {
-      //   ctx = compile.context()
-      //   ctx.first = true
-      //   command = compile.matchCommand(ctx, line)
-      //   if (command) {
-      //     command = { ...command }
-      //     command.line(ctx, next)
-      //   }
-      // }
+      if (add) {
+        Object.assign(command, ctx)
+        _commands.push(command)
+        ctx = compile.context()
+        command = null
+      } else {
+        Object.assign(command, ctx)
+        _commands.push(command)
+        console.log('>', line)
+        ctx = compile.context()
+        ctx.first = true
+        command = compile.matchCommand(ctx, line)
+        if (command) {
+          command = { ...command }
+          command.line(ctx, next)
+        } else {
+          _commands.push({
+            ...execCommand,
+            source: ctx.source,
+            argv: ctx.argv
+          })
+          ctx = compile.context()
+          command = null
+        }
+      }
     }
     if (command) {
       ctx.first = false
