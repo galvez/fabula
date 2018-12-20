@@ -13,6 +13,7 @@ Write server deployment scripts the Nuxt way.
 - [ ] get (file)
 - [ ] forward_local
 - [ ] forward_remote
+- [ ] https://gist.github.com/gcollazo/495372
 
 ```js
 npm test
