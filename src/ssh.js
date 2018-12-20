@@ -28,20 +28,12 @@ export function runLocalCommand(cmd) {
   return execAsync(cmd)
 }
 
-export async function runEcho(cmd) {
-  const { filePath, fileContents } = runEcho.parseCommand(cmd)
+export async function runEcho({ filePath, fileContents }) {
   const stream = await conn.sftp()
   return stream.writeFile(filePath, fileContents)
 }
 
-runEcho.parseCommand = function (cmd) {
-  const filePath = cmd[0]
-  const match = cmd[1][0].match(/^\s+/)
-  const indentation = match ? match[0].length : 0
-  const dedented = cmd[1].map(line => line.slice(indentation))
-  const fileContents = dedented.join('\n')
-  return { filePath, fileContents }
-}
+runEcho.
 
 export async function runPut(cmd) {
   const stream = await conn.sftp()

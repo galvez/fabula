@@ -17,7 +17,7 @@ export function compileTemplate(cmd, settings) {
   return cmdTemplate(settings)
 }
 
-export function compileAST(cmd) {
+export function compileTree(cmd) {
   cmd = cmd.toString()
   const lines = cmd.split(/\n/g)
   const commands = []
@@ -57,7 +57,7 @@ function makeCommand(command, method) {
   return func
 }
 
-export function commandsFromAST(commands) {
+export function commandsFromTree(commands) {
   return commands.map((command) => {
     if (Array.isArray(command)) {
       if (command[0] === 'local') {
@@ -81,8 +81,8 @@ export async function run(config, task) {
   for (const server in servers) {
     const conn = getConnection(server, servers[server])
     const template = compileTemplate(task, servers[server])
-    const tree = compileAST(template)
-    const commands = commandsFromAST(tree)
+    const tree = compileTree(template)
+    const commands = commandsFromTree(tree)
     for (const command of commands) {
       consola.info('Running command:', command.meta)
       await command()
@@ -96,8 +96,8 @@ export async function run(config, task) {
 // Mostly temporary, for testing
 export async function runString(conn, str) {
   const template = compileTemplate(task, servers[server])
-  const tree = compileAST(template)
-  const commands = commandsFromAST(tree)
+  const tree = compileTree(template)
+  const commands = commandsFromTree(tree)
   for (const command of commands) {
     consola.info('Running command:', command.meta)
     await command()
