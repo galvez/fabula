@@ -33,7 +33,7 @@ export async function runEcho({ filePath, fileContents }) {
   return stream.writeFile(filePath, fileContents)
 }
 
-export async function runPut(cmd) {
+export async function put(cmd) {
   const stream = await conn.sftp()
   return stream.fastPut(cmd)
 }

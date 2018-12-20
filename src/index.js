@@ -5,7 +5,7 @@ import consola from 'consola'
 import { getConnection } from './ssh'
 import { commands } from './commands'
 
-export function compileTemplate(cmd, settings) {
+compile.compileTemplate = function(cmd, settings) {
   const cmdTemplate = template(cmd, {
     interpolate: /<%=([\s\S]+?)%>/g
   })
@@ -19,7 +19,8 @@ compile.context = () => ({
   argv: []
 })
 
-export function compile(source) {
+export function compile(source, settings) {
+  source = compile.compileTemplate(source, settings)
   const lines = source.split(/\n/g)
   const _commands = []
 
@@ -56,28 +57,6 @@ export function compile(source) {
   return _commands
 }
 
-function makeCommand(command, method) {
-  const func = () => method(command)
-  func.meta = command
-  return func
-}
-
-export function commandsFromTree(commands) {
-  return commands.map((command) => {
-    if (Array.isArray(command)) {
-      if (command[0] === 'local') {
-        return makeCommand(command[1], runLocalCommand)
-      } else if (command[0] === 'echo') {
-        return makeCommand(command.slice(1), runEcho)
-      } else if (command[0] === 'put') {
-        return makeCommand(command, runPut)
-      }
-    } else {
-      return makeCommand(command, runCommand)
-    }
-  })
-}
-
 export async function run(config, task) {
   const base = config.srcDir
   const servers = (config.ops || {}).servers || {}
@@ -102,7 +81,7 @@ export async function run(config, task) {
 export async function runString(settings, str) {
   const template = compileTemplate(str, settings)
   const commands = compile(template)
-  console.log(commands[0])
+  console.log(commands[0].run, commands[0].ctx.args)
   // for (const command of commands) {
   //   consola.info('Running command:', command.name, command.args)
   //   await command()
