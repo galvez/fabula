@@ -1,7 +1,8 @@
 import { runPut } from '../ssh'
 
 export default {
-  match(line) {
+  match(ctx, line) {
+    console.log('line:', line)
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },
   line(ctx, next) {

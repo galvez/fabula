@@ -12,29 +12,35 @@ export function compileTemplate(cmd, settings) {
   return cmdTemplate(settings)
 }
 
-export function compileTree(source) {
-  const lines = cmd.split(/\n/g)
-  const commands = []
+compile.context = () => ({
+  args: [],
+  cmd: null,
+  match: null,
+  argv: []
+})
+
+export function compile(source) {
+  const lines = source.split(/\n/g)
+  const _commands = []
 
   let command
   let match
 
-  const ctx = {
-    cmd: null,
-    match: null,
-    argv: []
-  }
+  let ctx = compile.context()
 
   for (const line of lines) {
     ctx.argv = line.split(/s+/)
     if (command) {
       command.line(ctx, () => {
-        cmd = null
+        _commands.push(command)
+        ctx = compile.context()
+        command = null
       })
     } else {    
       command = commands.find((cmd) => {
         match = cmd.match(ctx, line)
         if (match) {
+          ctx.first = true
           return true
         }
       })
@@ -43,7 +49,7 @@ export function compileTree(source) {
       }
     }
   }
-  return commands
+  return _commands
 }
 
 function makeCommand(command, method) {
@@ -89,12 +95,12 @@ export async function run(config, task) {
 }
 
 // Mostly temporary, for testing
-export async function runString(conn, str) {
-  const template = compileTemplate(task, servers[server])
-  const tree = compileTree(template)
-  const commands = commandsFromTree(tree)
-  for (const command of commands) {
-    consola.info('Running command:', command.meta)
-    await command()
-  }  
+export async function runString(settings, str) {
+  const template = compileTemplate(str, settings)
+  const commands = compile(template)
+  console.log(commands)
+  // for (const command of commands) {
+  //   consola.info('Running command:', command.name, command.args)
+  //   await command()
+  // }  
 }
