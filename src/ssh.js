@@ -1,6 +1,6 @@
 
 import { readFileSync } from 'fs'
-import { exec } from 'child_process'
+import { exec as execLocal } from 'child_process'
 import { promisify } from 'util'
 import { Client } from 'ssh2'
 
@@ -38,7 +38,7 @@ export async function put(cmd) {
   return stream.fastPut(cmd)
 }
 
-export function runCommand(cmd) {
+export function exec(cmd) {
   return new Promise(async (resolve, reject) => {
     let stdout = ''
     let stderr = ''

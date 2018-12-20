@@ -3,6 +3,7 @@ import { readFileSync } from 'fs'
 import template from 'lodash.template'
 import consola from 'consola'
 import { getConnection } from './ssh'
+import execCommand from './commands/exec'
 import { commands } from './commands'
 
 compile.compileTemplate = function(cmd, settings) {
@@ -11,6 +12,13 @@ compile.compileTemplate = function(cmd, settings) {
   })
   return cmdTemplate(settings)
 }
+
+compile.expandTildes = (argv) => argv.map((arg) => {
+  if (arg.startsWith('~')) {
+    return `${process.env.HOME}${arg.slice(1)}`
+  }
+  return arg
+})
 
 compile.context = () => ({
   args: [],
@@ -22,6 +30,8 @@ compile.context = () => ({
 export function compile(source, settings) {
   source = compile.compileTemplate(source, settings)
   const lines = source.split(/\n/g)
+    .filter(Boolean)
+    .filter((line) => !line.startsWith('#'))
   const _commands = []
 
   let command
@@ -31,19 +41,20 @@ export function compile(source, settings) {
 
   for (const line of lines) {
     ctx.line = line
+    const next = () => {
+      command.ctx = ctx
+      _commands.push(command)
+      ctx = compile.context()
+      command = null
+    }
     if (command) {
       ctx.first = false
-      command.line(ctx, () => {
-        command.ctx = ctx
-        _commands.push(command)
-        ctx = compile.context()
-        command = null
-      })
+      command.line(ctx, next)
     } else {    
       command = commands.find((cmd) => {
         match = cmd.match(line, ctx)
         if (match) {
-          ctx.argv = line.split(/\s+/)
+          ctx.argv = compile.expandTildes(line.split(/\s+/))
           ctx.match = match
           ctx.first = true
           return true
@@ -51,9 +62,19 @@ export function compile(source, settings) {
       })
       if (command) {
         command = { ...command }
+        command.line(ctx, next)
+      } else {
+        _commands.push({
+          ...execCommand,
+          ctx: {
+            argv: compile.expandTildes(line.split(/\s+/))
+          }
+        })
+        command = null
       }
     }
   }
+  console.log(_commands.length)
   return _commands
 }
 
@@ -79,9 +100,7 @@ export async function run(config, task) {
 
 // Mostly temporary, for testing
 export async function runString(settings, str) {
-  const template = compileTemplate(str, settings)
-  const commands = compile(template)
-  console.log(commands[0].run, commands[0].ctx.args)
+  compile(str, settings)
   // for (const command of commands) {
   //   consola.info('Running command:', command.name, command.args)
   //   await command()
