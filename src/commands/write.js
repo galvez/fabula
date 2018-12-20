@@ -1,6 +1,6 @@
 
 export default {
-  match(line, ctx) {
+  match(ctx, line) {
     ctx.argv = [ ...ctx.argv ]
     if (['append', 'echo'].includes(ctx.argv[0])) {
       return line.trim().match(

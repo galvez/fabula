@@ -1,14 +1,15 @@
 import { put } from '../ssh'
 
 export default {
-  match(line, ctx) {
+  match(ctx, line) {
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },
   line(ctx, next) {
-    ctx.args.push(ctx.match[1], ctx.match[2])
+    this.sourcePath = ctx.match[1]
+    this.targetPath = ctx.match[2]
     next()
   },
-  command(ctx) {
-    return put(...ctx.args)
+  command() {
+    return put(this.sourcePath, this.targetPath)
   }
 }

@@ -4,7 +4,7 @@ import template from 'lodash.template'
 import consola from 'consola'
 import { getConnection } from './ssh'
 import execCommand from './commands/exec'
-import { commands } from './commands'
+import commands from './commands'
 
 compile.compileTemplate = function(cmd, settings) {
   const cmdTemplate = template(cmd, {
@@ -21,8 +21,7 @@ compile.expandTildes = (argv) => argv.map((arg) => {
 })
 
 compile.context = () => ({
-  args: [],
-  cmd: null,
+  source: [],
   match: null,
   argv: []
 })
@@ -41,8 +40,9 @@ export function compile(source, settings) {
 
   for (const line of lines) {
     ctx.line = line
+    ctx.source.push(line)
     const next = () => {
-      command.ctx = ctx
+      Object.assign(command, ctx)
       _commands.push(command)
       ctx = compile.context()
       command = null
@@ -53,7 +53,7 @@ export function compile(source, settings) {
     } else {
       ctx.first = true
       command = commands.find((cmd) => {
-        match = cmd.match(line, ctx)
+        match = cmd.match(ctx, line)
         if (match) {
           ctx.argv = compile.expandTildes(line.split(/\s+/))
           ctx.match = match
@@ -66,15 +66,14 @@ export function compile(source, settings) {
       } else {
         _commands.push({
           ...execCommand,
-          ctx: {
-            argv: compile.expandTildes(line.split(/\s+/))
-          }
+          source: ctx.source,
+          argv: compile.expandTildes(line.split(/\s+/))
         })
+        ctx = compile.context()
         command = null
       }
     }
   }
-  console.log(_commands.length)
   return _commands
 }
 
@@ -100,9 +99,9 @@ export async function run(config, task) {
 
 // Mostly temporary, for testing
 export async function runString(settings, str) {
-  compile(str, settings)
-  // for (const command of commands) {
-  //   consola.info('Running command:', command.name, command.args)
-  //   await command()
-  // }  
+  const commands = compile(str, settings)
+  for (const command of commands) {
+    consola.info('Running command:', command.source[0], command.params)
+    // await command()
+  }  
 }
