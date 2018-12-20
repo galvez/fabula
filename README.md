@@ -7,6 +7,13 @@ Write server deployment scripts the Nuxt way.
 
 ## Development
 
+- [x] local
+- [ ] put
+- [ ] run
+- [ ] get (file)
+- [ ] forward_local
+- [ ] forward_remote
+
 ```js
 npm test
 ```
