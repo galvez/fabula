@@ -9,6 +9,8 @@ const settings = {
 }
 
 runString(settings, `
+echo ~/.ssh/config:
+  foobar
 cd ~
 put foo bar
 `)

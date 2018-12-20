@@ -1,10 +1,9 @@
 
 export default {
   match(ctx, line) {
-    ctx.argv = [ ...ctx.argv ]
     if (['append', 'echo'].includes(ctx.argv[0])) {
       return line.trim().match(
-        new RegExp(`^${ctx.argv[0]}\s+(.+?):$`)
+        new RegExp(`^${ctx.argv[0]}\\s+(.+?):$`)
       )
     }
   },

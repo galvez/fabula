@@ -21,7 +21,7 @@ compile.expandTildes = (argv) => argv.map((arg) => {
 })
 
 compile.context = () => ({
-  params: [],
+  params: {},
   source: [],
   match: null,
   argv: []
@@ -53,10 +53,10 @@ export function compile(source, settings) {
       command.line(ctx, next)
     } else {
       ctx.first = true
+      ctx.argv = compile.expandTildes(line.split(/\s+/))
       command = commands.find((cmd) => {
         match = cmd.match(ctx, line)
         if (match) {
-          ctx.argv = compile.expandTildes(line.split(/\s+/))
           ctx.match = match
           return true
         }
@@ -68,7 +68,7 @@ export function compile(source, settings) {
         _commands.push({
           ...execCommand,
           source: ctx.source,
-          argv: compile.expandTildes(line.split(/\s+/))
+          argv: ctx.argv
         })
         ctx = compile.context()
         command = null
