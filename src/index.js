@@ -14,27 +14,33 @@ export function compileTemplate(cmd, settings) {
 
 export function compileTree(source) {
   const lines = cmd.split(/\n/g)
+  const commands = []
+
+  let command
+  let match
+
   const ctx = {
+    cmd: null,
     match: null,
     argv: []
   }
+
   for (const line of lines) {
     ctx.argv = line.split(/s+/)
-    if (match = _commands.match(line)) {
-      await match.compile(commands)
-    }
-    if (echo) {
-    } else if (line.startsWith('local')) {
-      commands.push(['local', parts.slice(1).join(' ')])
-    } else if () {
-      commands.push(['put', parts.slice(1)])
-    // eslint-disable-next-line no-cond-assign
-    } else if (match = line.trim().match(/^echo\s+(.+?):$/)) {
-      commands.push(['echo', match[1]])
-      echoIndex = commands.length - 1
-      echo = true
-    } else if (line.trim().length > 0) {
-      commands.push(line)
+    if (command) {
+      command.line(ctx, () => {
+        cmd = null
+      })
+    } else {    
+      command = commands.find((cmd) => {
+        match = cmd.match(ctx, line)
+        if (match) {
+          return true
+        }
+      })
+      if (command) {
+        command = { ...command }
+      }
     }
   }
   return commands
