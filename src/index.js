@@ -29,14 +29,14 @@ compile.context = () => ({
 
 export function compile(source, settings) {
   source = compile.compileTemplate(source, settings)
+
   const lines = source.split(/\n/g)
     .filter(Boolean)
     .filter((line) => !line.startsWith('#'))
-  const _commands = []
 
+  const _commands = []
   let command
   let match
-
   let ctx = compile.context()
 
   for (const line of lines) {
@@ -50,13 +50,13 @@ export function compile(source, settings) {
     if (command) {
       ctx.first = false
       command.line(ctx, next)
-    } else {    
+    } else {
+      ctx.first = true
       command = commands.find((cmd) => {
         match = cmd.match(line, ctx)
         if (match) {
           ctx.argv = compile.expandTildes(line.split(/\s+/))
           ctx.match = match
-          ctx.first = true
           return true
         }
       })

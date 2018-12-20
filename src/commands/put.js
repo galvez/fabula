@@ -1,7 +1,6 @@
 import { put } from '../ssh'
 
 export default {
-  run: put,
   match(line, ctx) {
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },
@@ -9,7 +8,7 @@ export default {
     ctx.args.push(ctx.match[1], ctx.match[2])
     next()
   },
-  command(...args) {
-    return runPut(...args)
+  command(ctx) {
+    return put(...ctx.args)
   }
 }
