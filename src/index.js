@@ -63,6 +63,7 @@ export function compile(source, settings) {
         _commands.push(command)
         console.log('>', line)
         ctx = compile.context()
+        ctx.source.push(line)
         ctx.first = true
         command = compile.matchCommand(ctx, line)
         if (command) {
@@ -71,6 +72,7 @@ export function compile(source, settings) {
         } else {
           _commands.push({
             ...execCommand,
+            params: ctx.params,
             source: ctx.source,
             argv: ctx.argv
           })
@@ -95,6 +97,7 @@ export function compile(source, settings) {
       } else {
         _commands.push({
           ...execCommand,
+          params: ctx.params,
           source: ctx.source,
           argv: ctx.argv
         })
