@@ -4,9 +4,22 @@ import { compileCommand } from '../util'
 
 describe('task compilation', () => {
 
+  test('write-files-local.sh', () => {
+
+    const templateFile = readFileSync('test/fixtures/write-files-local.sh')
+
+    const settings = {
+      files: ['file1', 'file2', 'file3']
+    }
+
+    const compiled = compileCommand(templateFile, settings)
+    console.log(compiled)
+    expect(JSON.stringify(compiled, null, 2)).toMatchSnapshot()
+  })
+
   test('create-setup.sh', () => {
 
-    const templateFile = readFileSync('test/fixtures/setup-ssh.sh')
+    const templateFile = readFileSync('test/fixtures/setup-deployment.sh')
 
     const sampleSettings = {
       hostname: 'my-server',

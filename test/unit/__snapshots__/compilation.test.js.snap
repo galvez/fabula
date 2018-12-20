@@ -28,3 +28,30 @@ exports[`task compilation create-setup.sh 1`] = `
   ]
 ]"
 `;
+
+exports[`task compilation write-files-local.sh 1`] = `
+"[
+  \\"# This script runs on the local machine to create a \\",
+  \\"# series of files using the \`files\` Array provided \\",
+  \\"# in the each server setting\\",
+  [
+    \\"local\\",
+    \\"\\"
+  ],
+  [
+    \\"local\\",
+    \\"/file1:\\"
+  ],
+  \\"  this is the content of file1\\",
+  [
+    \\"local\\",
+    \\"/file2:\\"
+  ],
+  \\"  this is the content of file2\\",
+  [
+    \\"local\\",
+    \\"/file3:\\"
+  ],
+  \\"  this is the content of file3\\"
+]"
+`;
