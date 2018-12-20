@@ -8,7 +8,6 @@ export default {
     }
   },
   line(ctx, next) {
-    console.log(ctx.source, ctx.first)
     if (ctx.first) {
       ctx.params.filePath = ctx.match[1], []
       ctx.params.fileContents = []

@@ -52,25 +52,24 @@ export function compile(source, settings) {
 
   for (const line of lines) {
     ctx.line = line
-    ctx.source.push(line)
     const next = (add = true) => {
-      if (add) {
-        Object.assign(command, ctx)
-        _commands.push(command)
-        ctx = compile.context()
-        command = null
-      } else {
-        ctx.first = true
-        command = compile.matchCommand(ctx, line)
-        if (command) {
-          command = { ...command }
-          command.line(ctx, next)
-        }
-      }
+      Object.assign(command, ctx)
+      _commands.push(command)
+      ctx = compile.context()
+      command = null
+      // } else {
+      //   ctx = compile.context()
+      //   ctx.first = true
+      //   command = compile.matchCommand(ctx, line)
+      //   if (command) {
+      //     command = { ...command }
+      //     command.line(ctx, next)
+      //   }
+      // }
     }
     if (command) {
-      console.log(ctx.source)
       ctx.first = false
+      ctx.source.push(line)
       command.line(ctx, next)
     } else {
       ctx.first = true
@@ -78,6 +77,7 @@ export function compile(source, settings) {
       command = compile.matchCommand(ctx, line)
       // console.log(ctx, line, command)
       if (command) {
+        ctx.source.push(line)
         command = { ...command }
         command.line(ctx, next)
       } else {
