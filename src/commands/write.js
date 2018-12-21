@@ -12,10 +12,12 @@ export default {
     if (this.firstLine) {
       this.params.filePath = this.match[1]
       this.params.fileContents = []
-    } else if (!/^\s+/.test(line)) {
       return true
+    } else if (!/^\s+/.test(line)) {
+      return false
     } else {
       this.params.fileContents.push(line)
+      return true
     }
   },
   command() {

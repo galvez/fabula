@@ -17,8 +17,12 @@ export default class Command {
     })
   }
   handleLine(line) {
+    const continueCommand = this.cmd.line.call(this, line)
+    if (this.firstLine) {
+      this.firstLine = false
+    }    
     this.source.push(line)
-    return this.cmd.line.call(this, line)
+    return continueCommand
   }
   run() {
     this.cmd.command.apply(this)

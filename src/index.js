@@ -21,7 +21,6 @@ compile.matchCommand = function(command, line, push) {
   let match
 
   if (command) {
-    this.firstLine = false
     if (command.handleLine(line)) {
       return command
     } else {
@@ -40,6 +39,7 @@ compile.matchCommand = function(command, line, push) {
     command = new Command(execCommand, line)
   }
   if (command.handleLine(line)) {
+    push(command)
     return command
   } else {
     push(command)
