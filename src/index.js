@@ -71,20 +71,9 @@ export function compile(source, settings) {
     if (currentCommand) {
       currentCommand.handleLine(line, next)
     } else {
-      currentCommand = compile.matchCommand(line)
-      if (command) {
-        ctx.source.push(line)
-        command = { ...command }
-        command.line(ctx, next)
-      } else {
-        _commands.push({
-          ...execCommand,
-          params: ctx.params,
-          source: ctx.source,
-          argv: ctx.argv
-        })
-        ctx = compile.context()
-        command = null
+      currentCommand = compile.matchCommand(line, next)
+      if (currentCommand) {
+        parsedCommands.push(currentCommand)
       }
     }
   }

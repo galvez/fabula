@@ -1,12 +1,13 @@
 
 export default class Command {
-  constructor(cmd, match, line) {
+  constructor(cmd, match, line, next) {
     this.cmd = cmd
     this.params = {}
     this.match = match
     this.argv = this._expandTildes(line.split(/\s+/))
-    this.source = []
+    this.source = [ line ]
     this.firstLine = true
+    this.handleLine(next)
   }
   _expandTildes(argv) {
     return argv.map((arg) => {
