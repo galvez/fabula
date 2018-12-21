@@ -16,14 +16,16 @@ compile.compileTemplate = function(cmd, settings) {
   return cmdTemplate(settings)
 }
 
-compile.matchCommand = function(command, line) {
+compile.matchCommand = function(command, line, push) {
   let cmd
   let match
 
   if (command) {
     this.firstLine = false
-    if (!command.firstLine && !command.handleLine(line)) {
+    if (command.handleLine(line)) {
       return command
+    } else {
+      command = null
     }
   }
   for (cmd of commands) {
@@ -37,8 +39,11 @@ compile.matchCommand = function(command, line) {
   } else {
     command = new Command(execCommand, line)
   }
-  command.handleLine(line)
-  return command
+  if (command.handleLine(line)) {
+    return command
+  } else {
+    push(command)
+  }
 }
 
 export function compile(source, settings) {
@@ -48,16 +53,13 @@ export function compile(source, settings) {
     .filter(Boolean)
     .filter(line => !line.startsWith('#'))
 
-  let lastCommand
   let currentCommand
   const parsedCommands = []
 
   for (const line of lines) {
-    currentCommand = compile.matchCommand(currentCommand, line)
-    lastCommand = parsedCommands[parsedCommands.length ? parsedCommands.length - 1 : 0]
-    if (currentCommand !== lastCommand) {
-      parsedCommands.push(currentCommand)
-    }
+    currentCommand = compile.matchCommand(currentCommand, line, (command) => {
+      parsedCommands.push(command)
+    })
   }
   console.log(parsedCommands)
   return parsedCommands

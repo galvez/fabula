@@ -18,9 +18,7 @@ export default class Command {
   }
   handleLine(line) {
     this.source.push(line)
-    const nextCommand = this.cmd.line.call(this, line)
-    this.firstLine = false
-    return nextCommand
+    return this.cmd.line.call(this, line)
   }
   run() {
     this.cmd.command.apply(this)
