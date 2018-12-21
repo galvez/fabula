@@ -18,7 +18,7 @@ export default {
       this.params.fileContents.push(line)
     }
   },
-  command(ctx) {
+  command() {
     const match = this.params.fileContents[0].match(/^\s+/)
     const indentation = match ? match[0].length : 0
     const dedented = this.params.fileContents.map(line => line.slice(indentation))

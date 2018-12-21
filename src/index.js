@@ -17,18 +17,19 @@ compile.compileTemplate = function(cmd, settings) {
 }
 
 compile.matchCommand = function(line, next) {
+  let cmd
   let command
-  for (const cmd of commands) {
-    let match
+  let match
+  for (cmd of commands) {
     if (cmd.match) {
-      match = cmd.match(line)
+      command = new Command(cmd, line)
+      match = command.cmd.match.call(command, line)
     }
-    if (match) {
-      return new Command(cmd, match, line, next)
-    } else {
-      console.log('return execCommand', line)
-      return new Command(execCommand, match, line, next)  
-    }
+  }
+  if (match) {
+    return new Command(command.cmd, line, match, next)
+  } else {
+    return new Command(execCommand, line, match, next)  
   }
 }
 
@@ -43,10 +44,13 @@ export function compile(source, settings) {
   const parsedCommands = []
 
   for (const line of lines) {
-    currentCommand = compile.matchCommand(line, () => {
-      currentCommand = null
+    currentCommand = compile.matchCommand(line, (end = true) => {
+      if (end) {
+        console.log('end', line)
+        currentCommand = null
+      }
     })
-    if (currentCommand) {
+    if (currentCommand !== parsedCommands[parsedCommands.length - 1]) {
       parsedCommands.push(currentCommand)
     }
   }
