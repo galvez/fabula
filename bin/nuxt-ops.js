@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
 require = require('esm')(module)
-require('nuxt/operations').run()
+require('@nuxt/operations').run()
