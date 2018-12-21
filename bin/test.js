@@ -21,20 +21,21 @@ cd foobar
 
 mkdir foobar
 
-append ~/.ssh/config2:
-  Host <%= host %>
-    Hostname <%= hostname %>
-    IdentityFile <%= privateKey %>
-
-git checkout <%= branch %>
-
-echo "foobarfobar" > foobar
-
-<% if (someFlag) { %>
-local touch /tmp/some-file
-<% } %>
-
 `)
+
+// append ~/.ssh/config2:
+//   Host <%= host %>
+//     Hostname <%= hostname %>
+//     IdentityFile <%= privateKey %>
+
+// git checkout <%= branch %>
+
+// echo "foobarfobar" > foobar
+
+// <% if (someFlag) { %>
+// local touch /tmp/some-file
+// <% } %>
+
 
 // runString(settings, `
 // echo ~/.ssh/config:

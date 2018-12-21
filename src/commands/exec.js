@@ -1,11 +1,10 @@
 import { exec } from '../ssh'
 
 export default {
-  line(line, next) {
+  line(line) {
     this.params.cmd = line
-    next()
   },
   command() {
-    return exec(this.params.cmd)
+    exec(this.params.cmd)
   }
 }

@@ -8,12 +8,12 @@ export default {
       )
     }
   },
-  line(line, next) {
+  line(line) {
     if (this.firstLine) {
       this.params.filePath = this.match[1]
       this.params.fileContents = []
     } else if (!/^\s+/.test(line)) {
-      next(false)
+      return true
     } else {
       this.params.fileContents.push(line)
     }
