@@ -1,15 +1,24 @@
 
 export default class Command {
-  constructor(cmd) {
+  constructor(cmd, match, line) {
     this.cmd = cmd
     this.params = {}
-    this.argv = []
+    this.match = match
+    this.argv = this._expandTildes(line.split(/\s+/))
     this.source = []
+    this.firstLine = true
   }
-  match (line) {
-    return this.cmd.match.apply(this, line)
+  _expandTildes(argv) {
+    return argv.map((arg) => {
+      if (arg.startsWith('~')) {
+        return `${process.env.HOME}${arg.slice(1)}`
+      }
+      return arg
+    })
   }
-  line (next) {
+  handleLine (line, next) {
+    this.firstLine = false
+    this.source.push(line)
     return this.cmd.line.apply(this, next)
   }
   run () {

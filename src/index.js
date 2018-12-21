@@ -16,30 +16,16 @@ compile.compileTemplate = function(cmd, settings) {
   return cmdTemplate(settings)
 }
 
-compile.expandTildes = (argv) => argv.map((arg) => {
-  if (arg.startsWith('~')) {
-    return `${process.env.HOME}${arg.slice(1)}`
-  }
-  return arg
-})
-
 compile.matchCommand = function(line) {
   let match
   let command
   for (const cmd of commands) {
     match = cmd.match(line)
     if (match) {
-      return new Command(cmd, match)
+      return new Command(cmd, match, line)
     }
   }
 }
-
-compile.context = () => ({
-  params: {},
-  source: [],
-  $match: null,
-  argv: []
-})
 
 export function compile(source, settings) {
   source = compile.compileTemplate(source, settings)
@@ -48,13 +34,11 @@ export function compile(source, settings) {
     .filter(Boolean)
     .filter((line) => !line.startsWith('#'))
 
-  const _commands = []
-  let command
-  let match
-  let ctx = compile.context()
+  let currentCommand
+  const parsedCommands = []
 
   for (const line of lines) {
-    ctx.line = line
+
     const next = (add = true) => {
       if (add) {
         Object.assign(command, ctx)
@@ -83,15 +67,11 @@ export function compile(source, settings) {
         }
       }
     }
-    if (command) {
-      ctx.first = false
-      ctx.source.push(line)
-      command.line(ctx, next)
+
+    if (currentCommand) {
+      currentCommand.handleLine(line, next)
     } else {
-      ctx.first = true
-      ctx.argv = compile.expandTildes(line.split(/\s+/))
-      command = compile.matchCommand(ctx, line)
-      // console.log(ctx, line, command)
+      currentCommand = compile.matchCommand(line)
       if (command) {
         ctx.source.push(line)
         command = { ...command }
