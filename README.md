@@ -5,63 +5,22 @@
 
 Write server deployment scripts the Nuxt way.
 
-## Development
+## Proposed API
 
-- [x] local
-- [ ] put
-- [ ] run
-- [ ] get (file)
+See the [Nuxt Operations Module RFC](https://github.com/nuxt/rfcs/issues/20)
+
+## First iteration
+
+- [x] shell script preprocessor
+- [ ] echo command
+- [ ] append command
+- [ ] get command
+- [ ] put command
+- [ ] local commands
+- [ ] remote commands
+
+## Second iteration
+
 - [ ] forward_local
 - [ ] forward_remote
 - [ ] https://gist.github.com/gcollazo/495372
-
-```js
-npm test
-```
-
-See `test/unit/basic.test.js` for now.
-
-## Proposed API
-
-**nuxt.config.js**:
-
-```js
-export default {
-  operations: {
-    servers: {
-      instance: {
-        // All properties here are available to the tasks templates
-        host: '192.168.100.100',
-        port: 22,
-        username: 'username',
-        privateKey: '/here/is/my/key'
-      }
-    }
-  }
-}
-```
-
-**tasks/setup-ssh**:
-
-```sh
-rm -rf /instance $HOME/.keys $HOME/.ssh/config
-mkdir -p /instance/ $HOME/.keys
-chown -R ubuntu /instance/ $HOME/.keys
-chmod 755 $HOME/.keys
-put <%= privateKey %> $HOME/.keys/deploy_key
-chmod 400 $HOME/.keys/deploy_key
-
-echo $HOME/.ssh/config:
-  Host <%= host %>
-    Hostname <%= hostname %>
-    Port <%= port %>
-    IdentityFile $HOME/.keys/deploy_key
-    User <%= user %>
-    StrictHostKeyChecking no
-```
-
-Run using [upcoming module commands](https://github.com/nuxt/nuxt.js/pull/4314):
-
-```sh
-nuxt ops run setup-ssh
-```
