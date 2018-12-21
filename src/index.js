@@ -61,7 +61,7 @@ export function compile(source, settings) {
       parsedCommands.push(command)
     })
   }
-  console.log(parsedCommands)
+
   return parsedCommands
 }
 
