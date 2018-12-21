@@ -1,0 +1,30 @@
+[
+  [
+    "cd",
+    "/Users/jonas"
+  ],
+  [
+    "cd",
+    "foobar"
+  ],
+  [
+    "mkdir",
+    "foobar"
+  ],
+  [
+    "git",
+    "checkout",
+    "my-branch"
+  ],
+  [
+    "echo",
+    "\"foobarfobar\"",
+    ">",
+    "foobar"
+  ],
+  [
+    "local",
+    "touch",
+    "/tmp/some-file"
+  ]
+]

@@ -10,7 +10,7 @@ describe('test preprocessor syntax', () => {
     const testPath = resolve(__dirname, '..', 'fixtures', 'syntax', 'simple')
     const result = runScriptTest(testPath)
     console.log(result)
-    expect(result).toNotBe(undefined)
+    expect(result).not.toBe(undefined)
   })
 
 })
