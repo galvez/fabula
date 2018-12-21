@@ -2,9 +2,12 @@
 import { readFileSync } from 'fs'
 import template from 'lodash.template'
 import consola from 'consola'
+
 import { getConnection } from './ssh'
-import execCommand from './commands/exec'
+
+import Command from './command'
 import commands from './commands'
+import execCommand from './commands/exec'
 
 compile.compileTemplate = function(cmd, settings) {
   const cmdTemplate = template(cmd, {
@@ -20,15 +23,15 @@ compile.expandTildes = (argv) => argv.map((arg) => {
   return arg
 })
 
-compile.matchCommand = function(ctx, line) {
+compile.matchCommand = function(line) {
   let match
-  return commands.find((cmd) => {
-    match = cmd.match(ctx, line)
+  let command
+  for (const cmd of commands) {
+    match = cmd.match(line)
     if (match) {
-      ctx.$match = match
-      return true
+      return new Command(cmd, match)
     }
-  })
+  }
 }
 
 compile.context = () => ({
@@ -61,7 +64,6 @@ export function compile(source, settings) {
       } else {
         Object.assign(command, ctx)
         _commands.push(command)
-        console.log('>', line)
         ctx = compile.context()
         ctx.source.push(line)
         ctx.first = true
@@ -109,25 +111,25 @@ export function compile(source, settings) {
   return _commands
 }
 
-export async function run(config, task) {
-  const base = config.srcDir
-  const servers = (config.ops || {}).servers || {}
-  task = readFileSync(base, 'tasks', task)
+// export async function run(config, task) {
+//   const base = config.srcDir
+//   const servers = (config.ops || {}).servers || {}
+//   task = readFileSync(base, 'tasks', task)
 
-  for (const server in servers) {
-    const conn = getConnection(server, servers[server])
-    const template = compileTemplate(task, servers[server])
-    const tree = compileTree(template)
-    const commands = commandsFromTree(tree)
-    for (const command of commands) {
-      consola.info('Running command:', command.meta)
-      await command()
-    }
-  }
-  if (servers.length === 0) {
-    consola.warn('No servers configured.')
-  }
-}
+//   for (const server in servers) {
+//     const conn = getConnection(server, servers[server])
+//     const template = compileTemplate(task, servers[server])
+//     const tree = compileTree(template)
+//     const commands = commandsFromTree(tree)
+//     for (const command of commands) {
+//       consola.info('Running command:', command.meta)
+//       await command()
+//     }
+//   }
+//   if (servers.length === 0) {
+//     consola.warn('No servers configured.')
+//   }
+// }
 
 // Mostly temporary, for testing
 export async function runString(settings, str) {

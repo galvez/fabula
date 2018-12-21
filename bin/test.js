@@ -8,12 +8,32 @@ const settings = {
   privateKey: '~/Keys/galvez'
 }
 
-runString(settings, `
-echo ~/.ssh/config:
-  foobar
+runString({
+  branch: 'my-branch',
+  someFlag: true
+}, `
 cd ~
-put foo bar
+
+cd foobar
+
+mkdir foobar
+
+git checkout <%= branch %>
+
+echo "foobarfobar" > foobar
+
+<% if (someFlag) { %>
+local touch /tmp/some-file
+<% } %>
+
 `)
+
+// runString(settings, `
+// echo ~/.ssh/config:
+//   foobar
+// cd ~
+// put foo bar
+// `)
 
 // runString(settings, `
 // local append ~/.ssh/config2:
