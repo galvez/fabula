@@ -17,14 +17,17 @@ compile.compileTemplate = function(cmd, settings) {
 }
 
 compile.matchCommand = function(line, next) {
-  let match
   let command
   for (const cmd of commands) {
-    match = cmd.match(line)
+    let match
+    if (cmd.match) {
+      match = cmd.match(line)
+    }
     if (match) {
       return new Command(cmd, match, line, next)
     } else {
-      return new Command(execCommand, match, line, next)
+      console.log('return execCommand', line)
+      return new Command(execCommand, match, line, next)  
     }
   }
 }
@@ -34,34 +37,17 @@ export function compile(source, settings) {
 
   const lines = source.split(/\n/g)
     .filter(Boolean)
-    .filter((line) => !line.startsWith('#'))
+    .filter(line => !line.startsWith('#'))
 
   let currentCommand
   const parsedCommands = []
 
   for (const line of lines) {
-
-    const next = (add = true) => {
-      if (add) {
-        parsedCommands.push(currentCommand)
-        currentCommand = null
-      } else {
-        parsedCommands.push(currentCommand)
-        currentCommand = compile.matchCommand(ctx, line, next)
-        if (currentCommand) {
-          parsedCommands.push(currentCommand)
-        }
-        currentCommand = null
-      }
-    }
-
+    currentCommand = compile.matchCommand(line, () => {
+      currentCommand = null
+    })
     if (currentCommand) {
-      currentCommand.handleLine(line, next)
-    } else {
-      currentCommand = compile.matchCommand(line, next)
-      if (currentCommand) {
-        parsedCommands.push(currentCommand)
-      }
+      parsedCommands.push(currentCommand)
     }
   }
   return parsedCommands
@@ -93,5 +79,5 @@ export async function runString(settings, str) {
   for (const command of commands) {
     consola.info('Running command:', command.source[0], command.params)
     // await command()
-  }  
+  }
 }

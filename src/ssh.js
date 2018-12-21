@@ -1,10 +1,8 @@
 
 import { readFileSync } from 'fs'
-import { exec as execLocal } from 'child_process'
 import { promisify } from 'util'
 import { Client } from 'ssh2'
 
-const execAsync = promisify(exec)
 export const connections = {}
 
 export function getConnection(server, settings) {
@@ -22,10 +20,6 @@ export function getConnection(server, settings) {
       privateKey: readFileSync(privateKey).toString()
     })
   })
-}
-
-export function runLocalCommand(cmd) {
-  return execAsync(cmd)
 }
 
 export async function echo({ filePath, fileContents }) {
