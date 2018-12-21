@@ -16,7 +16,7 @@ compile.compileTemplate = function(cmd, settings) {
   return cmdTemplate(settings)
 }
 
-compile.matchCommand = function(command, line, push) {
+compile.parseLine = function(command, line, push) {
   let cmd
   let match
 
@@ -57,7 +57,7 @@ export function compile(source, settings) {
   const parsedCommands = []
 
   for (const line of lines) {
-    currentCommand = compile.matchCommand(currentCommand, line, (command) => {
+    currentCommand = compile.parseLine(currentCommand, line, (command) => {
       parsedCommands.push(command)
     })
   }
