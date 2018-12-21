@@ -1,6 +1,5 @@
-import { compileTemplate, compileAST } from '../../src/index'
+import { compile } from '../../src/index'
 
-export function compileCommand(templateFile, settings) {
-  const template = compileTemplate(templateFile, settings)
-  return compileAST(template)
+export function runScriptTest(path) {
+  const data = require(`${path}.js`)
 }
