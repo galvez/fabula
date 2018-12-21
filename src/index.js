@@ -41,30 +41,15 @@ export function compile(source, settings) {
 
     const next = (add = true) => {
       if (add) {
-        Object.assign(command, ctx)
-        _commands.push(command)
-        ctx = compile.context()
-        command = null
+        parsedCommands.push(currentCommand)
+        currentCommand = null
       } else {
-        Object.assign(command, ctx)
-        _commands.push(command)
-        ctx = compile.context()
-        ctx.source.push(line)
-        ctx.first = true
-        command = compile.matchCommand(ctx, line)
-        if (command) {
-          command = { ...command }
-          command.line(ctx, next)
-        } else {
-          _commands.push({
-            ...execCommand,
-            params: ctx.params,
-            source: ctx.source,
-            argv: ctx.argv
-          })
-          ctx = compile.context()
-          command = null
+        parsedCommands.push(currentCommand)
+        currentCommand = compile.matchCommand(ctx, line, next)
+        if (currentCommand) {
+          parsedCommands.push(currentCommand)
         }
+        currentCommand = null
       }
     }
 
