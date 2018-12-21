@@ -15,6 +15,7 @@ module.exports = {
   //   'packages/webpack/src/config/plugins/vue'
   // ],
   testPathIgnorePatterns: [
+    'bin/',
     'node_modules/',
     'test/fixtures/.*/.*?/'
   ],

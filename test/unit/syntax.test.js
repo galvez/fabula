@@ -1,6 +1,7 @@
 
+import { resolve } from 'path'
 import { readFileSync } from 'fs'
-import { compileCommand } from '../util'
+import { runScriptTest } from '../util'
 
 describe('test preprocessor syntax', () => {
 
