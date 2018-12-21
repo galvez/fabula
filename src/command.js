@@ -1,6 +1,7 @@
 
 export default class Command {
-  constructor(cmd, line, match, next) {
+  constructor(cmd, line, match) {
+    console.log('constructor', line)
     this.cmd = { ...cmd }
     this.params = {}
     this.match = match
@@ -16,11 +17,10 @@ export default class Command {
       return arg
     })
   }
-  handleLine(line, next) {
+  handleLine(line) {
+    console.log('handleLine', line)
     this.source.push(line)
-    if (this.cmd.line.call(this, line)) {
-      return
-    }
+    return this.cmd.line.call(this, line)
   }
   run() {
     this.cmd.command.apply(this)

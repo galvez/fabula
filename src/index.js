@@ -22,7 +22,7 @@ compile.matchCommand = function(command, line) {
 
   if (command) {
     this.firstLine = false
-    if (command.handleLine(line)) {
+    if (!command.firstLine && !command.handleLine(line)) {
       return command
     }
   }
@@ -34,13 +34,11 @@ compile.matchCommand = function(command, line) {
   }
   if (match) {
     command.match = match
-    command.handleLine(line)
-    return command
   } else {
     command = new Command(execCommand, line)
-    command.handleLine(line)
-    return command
   }
+  command.handleLine(line)
+  return command
 }
 
 export function compile(source, settings) {
