@@ -16,13 +16,15 @@ compile.compileTemplate = function(cmd, settings) {
   return cmdTemplate(settings)
 }
 
-compile.matchCommand = function(line) {
+compile.matchCommand = function(line, next) {
   let match
   let command
   for (const cmd of commands) {
     match = cmd.match(line)
     if (match) {
-      return new Command(cmd, match, line)
+      return new Command(cmd, match, line, next)
+    } else {
+      return new Command(execCommand, match, line, next)
     }
   }
 }
@@ -62,7 +64,7 @@ export function compile(source, settings) {
       }
     }
   }
-  return _commands
+  return parsedCommands
 }
 
 // export async function run(config, task) {
