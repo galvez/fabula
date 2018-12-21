@@ -33,8 +33,9 @@ export async function echo({ filePath, fileContents }) {
   return stream.writeFile(filePath, fileContents)
 }
 
-export async function append(cmd) {
-//
+export async function append({ filePath, fileContents }) {
+  // escape string
+  // run echo escaped(fileContents) >> filePath on the server
 }
 
 export async function put(cmd) {
