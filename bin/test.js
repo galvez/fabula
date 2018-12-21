@@ -21,6 +21,11 @@ cd foobar
 
 mkdir foobar
 
+append ~/.ssh/config2:
+  Host <%= host %>
+    Hostname <%= hostname %>
+    IdentityFile <%= privateKey %>
+
 `)
 
 // append ~/.ssh/config2:
