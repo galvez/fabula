@@ -8,6 +8,7 @@ export default class Command {
     this.source = [ line ]
     this.firstLine = true
     this.handleLine(next)
+    this.firstLine = false
   }
   _expandTildes(argv) {
     return argv.map((arg) => {
