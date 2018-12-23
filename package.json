@@ -1,15 +1,14 @@
 {
-  "name": "@nuxt/operations",
+  "name": "fabula",
   "version": "0.0.1",
-  "description": "Nuxt.js server configuration and task management framework",
+  "description": "Minimalist server configuration and task management",
   "author": "Jonas Galvez <jonasgalvez@gmail.com>",
   "license": "MIT",
   "engines": {
     "node": ">= 10.0.0"
   },
-  "bin": {
-    "nuxt-ops-run": "bin/run"
-  },
+  "main": "src/index.js",
+  "files": ["src"],
   "scripts": {
     "test": "jest",
     "lint": "eslint --fix --ext .js,.vue src"
