@@ -32,6 +32,14 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^4.7.1",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "rollup": "^0.68.1",
+    "rollup-plugin-alias": "^1.5.1",
+    "rollup-plugin-babel": "^4.1.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-license": "^0.7.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-replace": "^2.1.0"
   }
 }

@@ -1,7 +1,18 @@
+<script>
+export default {
+  server: {
+  	host: 'server-host',
+  	port: 22,
+  	privateKey: '/usr/'
+  }
+}
+</script>
 
+<fabula>
 local append ~/.ssh/config.test:
   Host <%= server.host %>
     Hostname <%= server.hostname %>
     Port <%= server.port %>
     IdentityFile <%= server.privateKey %>
     StrictHostKeyChecking no
+</fabula>
