@@ -61,7 +61,6 @@ compile.splitMultiLines = function (source) {
   }, [])
 }
 
-
 export function compile(source, settings) {
   source = compile.compileTemplate(source, settings)
 
@@ -81,31 +80,15 @@ export function compile(source, settings) {
   return parsedCommands
 }
 
-// export async function run(config, task) {
-//   const base = config.srcDir
-//   const servers = (config.ops || {}).servers || {}
-//   task = readFileSync(base, 'tasks', task)
-
-//   for (const server in servers) {
-//     const conn = getConnection(server, servers[server])
-//     const template = compileTemplate(task, servers[server])
-//     const tree = compileTree(template)
-//     const commands = commandsFromTree(tree)
-//     for (const command of commands) {
-//       consola.info('Running command:', command.meta)
-//       await command()
-//     }
-//   }
-//   if (servers.length === 0) {
-//     consola.warn('No servers configured.')
-//   }
-// }
-
-// Mostly temporary, for testing
-export async function runString(settings, str) {
+export async function runString(str, settings) {
   const commands = compile(str, settings)
   for (const command of commands) {
     consola.info('Running command:', command.source[0], command.params)
     // await command()
   }
+}
+
+export async function runSource(source, settings) {
+  const source = readFileSync(source).toString()
+  runString(source, settings)
 }
