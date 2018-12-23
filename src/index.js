@@ -46,10 +46,26 @@ compile.parseLine = function(command, line, push) {
   }
 }
 
+compile.splitMultiLines = function (source) {
+  let multiline
+  return source.split(/\n/g).reduce((_lines, line) => {
+    if (multiline) {
+      line = line.trimLeft()
+      multiline = /\\\s*$/.test(line)
+      const index = _lines.length ? _lines.length - 1 : 0
+      _lines[index] += line.replace(/\s*\\\s*$/, ' ')
+      return _lines
+    }
+    multiline = /\\\s*$/.test(line)
+    return _lines.concat([line.replace(/\s*\\\s*$/, ' ')])
+  }, [])
+}
+
+
 export function compile(source, settings) {
   source = compile.compileTemplate(source, settings)
 
-  const lines = source.split(/\n/g)
+  const lines = compile.splitMultiLines(source)
     .filter(Boolean)
     .filter(line => !line.startsWith('#'))
 

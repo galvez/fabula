@@ -13,9 +13,17 @@ runString({
   someFlag: true,
   host: 'host',
   hostname: 'hostname',
-  privateKey: '/keys/private-key'
+  privateKey: '/keys/private-key',
+  k8s: {
+    clusterName: 'k8s-name'
+  }
 }, `
 cd ~
+
+gcloud container clusters create <%= k8s.clusterName %> \\
+  --machine-type=n1-standard-2 \\
+  --zone=southamerica-east1-a \\
+  --num-nodes=4
 
 cd foobar
 
