@@ -1,6 +1,6 @@
 <p align="center">
-  <h1>⚙ nuxt/operations</h1>
-  <span>Nuxt.js server configuration and task management framework</span>
+  <h1>⚙ fabula</h1>
+  <span>Minimalist server configuration and task management</span>
 </p>
 
 Write server deployment scripts the Nuxt way.
