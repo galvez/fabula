@@ -1,3 +1,2 @@
-
-export async function run() {
-}
+ 
+export { default as cli } from './cli'

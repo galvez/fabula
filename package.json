@@ -7,6 +7,9 @@
   "engines": {
     "node": ">= 10.0.0"
   },
+  "bin": {
+    "fabula": "./bin/fabula.js"
+  },
   "main": "src/index.js",
   "files": [
     "src"
@@ -16,6 +19,7 @@
     "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
+    "arg": "^3.0.0",
     "consola": "^2.3.0",
     "esm": "^3.0.84",
     "lodash.template": "^4.4.0",

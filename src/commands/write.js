@@ -12,7 +12,7 @@ export default {
     }
     if (['append', 'echo'].includes(argv[0])) {
       return line.trim().match(
-        new RegExp(`^${argv[0]}\\s+(.+?):$`)
+        new RegExp(`^(?:local\s*)?${argv[0]}\\s+(.+?):$`)
       )
     }
   },

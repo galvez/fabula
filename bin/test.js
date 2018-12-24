@@ -1,5 +1,5 @@
 
-const { runString } = require('../src/index')
+const { runString } = require('../src/compile')
 
 const settings = {
   host: 'stored',

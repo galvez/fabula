@@ -9,7 +9,6 @@ export default {
     } else {
       this.op = 'exec'
       this.params.cmd = line
-      return true
     }
   },
   command() {
