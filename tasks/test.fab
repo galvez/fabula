@@ -1,5 +1,7 @@
-local mkdir /tmp/foobar98
+
 
 local echo /tmp/foobar98:
   foobar1
   foobar2
+
+local mkdir /tmp/foobar98

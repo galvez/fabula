@@ -10,6 +10,7 @@ export default {
       this.local = true
     }
     this.op = argv[0]
+    this.dedent = 0
     if (['append', 'echo'].includes(argv[0])) {
       return line.trim().match(
         new RegExp(`^(?:local\\s*)?${argv[0]}\\s+(.+?):$`)
@@ -22,27 +23,25 @@ export default {
       this.params.fileContents = []
       return true
     } else if (!/^\s+/.test(line)) {
-      const match = this.params.fileContents[0].match(/^\s+/)
-      const indentation = match ? match[0].length : 0
-      this.params.fileContents = this.params.fileContents
-        .map(line => line.slice(indentation)).join('\n')
       return false
     } else {
-      this.params.fileContents.push(line)
+      if (this.params.fileContents.length === 0) {
+        const match = line.match(/^\s+/)
+        if (match) {
+          this.dedent = match[0].length
+        }
+      }
+      this.params.fileContents.push(line.slice(this.dedent))
       return true
     }
   },
   command() {
+    const filePath = this.params.filePath
+    const fileContents = this.params.fileContents.join('\n')
     if (this.local) {
-      return ({ localEcho, localAppend })[this.op]({
-        filePath: this.params.filePath,
-        fileContents: this.params.fileContents
-      })
+      return ({ localEcho, localAppend })[this.op]({ filePath, fileContents })
     } else {
-      return ({ echo, append })[this.op]({
-        filePath: this.params.filePath,
-        fileContents: this.params.fileContents
-      })
+      return ({ echo, append })[this.op]({ filePath, fileContents })
     }
   }
 }

@@ -26,10 +26,10 @@ export default class Command {
       return false
     }
     const continueCommand = this.cmd.line.call(this, line)
+    this.source.push(line)
     if (this.firstLine) {
       this.firstLine = false
     }
-    this.source.push(line)
     return continueCommand
   }
   run() {
