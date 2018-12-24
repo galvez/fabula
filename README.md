@@ -34,6 +34,7 @@ export default {
   	deployKey: '/path/to/deploy-key'
   }
 }
+```
 
 #### command line
 
