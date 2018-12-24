@@ -43,7 +43,7 @@ export default {
 #### command line
 
 ```sh
-fabula tasks/setup-gh-deploy.fab
+fabula all tasks/setup-gh-deploy.fab
 fabula server1:tasks/setup-gh-deploy.fab
 ```
 
@@ -93,7 +93,23 @@ With a couple of twists:
   and Pythonic blocks (`echo <path>:`), as seen at the top.
 
 - Offer an API for extending the preprocessor with your own commands. This is
-  done by modularizing the bash parser with hooks. More on this below:
+  done by modularizing the bash parser with hooks. More on this below.
+
+## Local commands
+
+```sh
+fabula tasks/local-script.fab
+```
+
+Will run a script strictly on the local machine. 
+
+If it finds a remote command within, it will throw an error.
+
+## Key passphrases
+
+If you fail to provide a `passphrase` option in your server configuration, it'll use a promto to ask for one and use it for the current connection only.
+
+<img width="747" alt="screen shot 2018-12-24 at 8 21 58 pm" src="https://user-images.githubusercontent.com/12291/50407203-a465f400-07b9-11e9-945b-68c4b1ae9749.png">
 
 ## Dissecting a sample Fabula script
 
