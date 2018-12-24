@@ -11,7 +11,7 @@ function askPassphrase(privateKey) {
       silent: true,
       replace: '*'
     }
-    read(prompt, (error, passphrase) => {
+    read(prompt, (_, passphrase) => {
       resolve(passphrase)
     })
   })

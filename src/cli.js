@@ -1,6 +1,7 @@
 
 import { existsSync } from 'fs'
 import { resolve } from 'path'
+import consola from 'consola'
 import arg from 'arg'
 import { run } from './compile'
 
