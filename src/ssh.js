@@ -1,19 +1,47 @@
 
+import readline from 'readline'
+import { Writable } from 'stream'
 import { readFileSync } from 'fs'
 import { promisify } from 'util'
 import { Client } from 'ssh2'
+
+function askPassphrase(privateKey) {
+  return new Promise((resolve) => {
+    const passphraseOutput = new Writable({
+      write(chunk, encoding, callback) {
+        if (!this.protected) {
+          process.stdout.write(chunk, encoding)
+        } else {
+          // Displays typed passphrase as * on the screen
+          process.stdout.write(Buffer.from(chunk.toString().replace(/./g, '*')), encoding)
+        }
+        callback()
+      }
+    })
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: passphraseOutput,
+      terminal: true
+    })
+    rl.question(`${privateKey} requires a passphrase: `, (passphrase) => {
+      rl.close()
+      resolve(passphrase)
+    })
+    passphraseOutput.protected = true
+  })
+}
 
 function isKeyEncrypted(privateKey) {
   if (/^-*BEGIN ENCRYPTED PRIVATE KEY/g.test(privateKey)) {
     return true
   } else {
-    const firstLines = privateKey.split(/\n/g).slice(0, 3)
+    const firstLines = privateKey.split(/\n/g).slice(0, 2)
     return firstLines.some((line) => line.match(/Proc-Type: 4,ENCRYPTED/))
   }
 }
 
 export function getConnection(settings) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const conn = new Client()
     conn.exec = promisify(conn.exec).bind(conn)
     conn.sftp = promisify(conn.sftp).bind(conn)
@@ -22,7 +50,7 @@ export function getConnection(settings) {
 
     const privateKey = readFileSync(settings.privateKey).toString()
     if (!settings.passphrase && isKeyEncrypted(privateKey)) {
-
+      settings.passphrase = await askPassphrase(settings.privateKey)
     }
     conn.connect({ ...settings, privateKey })
   })

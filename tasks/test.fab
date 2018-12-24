@@ -1,7 +1,7 @@
 
 
-local echo /tmp/fabula1:
+echo /tmp/fabula1:
   foobar1
   foobar2
 
-local mkdir -p /tmp/fabula2
+mkdir -p /tmp/fabula2
