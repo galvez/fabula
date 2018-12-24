@@ -12,11 +12,11 @@ export default {
     }
     return true
   },
-  command() {
+  command(conn) {
     if (this.local) {
       return execLocal(this.params.cmd)
     } else {
-      return exec(this.conn, this.params.cmd)
+      return exec(conn, this.params.cmd)
     }
   }
 }

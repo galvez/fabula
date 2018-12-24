@@ -9,7 +9,7 @@ export default {
     this.params.sourcePath = this.match[1]
     this.params.targetPath = this.match[2]
   },
-  command() {
-    return put(this.conn, this.params.sourcePath, this.param.targetPath)
+  command(conn) {
+    return put(conn, this.params.sourcePath, this.param.targetPath)
   }
 }

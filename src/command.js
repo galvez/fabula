@@ -32,7 +32,7 @@ export default class Command {
     }
     return continueCommand
   }
-  run() {
-    return this.cmd.command.apply(this)
+  run(conn) {
+    return this.cmd.command.call(this, conn)
   }
 }

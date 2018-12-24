@@ -78,21 +78,25 @@ export function compile(source, settings) {
   return parsedCommands
 }
 
-export async function runString(str, settings) {
+export async function runString(server, conn, str, settings) {
   const commands = compile(str, settings)
   for (const command of commands) {
     try {
-      await command.run()
-      consola.info('[OK]', command.source[0])
+      await command.run(conn)
+      consola.info(`[${server}] [OK]`, command.source[0])
     } catch (err) {
-      consola.info('[FAIL]', command.source[0])
+      consola.info(`[${server}] [FAIL]`, command.source[0])
       consola.fatal(err)
       break
     }
   }
 }
 
-export function runSource(source, settings) {
+export function run(source, config) {
+  const settings = config
+  const remoteServers = settings.ssh
+  delete settings.ssh
+
   source = readFileSync(source).toString()
   runString(source, settings)
 }

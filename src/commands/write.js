@@ -35,14 +35,14 @@ export default {
       return true
     }
   },
-  command() {
+  command(conn) {
     const filePath = this.params.filePath
     const fileContents = this.params.fileContents
     if (this.local) {
       const cmd = ({ echo: localEcho, append: localAppend })[this.op]
       return cmd({ filePath, fileContents })
     } else {
-      return ({ echo, append })[this.op](this.conn, { filePath, fileContents })
+      return ({ echo, append })[this.op](conn, { filePath, fileContents })
     }
   }
 }
