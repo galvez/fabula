@@ -4,11 +4,12 @@ import { execLocal } from '../local'
 export default {
   match(line) {
     if (argv[0] === 'local') {
-      this.op = `execLocal`
+      this.op = 'execLocal'
       this.params.cmd = line.split(/^local\s+/)[1]
     } else {
-      this.op = `exec`
+      this.op = 'exec'
       this.params.cmd = line
+      return true
     }
   },
   command() {
