@@ -1,7 +1,10 @@
+
 import { readFileSync } from 'fs'
 import consola from 'consola'
 
 import template from 'lodash.template'
+
+import { getConnection } from './ssh'
 
 import Command from './command'
 import commands from './commands'
@@ -78,6 +81,25 @@ export function compile(source, settings) {
   return parsedCommands
 }
 
+export async function runLocalString(str, settings) {
+  const commands = compile(str, settings)
+  for (const command of commands) {
+    try {
+      if (!command.local) {
+        consola.info(`[FAIL]`, command.source[0])
+        consola.fatal('No servers specified to run this remote command.')
+        process.exit()
+      }
+      await command.run(conn)
+      consola.info(`[local] [OK]`, command.source[0])
+    } catch (err) {
+      consola.info(`[local] [FAIL]`, command.source[0])
+      consola.fatal(err)
+      break
+    }
+  }
+}
+
 export async function runString(server, conn, str, settings) {
   const commands = compile(str, settings)
   for (const command of commands) {
@@ -92,11 +114,22 @@ export async function runString(server, conn, str, settings) {
   }
 }
 
-export function run(source, config) {
-  const settings = config
-  const remoteServers = settings.ssh
+export async function run(source, config, servers = []) {
+  source = readFileSync(source).toString()
+  const settings = { ...config }
   delete settings.ssh
 
-  source = readFileSync(source).toString()
-  runString(source, settings)
+  let remoteServers = servers
+  if (servers.length === 0) {
+    await runLocalString(source, settings)
+    return
+  } else if (servers.length === 1 && servers[0] === 'all') {
+    remoteServers = Object.keys(config.ssh)
+  }
+  
+  let conn
+  for (const server of remoteServers) {
+    conn = await getConnection(config.ssh[server])
+    await runString(server, conn, source, settings)
+  }
 }
