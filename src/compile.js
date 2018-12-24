@@ -5,7 +5,6 @@ import template from 'lodash.template'
 
 import Command from './command'
 import commands from './commands'
-import execCommand from './commands/exec'
 
 compile.compileTemplate = function (cmd, settings) {
   const cmdTemplate = template(cmd, {
@@ -16,7 +15,6 @@ compile.compileTemplate = function (cmd, settings) {
 
 compile.parseLine = function (command, line, push) {
   let cmd
-  let match
 
   if (command) {
     if (command.handleLine(line)) {
@@ -28,14 +26,11 @@ compile.parseLine = function (command, line, push) {
   for (cmd of commands) {
     if (cmd.match) {
       command = new Command(cmd, line)
-      match = command.cmd.match.call(command, line)
+      if (command.cmd.match.call(command, line)) {
+        break
+      }
     }
   }
-  // if (match) {
-  //   command.match = match
-  // } else {
-  //   command = new Command(execCommand, line)
-  // }
   if (command.handleLine(line)) {
     push(command)
     return command

@@ -4,6 +4,7 @@ import { resolve } from 'path'
 import consola from 'consola'
 import arg from 'arg'
 import { runSource } from '../compile'
+// import { getConnection } from './ssh'
 
 function resolvePath(path) {
   return resolve(...path.split('/'))
@@ -22,6 +23,7 @@ function loadConfig() {
   }
   return require(resolvePath(rcFile))
 }
+
 
 void (async function main() {
   const config = loadConfig()
