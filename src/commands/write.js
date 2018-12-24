@@ -21,6 +21,10 @@ export default {
       this.params.fileContents = []
       return true
     } else if (!/^\s+/.test(line)) {
+      const match = this.params.fileContents[0].match(/^\s+/)
+      const indentation = match ? match[0].length : 0
+      this.params.fileContents =  this.params.fileContents
+        .map(line => line.slice(indentation)).join('\n')
       return false
     } else {
       this.params.fileContents.push(line)
@@ -28,18 +32,15 @@ export default {
     }
   },
   command() {
-    const match = this.params.fileContents[0].match(/^\s+/)
-    const indentation = match ? match[0].length : 0
-    const dedented = this.params.fileContents.map(line => line.slice(indentation))
     if (this.local) {
       return ({ appendLocal, echoLocal })[this.op]({
         filePath: this.params.filePath,
-        fileContents: dedented.join('\n')
+        fileContents: this.params.fileContents
       })
     } else {
       return ({ append, echo })[this.op]({
         filePath: this.params.filePath,
-        fileContents: dedented.join('\n')
+        fileContents: this.params.fileContents
       })
     }
   }
