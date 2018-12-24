@@ -42,7 +42,7 @@ export default {
       const cmd = ({ echo: localEcho, append: localAppend })[this.op]
       return cmd({ filePath, fileContents })
     } else {
-      return ({ echo, append })[this.op]({ filePath, fileContents })
+      return ({ echo, append })[this.op](this.conn, { filePath, fileContents })
     }
   }
 }

@@ -10,6 +10,6 @@ export default {
     this.params.targetPath = this.match[2]
   },
   command() {
-    return put(this.params.sourcePath, this.param.targetPath)
+    return put(this.conn, this.params.sourcePath, this.param.targetPath)
   }
 }
