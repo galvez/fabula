@@ -3,7 +3,7 @@ import { execLocal } from '../local'
 
 export default {
   match(line) {
-    if (argv[0] === 'local') {
+    if (this.argv[0] === 'local') {
       this.op = 'execLocal'
       this.params.cmd = line.split(/^local\s+/)[1]
     } else {
