@@ -1,34 +1,19 @@
 
-import readline from 'readline'
-import { Writable } from 'stream'
 import { readFileSync } from 'fs'
 import { promisify } from 'util'
+import read from 'read'
 import { Client } from 'ssh2'
 
 function askPassphrase(privateKey) {
   return new Promise((resolve) => {
-    const passphraseOutput = new Writable({
-      write(chunk, encoding, callback) {
-        if (!this.protected) {
-          process.stdout.write(chunk, encoding)
-        } else {
-          // Displays typed passphrase as * on the screen
-          const withAsterisks = chunk.toString().replace(/./g, '*')
-          process.stdout.write(Buffer.from(withAsterisks), encoding)
-        }
-        callback()
-      }
-    })
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: passphraseOutput,
-      terminal: true
-    })
-    rl.question(`${privateKey} requires a passphrase: `, (passphrase) => {
-      rl.close()
+    const prompt = {
+      prompt: `${privateKey} requires a passphrase: `,
+      silent: true,
+      replace: '*'
+    }
+    read(prompt, (error, passphrase) => {
       resolve(passphrase)
     })
-    passphraseOutput.protected = true
   })
 }
 

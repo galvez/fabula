@@ -90,7 +90,7 @@ export async function runLocalString(str, settings) {
         consola.fatal('No servers specified to run this remote command.')
         process.exit()
       }
-      await command.run(conn)
+      await command.run()
       consola.info(`[local] [OK]`, command.source[0])
     } catch (err) {
       consola.info(`[local] [FAIL]`, command.source[0])
