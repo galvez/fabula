@@ -288,6 +288,7 @@ Created and maintained by [Jonas Galvez][jg] with the help of the **Nuxt Core Te
 
 <img width="104" alt="screen shot 2018-12-24 at 8 35 05 pm" src="https://user-images.githubusercontent.com/12291/50407303-987b3180-07bb-11e9-80b8-9609f99023dc.png">
 
-Proudly sponsored by [STORED e-commerce][stored], who provides state-of-the-art sales and payment solutions in Brazil.
+Proudly sponsored by [STORED][stored], which provides state-of-the-art e-commerce solutions in Brazil.
 
 [jg]: http://hire.jonasgalvez.com.br
+[stored]: http://stored.com.br
