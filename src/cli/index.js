@@ -1,17 +1,13 @@
 
+import { existsSync } from 'fs'
 import { resolve } from 'path'
 import consola from 'consola'
 import arg from 'arg'
 import { runSource } from '../compile'
 
-function resolvePath(path, base = null) {
-  if (!base) {
-    base = process.cwd()
-  }
-  return resolve(base, ...path.split('/'))
+function resolvePath(path) {
+  return resolve(...path.split('/'))
 }
-
-let config
 
 function loadConfig() {
   let rcFile
@@ -24,14 +20,15 @@ function loadConfig() {
   if (rcFile === null) {
     throw new Error('Fabula configuration not found.')
   }
-  config = require(resolvePath(rcFile))
+  return require(resolvePath(rcFile))
 }
 
-void async function main() {
+void (async function main() {
+  const config = loadConfig()
   const args = arg()
   const source = args._[0]
   await runSource(source, config)
-}.catch((err) => {
+}()).catch((err) => {
   consola.fatal(err)
   process.exit()
 })
