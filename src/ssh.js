@@ -13,7 +13,8 @@ function askPassphrase(privateKey) {
           process.stdout.write(chunk, encoding)
         } else {
           // Displays typed passphrase as * on the screen
-          process.stdout.write(Buffer.from(chunk.toString().replace(/./g, '*')), encoding)
+          const withAsterisks = chunk.toString().replace(/./g, '*')
+          process.stdout.write(Buffer.from(withAsterisks), encoding)
         }
         callback()
       }
