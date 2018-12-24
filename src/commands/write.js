@@ -37,9 +37,10 @@ export default {
   },
   command() {
     const filePath = this.params.filePath
-    const fileContents = this.params.fileContents.join('\n')
+    const fileContents = this.params.fileContents
     if (this.local) {
-      return ({ localEcho, localAppend })[this.op]({ filePath, fileContents })
+      const cmd = ({ echo: localEcho, append: localAppend })[this.op]
+      return cmd({ filePath, fileContents })
     } else {
       return ({ echo, append })[this.op]({ filePath, fileContents })
     }

@@ -33,6 +33,6 @@ export default class Command {
     return continueCommand
   }
   run() {
-    this.cmd.command.apply(this)
+    return this.cmd.command.apply(this)
   }
 }

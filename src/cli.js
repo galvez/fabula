@@ -24,7 +24,7 @@ function loadConfig() {
   return require(resolvePath(rcFile))
 }
 
-export default async function() {
+export default async function () {
   const config = loadConfig()
   const args = arg({})
   const source = args._[0]
