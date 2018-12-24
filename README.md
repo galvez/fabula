@@ -83,8 +83,8 @@ Fabric **and** Nuxt inspired new tool.
 With a couple of twists:
 
 - Instead of using JavaScript for composing shell scripts, just preprocess bash
-  scripts with [`lodash.template`][template] with some added conveniences, such 
-  as `local <cmd>` and Pythonic blocks (`echo <path>:`), as seen at the top.
+  scripts with some added conveniences, such as `local <cmd>` and Pythonic 
+  blocks (`echo <path>:`), as seen at the top.
 
 - Offer an API for extending the preprocessor with your own commands. This is
   done by modularizing the bash parser with hooks. More on this below:
