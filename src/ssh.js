@@ -3,41 +3,36 @@ import { readFileSync } from 'fs'
 import { promisify } from 'util'
 import { Client } from 'ssh2'
 
-export const connections = {}
-
-export function getConnection(server, settings) {
+export function getConnection(settings) {
   return new Promise((resolve, reject) => {
-    if (!connections[server]) {
-      const conn = new Client()
-      connections[server] = conn
-      conn.exec = promisify(conn.exec).bind(conn)
-      conn.sftp = promisify(conn.sftp).bind(conn)
-    }
+    const conn = new Client()
+    conn.exec = promisify(conn.exec).bind(conn)
+    conn.sftp = promisify(conn.sftp).bind(conn)
     conn.on('error', reject)
     conn.on('ready', () => resolve(conn))
     conn.connect({
       ...settings,
-      privateKey: readFileSync(privateKey).toString()
+      privateKey: readFileSync(settings.privateKey).toString()
     })
   })
 }
 
-export async function echo({ filePath, fileContents }) {
+export async function echo(conn, { filePath, fileContents }) {
   const stream = await conn.sftp()
   return stream.writeFile(filePath, fileContents)
 }
 
-export async function append({ filePath, fileContents }) {
+export async function append(conn, { filePath, fileContents }) {
   // escape string
   // run echo escaped(fileContents) >> filePath on the server
 }
 
-export async function put(cmd) {
+export async function put(conn, cmd) {
   const stream = await conn.sftp()
   return stream.fastPut(cmd)
 }
 
-export function exec(cmd) {
+export function exec(conn, cmd) {
   return new Promise(async (resolve, reject) => {
     let stdout = ''
     let stderr = ''
