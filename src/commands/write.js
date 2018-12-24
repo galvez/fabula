@@ -2,17 +2,17 @@ import { echo, append } from '../ssh'
 import { localEcho, localAppend } from '../local'
 
 export default {
+  name: 'write',
   match(line) {
     const argv = [...this.argv]
     if (argv[0] === 'local') {
-      this.op = `${argv.shift()}Local`
+      argv.shift()
       this.local = true
-    } else {
-      this.op = argv[0]
     }
+    this.op = argv[0]
     if (['append', 'echo'].includes(argv[0])) {
       return line.trim().match(
-        new RegExp(`^(?:local\s*)?${argv[0]}\\s+(.+?):$`)
+        new RegExp(`^(?:local\\s*)?${argv[0]}\\s+(.+?):$`)
       )
     }
   },

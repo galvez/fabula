@@ -69,8 +69,6 @@ export function compile(source, settings) {
   let currentCommand
   const parsedCommands = []
 
-  console.log('>', lines)
-
   for (const line of lines) {
     currentCommand = compile.parseLine(currentCommand, line, (command) => {
       parsedCommands.push(command)
@@ -82,16 +80,17 @@ export function compile(source, settings) {
 
 export async function runString(str, settings) {
   const commands = compile(str, settings)
-  for (const command of commands) {
-    console.log(command.source)
-    // try {
-    //   await command.run()
-    //   consola.info(command.source[0], '[OK]')
-    // } catch (err) {
-    //   consola.info(command.source[0], '[FAIL]')
-    //   consola.fatal(err)
-    // }
-  }
+  consola.log(commands.length)
+  // for (const command of commands) {
+  //   console.log(command.source)
+  //   // try {
+  //   //   await command.run()
+  //   //   consola.info(command.source[0], '[OK]')
+  //   // } catch (err) {
+  //   //   consola.info(command.source[0], '[FAIL]')
+  //   //   consola.fatal(err)
+  //   // }
+  // }
 }
 
 export function runSource(source, settings) {

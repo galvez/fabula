@@ -12,10 +12,8 @@ function resolvePath(path) {
 
 function loadConfig() {
   let rcFile
-  consola.info('>', 'foo')
   for (rcFile of ['.fabularc', '.fabularc.js', 'fabula.js']) {
     if (existsSync(resolvePath(rcFile))) {
-      consola.info('exists', rcFile)
       break
     }
     rcFile = null
