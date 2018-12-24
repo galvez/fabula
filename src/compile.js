@@ -81,14 +81,13 @@ export function compile(source, settings) {
 export async function runString(str, settings) {
   const commands = compile(str, settings)
   for (const command of commands) {
-    // console.log(command.source[0], command.params)
     try {
-      console.log('command.name', command.name)
       await command.run()
-      consola.info(command.source[0], '[OK]')
+      consola.info('[OK]', command.source[0])
     } catch (err) {
-      consola.info(command.source[0], '[FAIL]')
+      consola.info('[FAIL]', command.source[0])
       consola.fatal(err)
+      break
     }
   }
 }
