@@ -72,13 +72,15 @@ my case, I'd always need my `node_modules` **and** a [pip][pip] installation.
 Granted, these other packages are rather full-blown abstractions for server 
 management and deployment, in contrast to Fabric which is architected more 
 closely to the metal (SSH), _so to speak_. Fabric avoids abstracting too much, 
-while offering the ability to compose low-level commands with easier 
-configuration and a convenience transport layer independent from `ssh-agent`.
+it just lets you compose low-level commands with easier configuration and a 
+convenience transport layer independent from `ssh-agent`.
 
-Given there's [a mature SSH2 package for Node][ssh2] available, I set out to 
-write a Fabric and Nuxt inspired new tool, with a couple of twists:
+Given there's [a mature SSH2 package for Node][ssh2], I set out to write a 
+Fabric **and** Nuxt inspired new tool.
 
 [ssh2]: https://github.com/mscdex/ssh2
+
+With a couple of twists:
 
 - Instead of using JavaScript for composing shell scripts, just preprocess bash
   scripts with [`lodash.template`][template] with some added conveniences, such 
