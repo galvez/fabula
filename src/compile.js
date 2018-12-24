@@ -1,18 +1,20 @@
 import { readFileSync } from 'fs'
+import consola from 'consola'
+
 import template from 'lodash.template'
 
 import Command from './command'
 import commands from './commands'
 import execCommand from './commands/exec'
 
-compile.compileTemplate = function(cmd, settings) {
+compile.compileTemplate = function (cmd, settings) {
   const cmdTemplate = template(cmd, {
     interpolate: /<%=([\s\S]+?)%>/g
   })
   return cmdTemplate(settings)
 }
 
-compile.parseLine = function(command, line, push) {
+compile.parseLine = function (command, line, push) {
   let cmd
   let match
 
@@ -76,21 +78,20 @@ export function compile(source, settings) {
   return parsedCommands
 }
 
-
 export async function runString(str, settings) {
   const commands = compile(str, settings)
   for (const command of commands) {
     try {
       await command.run()
       consola.info(command.source[0], '[OK]')
-    } catch(err) {
+    } catch (err) {
       consola.info(command.source[0], '[FAIL]')
       consola.fatal(err)
     }
   }
 }
 
-export async function runSource(source, settings) {
-  const source = readFileSync(source).toString()
+export function runSource(source, settings) {
+  source = readFileSync(source).toString()
   runString(source, settings)
 }
