@@ -1,5 +1,5 @@
-import { append, echo } from '../ssh'
-import { localAppend, localEcho } from '../local'
+import { echo, append } from '../ssh'
+import { localEcho, localAppend } from '../local'
 
 export default {
   match(line) {
@@ -24,7 +24,7 @@ export default {
     } else if (!/^\s+/.test(line)) {
       const match = this.params.fileContents[0].match(/^\s+/)
       const indentation = match ? match[0].length : 0
-      this.params.fileContents =  this.params.fileContents
+      this.params.fileContents = this.params.fileContents
         .map(line => line.slice(indentation)).join('\n')
       return false
     } else {
@@ -34,12 +34,12 @@ export default {
   },
   command() {
     if (this.local) {
-      return ({ appendLocal, echoLocal })[this.op]({
+      return ({ localEcho, localAppend })[this.op]({
         filePath: this.params.filePath,
         fileContents: this.params.fileContents
       })
     } else {
-      return ({ append, echo })[this.op]({
+      return ({ echo, append })[this.op]({
         filePath: this.params.filePath,
         fileContents: this.params.fileContents
       })
