@@ -3,6 +3,15 @@ import { readFileSync } from 'fs'
 import { promisify } from 'util'
 import { Client } from 'ssh2'
 
+function isKeyEncrypted(privateKey) {
+  if (/^-*BEGIN ENCRYPTED PRIVATE KEY/g.test(privateKey)) {
+    return true
+  } else {
+    const firstLines = privateKey.split(/\n/g).slice(0, 3)
+    return firstLines.some((line) => line.match(/Proc-Type: 4,ENCRYPTED/))
+  }
+}
+
 export function getConnection(settings) {
   return new Promise((resolve, reject) => {
     const conn = new Client()
@@ -10,10 +19,12 @@ export function getConnection(settings) {
     conn.sftp = promisify(conn.sftp).bind(conn)
     conn.on('error', reject)
     conn.on('ready', () => resolve(conn))
-    conn.connect({
-      ...settings,
-      privateKey: readFileSync(settings.privateKey).toString()
-    })
+
+    const privateKey = readFileSync(settings.privateKey).toString()
+    if (!settings.passphrase && isKeyEncrypted(privateKey)) {
+
+    }
+    conn.connect({ ...settings, privateKey })
   })
 }
 
