@@ -1,4 +1,5 @@
 import { append, echo } from '../ssh'
+import { localAppend, localEcho } from '../local'
 
 export default {
   match(line) {

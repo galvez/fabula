@@ -8,7 +8,9 @@
     "node": ">= 10.0.0"
   },
   "main": "src/index.js",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "jest",
     "lint": "eslint --fix --ext .js,.vue src"
@@ -17,6 +19,7 @@
     "consola": "^2.3.0",
     "esm": "^3.0.84",
     "lodash.template": "^4.4.0",
+    "shell-quote": "^1.6.1",
     "ssh2": "^0.6.1"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import { exec } from '../ssh'
+import { execLocal } from '../local'
 
 export default {
   line(line) {
