@@ -25,11 +25,15 @@ echo ~/.ssh/config:
 
 ```js
 export default {
-  server1: {
-  	host: '1.2.3.4',
-  	user: 'deploy',
-  	privateKey: '/path/to/private-key'
+  // List remote servers in `ssh`
+  ssh: {
+  	server1: {
+  	  host: '1.2.3.4',
+  	  user: 'deploy',
+  	  privateKey: '/path/to/private-key'
+    }
   },
+  // Add any other options you want
   github: {
   	deployKey: '/path/to/deploy-key'
   }
