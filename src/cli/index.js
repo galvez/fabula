@@ -24,7 +24,6 @@ function loadConfig() {
   return require(resolvePath(rcFile))
 }
 
-
 void (async function main() {
   const config = loadConfig()
   const args = arg()
