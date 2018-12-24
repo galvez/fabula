@@ -101,16 +101,15 @@ With a couple of twists:
 # This script runs on the remote instance
 # to add Github SSH configuration for deployment
 
-# ~ is automatically expanded to $HOME
-mkdir -p ~/.keys
-chown -R ubuntu ~/.keys
-chmod 755 ~/.keys
+mkdir -p /app/.keys
+chown -R ubuntu /app/.keys
+chmod 755 /app/.keys
 
 # put is a special command that performs a SFTP
 # PUT operation from <source> to <target>, where
 # <source> is a path on the local machine
-put <%= github.deploy_key %> ~/.keys/deploy_key
-chmod 400 ~/.keys/deploy_key
+put <%= github.deploy_key %> /app/.keys/deploy_key
+chmod 400 /app/.keys/deploy_key
 
 # echo is a special command that overrides the original 
 # UNIX command with an indentation-based block to define 
@@ -121,7 +120,7 @@ chmod 400 ~/.keys/deploy_key
 echo ~/.ssh/config:
   Host <%= host %>
     Hostname <%= hostname %>
-    IdentityFile ~/.keys/deploy_key
+    IdentityFile /app/.keys/deploy_key
     User git
     StrictHostKeyChecking no
 ```
