@@ -2,9 +2,16 @@ import { append, echo } from '../ssh'
 
 export default {
   match(line) {
-    if (['append', 'echo'].includes(this.argv[0])) {
+    const argv = [...this.argv]
+    if (argv[0] === 'local') {
+      this.op = `${argv.shift()}Local`
+      this.local = true
+    } else {
+      this.op = argv[0]
+    }
+    if (['append', 'echo'].includes(argv[0])) {
       return line.trim().match(
-        new RegExp(`^${this.argv[0]}\\s+(.+?):$`)
+        new RegExp(`^${argv[0]}\\s+(.+?):$`)
       )
     }
   },
@@ -24,9 +31,16 @@ export default {
     const match = this.params.fileContents[0].match(/^\s+/)
     const indentation = match ? match[0].length : 0
     const dedented = this.params.fileContents.map(line => line.slice(indentation))
-    return ({ append, echo })[this.argv[0]]({
-      filePath: this.params.filePath,
-      fileContents: dedented.join('\n')
-    })
+    if (this.local) {
+      return ({ appendLocal, echoLocal })[this.op]({
+        filePath: this.params.filePath,
+        fileContents: dedented.join('\n')
+      })
+    } else {
+      return ({ append, echo })[this.op]({
+        filePath: this.params.filePath,
+        fileContents: dedented.join('\n')
+      })
+    }
   }
 }
