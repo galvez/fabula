@@ -1,0 +1,6 @@
+
+local echo /tmp/fabula1:
+  foobar1
+  foobar2
+
+local mkdir -p /tmp/fabula2
