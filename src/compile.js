@@ -126,7 +126,7 @@ export async function run(source, config, servers = []) {
   } else if (servers.length === 1 && servers[0] === 'all') {
     remoteServers = Object.keys(config.ssh)
   }
-  
+
   let conn
   for (const server of remoteServers) {
     conn = await getConnection(config.ssh[server])

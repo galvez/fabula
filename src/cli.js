@@ -1,7 +1,6 @@
 
 import { existsSync } from 'fs'
 import { resolve } from 'path'
-import consola from 'consola'
 import arg from 'arg'
 import { run } from './compile'
 
@@ -33,10 +32,12 @@ export default async function () {
   } else if (args._.length === 1) {
     const source = args._[0]
     if (!source) {
-      throw new Error('No source specified.')
+      consola.fatal('No source specified.')
+      process.exit()
     }
     await run(source, config)
   } else {
-    throw new String('Unrecognized number of parameters.')
+    consola.fatal('Unrecognized number of parameters.')
+    process.exit()
   }
 }

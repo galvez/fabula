@@ -22,7 +22,7 @@ function isKeyEncrypted(privateKey) {
     return true
   } else {
     const firstLines = privateKey.split(/\n/g).slice(0, 2)
-    return firstLines.some((line) => line.match(/Proc-Type: 4,ENCRYPTED/))
+    return firstLines.some(line => line.match(/Proc-Type: 4,ENCRYPTED/))
   }
 }
 
