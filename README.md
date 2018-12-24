@@ -50,6 +50,15 @@ fabula server1:tasks/setup-gh-deploy.fab
 - First command will automatically run on all available servers.
 - Second command will run specifically on `server1`
 
+## Checklist
+
+- [x] Local commands
+- [x] Local echo/append
+- [x] Remote commands
+- [ ] Remote echo/append
+- [ ] Remote get
+- [ ] Forwarding
+
 ## Motivation
 
 For the longest time, I have packaged my Node applications together with a 
