@@ -161,7 +161,6 @@ defined under `src/commands/put.js`:
 import { put } from '../ssh'
 
 export default {
-  name: 'put',
   match(line) {
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },
@@ -211,7 +210,6 @@ import { echo, append } from '../ssh'
 import { localEcho, localAppend } from '../local'
 
 export default {
-  name: 'write',
   match(line) {
     const argv = [...this.argv]
     if (argv[0] === 'local') {
