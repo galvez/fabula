@@ -3,8 +3,7 @@ import { existsSync } from 'fs'
 import { resolve } from 'path'
 import consola from 'consola'
 import arg from 'arg'
-import { runSource } from './compile'
-// import { getConnection } from './ssh'
+import { run } from './compile'
 
 function resolvePath(path) {
   return resolve(process.cwd(), ...path.split('/'))
@@ -21,15 +20,23 @@ function loadConfig() {
   if (rcFile === null) {
     throw new Error('Fabula configuration not found.')
   }
-  return require(resolvePath(rcFile))
+  return require(resolvePath(rcFile)).default
 }
 
 export default async function () {
   const config = loadConfig()
   const args = arg({})
-  const source = args._[0]
-  if (!source) {
-    throw new Error('No action specified.')
+  if (args._.length === 2) {
+    const servers = args._[0].split(/,/g)
+    const source = args._[1]
+    await run(source, config, servers)
+  } else if (args._.length === 1) {
+    const source = args._[0]
+    if (!source) {
+      throw new Error('No source specified.')
+    }
+    await run(source, config)
+  } else {
+    throw new String('Unrecognized number of parameters.')
   }
-  await runSource(source, config)
 }
