@@ -31,11 +31,11 @@ compile.parseLine = function (command, line, push) {
       match = command.cmd.match.call(command, line)
     }
   }
-  if (match) {
-    command.match = match
-  } else {
-    command = new Command(execCommand, line)
-  }
+  // if (match) {
+  //   command.match = match
+  // } else {
+  //   command = new Command(execCommand, line)
+  // }
   if (command.handleLine(line)) {
     push(command)
     return command

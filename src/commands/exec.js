@@ -2,10 +2,16 @@ import { exec } from '../ssh'
 import { execLocal } from '../local'
 
 export default {
-  line(line) {
-    this.params.cmd = line
+  match(line) {
+    if (argv[0] === 'local') {
+      this.op = `execLocal`
+      this.params.cmd = line.split(/^local\s+/)[1]
+    } else {
+      this.op = `exec`
+      this.params.cmd = line
+    }
   },
   command() {
-    exec(this.params.cmd)
+    return ({ exec, execLocal })[this.op](this.params.cmd)
   }
 }
