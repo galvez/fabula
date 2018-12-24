@@ -80,8 +80,13 @@ export function compile(source, settings) {
 export async function runString(str, settings) {
   const commands = compile(str, settings)
   for (const command of commands) {
-    consola.info('Running command:', command.source[0], command.params)
-    // await command()
+    try {
+      await command.run()
+      consola.info(command.source[0], '[OK]')
+    } catch(err) {
+      consola.info(command.source[0], '[FAIL]')
+      consola.fatal(err)
+    }
   }
 }
 
