@@ -33,14 +33,19 @@ export function getConnection(settings) {
     conn.sftp = promisify(conn.sftp).bind(conn)
     conn.on('error', reject)
     conn.on('ready', () => {
-      conn.settings = settingss
+      conn.settings = settings
       resolve(conn)
     })
-    const privateKey = readFileSync(settings.privateKey).toString()
-    if (!settings.passphrase && isKeyEncrypted(privateKey)) {
-      settings.passphrase = await askPassphrase(settings.privateKey)
+    
+    if (settings.privateKey) {
+      const privateKey = readFileSync(settings.privateKey).toString()
+      if (!settings.passphrase && isKeyEncrypted(privateKey)) {
+        settings.passphrase = await askPassphrase(settings.privateKey)
+      }
+      conn.connect({ ...settings, privateKey })
+    } else if (settings.agent) {
+      conn.connect({ ...settings })
     }
-    conn.connect({ ...settings, privateKey })
   })
 }
 
@@ -65,8 +70,6 @@ export function exec(conn, cmd) {
     let stderr = ''
     const stream = await conn.exec(cmd).catch(reject)
     stream.on('close', (code, signal) => {
-      // console.log('stdout:', stdout)
-      // console.log('stderr:', stderr)
       resolve({ stdout, stderr, code, signal })
     })
     stream.on('data', (data) => { stdout += data })

@@ -19,7 +19,7 @@ export default {
     }
     this.op = argv[0]
     this.dedent = 0
-    if (['append', 'echo'].includes(argv[0])) {
+    if (['append', 'write'].includes(argv[0])) {
       let match
       // eslint-disable-next-line no-cond-assign
       if (match = line.match(this.cmd.patterns.block(argv))) {

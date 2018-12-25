@@ -185,10 +185,16 @@ export async function runString(server, conn, name, str, settings) {
   const commands = compile(name, str, settings)
   for (const command of commands) {
     try {
-      await command.run(conn)
+      const response = await command.run(conn)
+      for (const line of response.stdout.split(/\n/g).filter(Boolean)) {
+        consola.info(`[${server}]`, line.trim())
+      }
+      for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
+        consola.error(`[${server}]`, line.trim())
+      }      
       consola.info(`[${server}] [OK]`, command.source[0])
     } catch (err) {
-      consola.info(`[${server}] [FAIL]`, command.source[0])
+      consola.error(`[${server}] [FAIL]`, command.source[0])
       consola.fatal(err)
       break
     }
@@ -196,6 +202,9 @@ export async function runString(server, conn, name, str, settings) {
 }
 
 export async function run(source, config, servers = []) {
+  if (!source.endsWith('.fab')) {
+    source += '.fab'
+  }
   const name = parse(source).name
   source = readFileSync(source).toString()
   const settings = { ...config }
