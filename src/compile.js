@@ -126,7 +126,7 @@ function compileComponent(name, source, settings) {
   const componentStrings = strings.reduce((hash, string) => {
     return { ...hash, [string.id]: quote(string.lines.join('\n'), true) }
   }, {})
-  
+
   settings = {
     ...settings.options,
     ...componentSettings.default,
@@ -139,7 +139,6 @@ export function compile(name, source, settings) {
   if (source.match(/^\s*<(?:(?:fabula)|(commands))>/g)) {
     return compileComponent(name, source, settings)
   }
-  console.log('source>', source)
   source = compile.compileTemplate(source, settings)
 
   const lines = compile.splitMultiLines(source)
