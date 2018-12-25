@@ -61,9 +61,9 @@ to define an **indented block of text** (that gets **automatically dedendeted**
 when parsed) and append it to a file. 
 
 Similarly, `local write` would overwrite the contents of the file, instead of 
-simply appending to it. As minimalist and useful as these blocks of inline text 
-can be (way prettier than using native Bash at least), they can still be kind of
-funky for some people.
+simply appending to it. As simple as these blocks of inline text can be (way 
+prettier than using native Bash at least), they can still be kind of funky for 
+some people.
 
 **Fabula** offers yet another alternative to this case, which is to add a 
 `<string>` block with an identifier, that can later be referenced by an 
