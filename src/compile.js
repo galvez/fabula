@@ -123,15 +123,17 @@ function compileComponent(name, source, settings) {
   const { fabula, script, strings } = compile.loadComponent(source)
   const componentSettings = requireFromString(fabula.join('\n'), name)
   const componentSource = script.join('\n')
-  const componentStrings = strings.reduce((hash, string) => {
-    return { ...hash, [string.id]: quote(string.lines.join('\n'), true) }
-  }, {})
-
+  
   settings = {
     ...settings.options,
-    ...componentSettings.default,
-    strings: componentStrings
+    ...componentSettings.default
   }
+
+  settings.strings = strings.reduce((hash, string) => {
+    const compiledString = compile.compileTemplate(string.lines.join('\n'), settings)
+    return { ...hash, [string.id]: quote(compiledString, true) }
+  }, {})
+
   return compile(name, componentSource, settings)
 }
 
@@ -177,6 +179,10 @@ export async function runLocalString(name, str, settings) {
 }
 
 export async function runString(server, conn, name, str, settings) {
+  settings = {
+    ...settings,
+    $server: conn.settings
+  }
   const commands = compile(name, str, settings)
   for (const command of commands) {
     try {

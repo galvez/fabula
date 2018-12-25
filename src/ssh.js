@@ -32,8 +32,10 @@ export function getConnection(settings) {
     conn.exec = promisify(conn.exec).bind(conn)
     conn.sftp = promisify(conn.sftp).bind(conn)
     conn.on('error', reject)
-    conn.on('ready', () => resolve(conn))
-
+    conn.on('ready', () => {
+      conn.settings = settingss
+      resolve(conn)
+    })
     const privateKey = readFileSync(settings.privateKey).toString()
     if (!settings.passphrase && isKeyEncrypted(privateKey)) {
       settings.passphrase = await askPassphrase(settings.privateKey)
