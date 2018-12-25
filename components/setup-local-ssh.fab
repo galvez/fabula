@@ -1,0 +1,24 @@
+<fabula>
+export default {
+  host: '3.80.152.37',
+  user: 'ubuntu',
+  port: 22,
+  privateKey: '/Users/jonas/Keys/galvez'
+}
+</fabula>
+
+<script>
+mkdir -p ~/.ssh/
+chmod 755 ~/.ssh
+# sshConfig will contain a /tmp/ file path
+local append ~/.ssh/config #sshConfig
+chmod 640 sshConfig
+</script>
+
+<string id="sshConfig">
+Host <%= host %>
+  Hostname <%= hostname %>
+  Port <%= port %>
+  IdentityFile <%= privateKey %>
+  StrictHostKeyChecking no
+</string>

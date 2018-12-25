@@ -3,7 +3,7 @@ local cd ~
 local mkdir -p test
 
 echo /tmp/test:
-	goes into the file
+  goes into the file
 
 sudo service nginx restart
 
@@ -16,6 +16,7 @@ local append ~/.ssh/config.test:
     StrictHostKeyChecking no
 <% } %>
 
+# Lines ending in \ continue into the next line (like Bash)
 gcloud container clusters create <%= k8s.clusterName %> \
   --machine-type=n1-standard-2 \
   --zone=southamerica-east1-a \
