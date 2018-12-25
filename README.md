@@ -14,30 +14,33 @@ First, we'll define some parameters we'll use:
 ```xml
 <fabula>
 export default {
-  host: 'stored',
-  hostname: '3.80.152.37',
+  host: 'server',
+  hostname: '1.2.3.4',
   user: 'ubuntu',
-  privateKey: '/Users/jonas/Keys/galvez'
+  privateKey: '/path/to/key'
 }
 </fabula>
 ```
 
-The `<fabula>` block should contain a **ES module**.
+The `<fabula>` block should contain an **ES module**.
 
 Next we can add a `local append` command to the `<commands>` section:
 
 ```xml
 <fabula>
 export default {
-  host: 'stored',
-  hostname: '3.80.152.37',
+  host: 'server',
+  hostname: '1.2.3.4',
   user: 'ubuntu',
-  privateKey: '/Users/jonas/Keys/galvez'
+  privateKey: '/path/to/key'
 }
 </fabula>
 
 <commands>
-local echo >> ~/.ssh/config # new line
+# Append a new line
+local echo >> ~/.ssh/config
+
+# Append specified block of text
 local append ~/.ssh/config:
   Host <%= host %>
       Hostname <%= hostname %>
@@ -64,10 +67,10 @@ alternatively recognizable syntax for the special `local append` command:
 ```xml
 <fabula>
 export default {
-  host: 'stored',
-  hostname: '3.80.152.37',
+  host: 'server',
+  hostname: '1.2.3.4',
   user: 'ubuntu',
-  privateKey: '/Users/jonas/Keys/galvez'
+  privateKey: '/path/to/key'
 }
 </fabula>
 
@@ -80,7 +83,10 @@ Host <%= host %>
 </string>
 
 <commands>
-local echo >> ~/.ssh/config # new line
+# Append a new line
+local echo >> ~/.ssh/config
+
+# Append specified string
 local append ~/.ssh/config strings.sshConfig
 </commands>
 ```
