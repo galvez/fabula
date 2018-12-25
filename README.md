@@ -8,11 +8,39 @@ Let's start with the simplest of tasks: adding an entry to ~/.ssh/config on your
 
 First, we'll define some parameters we'll use:
 
-![Configuration](https://user-images.githubusercontent.com/12291/50420075-7913f100-081b-11e9-91da-7d90e2cba575.png)
+```xml
+<fabula>
+export default {
+  host: 'stored',
+  hostname: '3.80.152.37',
+  user: 'ubuntu',
+  privateKey: '/Users/jonas/Keys/galvez'
+}
+</fabula>
+```
 
 Next we can add a `local append` command to the `<commands>` section:
 
-![Commands](https://user-images.githubusercontent.com/12291/50420084-8630e000-081b-11e9-9999-f538be84c534.png)
+```xml
+<fabula>
+export default {
+  host: 'stored',
+  hostname: '3.80.152.37',
+  user: 'ubuntu',
+  privateKey: '/Users/jonas/Keys/galvez'
+}
+</fabula>
+
+<commands>
+local echo >> ~/.ssh/config # new line
+local append ~/.ssh/config:
+  Host <%= host %>
+      Hostname <%= hostname %>
+      User <%= user %>
+      IdentityFile <%= privateKey %>
+      StrictHostKeyChecking no
+</commands>
+```
 
 Any Bash statement will work inside `<commands>`, but a few particular 
 statements are recognized by handlers using **Fabula**'s modular compiler API, 
@@ -28,7 +56,29 @@ still be kind of funky for some people.
 `<string>` block with an identifier, than can later be referenced by an 
 alternatively recognizable syntax for the special `local append` command:
 
-![Strings](https://user-images.githubusercontent.com/12291/50420095-921ca200-081b-11e9-8715-6d0250797bcf.png)
+```xml
+<fabula>
+export default {
+  host: 'stored',
+  hostname: '3.80.152.37',
+  user: 'ubuntu',
+  privateKey: '/Users/jonas/Keys/galvez'
+}
+</fabula>
+
+<string id="sshConfig">
+Host <%= host %>
+    Hostname <%= hostname %>
+    User <%= user %>
+    IdentityFile <%= privateKey %>
+    StrictHostKeyChecking no
+</string>
+
+<commands>
+local echo >> ~/.ssh/config # new line
+local append ~/.ssh/config strings.sshConfig
+</commands>
+```
 
 ## SSH
 

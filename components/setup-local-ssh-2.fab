@@ -7,11 +7,6 @@ export default {
 }
 </fabula>
 
-<commands>
-local echo >> ~/.ssh/config # new line
-local append ~/.ssh/config strings.sshConfig
-</commands>
-
 <string id="sshConfig">
 Host <%= host %>
     Hostname <%= hostname %>
@@ -19,3 +14,9 @@ Host <%= host %>
     IdentityFile <%= privateKey %>
     StrictHostKeyChecking no
 </string>
+
+<commands>
+local echo >> ~/.ssh/config # new line
+local append ~/.ssh/config strings.sshConfig
+</commands>
+
