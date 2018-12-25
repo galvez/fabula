@@ -5,7 +5,7 @@
 
 ### 2-minute intro
 
-Let's start with the simplest of tasks: adding an entry to ~/.ssh/config on your
+Let's start with the simplest of tasks: adding an entry to `~/.ssh/config` on your
 **local computer**. 
 
 First, we'll define some parameters we'll use:
