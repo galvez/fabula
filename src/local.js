@@ -11,7 +11,7 @@ export function execLocal(cmd) {
 export async function localEcho({ filePath, fileContents }) {
   await execLocal(`echo -e ${quote(fileContents[0])} > ${filePath}`)
   for (const line of fileContents.slice(1)) {
-    await execLocal(`echo ${quote(line)} >> ${filePath}`)
+    await execLocal(`echo -e ${quote(line)} >> ${filePath}`)
   }
 }
 
