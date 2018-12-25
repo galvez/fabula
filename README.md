@@ -50,15 +50,20 @@ local append ~/.ssh/config:
 </commands>
 ```
 
-Any Bash statement will work inside `<commands>`, but a few particular 
-statements are recognized by handlers using **Fabula**'s modular compiler API, 
-which cause them to process and run differently. In this snippet, we're using
-Fabula's special `local append` command, which allows you to define an **indented
-block of text** (that gets **automatically dedendeted** when parsed) and append
-it to a file. Similarly, `local write` would overwrite the contents of the file,
-instead of simply appending to it. As minimalist and useful as these blocks of
-inline text can be (way prettier than using native Bash at least), they can 
-still be kind of funky for some people.
+Any Bash statement will work inside `<commands>` (like the first one), but a few
+particular statements are recognized by handlers using **Fabula**'s modular 
+compiler API, which cause them to process and run differently. 
+
+First off, anything line that starts with `local` is run on the local machine.
+
+In this snippet, we're using Fabula's special `append` command, which allows you 
+to define an **indented block of text** (that gets **automatically dedendeted** 
+when parsed) and append it to a file. 
+
+Similarly, `local write` would overwrite the contents of the file, instead of 
+simply appending to it. As minimalist and useful as these blocks of inline text 
+can be (way prettier than using native Bash at least), they can still be kind of
+funky for some people.
 
 **Fabula** offers yet another alternative to this case, which is to add a 
 `<string>` block with an identifier, that can later be referenced by an 
