@@ -11,7 +11,7 @@ function resolvePath(path) {
 
 function loadConfig() {
   let rcFile
-  for (rcFile of ['.fabularc', '.fabularc.js', 'fabula.js']) {
+  for (rcFile of ['fabula.js', '.fabularc.js', '.fabularc']) {
     if (existsSync(resolvePath(rcFile))) {
       break
     }

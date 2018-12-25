@@ -3,7 +3,7 @@
   <span>Minimalist server configuration and task management.</span>
 </p>
 
-### 2-minute intro
+### Intro
 
 Let's start with the simplest of tasks:
 
@@ -16,7 +16,7 @@ First, we'll define some parameters we'll use:
 export default {
   host: 'server',
   hostname: '1.2.3.4',
-  user: 'ubuntu',
+  username: 'ubuntu',
   privateKey: '/path/to/key'
 }
 </fabula>
@@ -31,7 +31,7 @@ Next we can add a `local append` command to the `<commands>` section:
 export default {
   host: 'server',
   hostname: '1.2.3.4',
-  user: 'ubuntu',
+  username: 'ubuntu',
   privateKey: '/path/to/key'
 }
 </fabula>
@@ -61,7 +61,7 @@ inline text can be (way prettier than using native Bash at least), they can
 still be kind of funky for some people.
 
 **Fabula** offers yet another alternative to this case, which is to add a 
-`<string>` block with an identifier, than can later be referenced by an 
+`<string>` block with an identifier, that can later be referenced by an 
 alternatively recognizable syntax for the special `local append` command:
 
 ```xml
@@ -69,7 +69,7 @@ alternatively recognizable syntax for the special `local append` command:
 export default {
   host: 'server',
   hostname: '1.2.3.4',
-  user: 'ubuntu',
+  username: 'ubuntu',
   privateKey: '/path/to/key'
 }
 </fabula>
@@ -77,7 +77,7 @@ export default {
 <string id="sshConfig">
 Host <%= host %>
     Hostname <%= hostname %>
-    User <%= user %>
+    User <%= username %>
     IdentityFile <%= privateKey %>
     StrictHostKeyChecking no
 </string>
@@ -93,28 +93,57 @@ local append ~/.ssh/config strings.sshConfig
 
 ## SSH
 
-To be written...
+So far we've only seen local commands. Anything **that is not preceded** by 
+**`local`** is recognized to be a remote command. That is, they'll run on one
+or more SSH servers that you can specify in **Fabula**'s configuration file.
 
-## CLI
+> **Fabula** will recognize `fabula.js`, `fabularc.js` and `.fabularc.js` as
+valid configuration filenames, in that order.
 
-d
+To specify a remote server, list it by a key under the `ssh` global option:
 
-```sh
-fabula all tasks/setup-gh-deploy.fab
-fabula server1:tasks/setup-gh-deploy.fab
+```js
+export default {
+  ssh: {
+    server: {
+      username: 'ubuntu',
+      hostname: '1.2.3.4',
+      privateKey: '/path/to/key'
+    }
+  }
+}
 ```
 
-- First command will automatically run on all available servers.
-- Second command will run specifically on `server1`
+To run a remote command, you need specify a list of servers. If you try to run
+a **Fabula** file that contains a remote command without specifying any servers
+where to run, it will exit and display an error. 
 
-## Checklist
+In the beggining you saw **Fabula** files with multiple sections organized as 
+tags, but you can also skip the sections and just have your commands in a 
+**Fabula** file. Say you have a `show-uptime.fab` file with simply:
 
-- [x] Local commands
-- [x] Local echo/append
-- [x] Remote commands
-- [ ] Remote echo/append
-- [ ] Remote get
-- [ ] Forwarding
+```sh
+uptime
+```
+
+To run it on the SSH server specified as `server` above, run:
+
+```sh
+fabula server show-uptime
+```
+
+That would be the same as running:
+
+```sh
+fabula all show-uptime
+```
+
+If there are, however, multiple servers and you need to choose, you can do:
+
+
+```sh
+fabula server1,server2,server3 show-uptime
+```
 
 ## Motivation
 
@@ -160,16 +189,6 @@ With a couple of twists:
 
 - Offer an API for extending the preprocessor with your own commands. This is
   done by modularizing the bash parser with hooks. More on this below.
-
-## Local commands
-
-```sh
-fabula tasks/local-script.fab
-```
-
-Will run a script strictly on the local machine. 
-
-If it finds a remote command within, it will throw an error.
 
 ## Key passphrases
 
