@@ -152,7 +152,21 @@ If there are, however, multiple servers and you need to choose, you can do:
 fabula server1,server2,server3 show-uptime
 ```
 
-Notice that **Fabula** will ask for a passphrase if you don't provide one (as `passphrase`) in the connection settings.
+Notice that **Fabula** will ask for a passphrase if you don't provide one (as 
+`passphrase`) in the connection settings in conjunction with `privateKey`. You 
+can also skip providing a `privateKey` by linking to the local SSH agent:
+
+```js
+export default {
+  ssh: {
+    server: {
+      username: 'ubuntu',
+      hostname: '1.2.3.4',
+      agent: process.env.SSH_AUTH_SOCK
+    }
+  }
+}
+```
 
 See the **full documentation** (coming soon) for more.
 
