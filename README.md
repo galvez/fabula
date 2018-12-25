@@ -67,7 +67,7 @@ some people.
 
 **Fabula** offers yet another alternative to this case, which is to add a 
 `<string>` block with an identifier, that can later be referenced by an 
-alternatively recognizable syntax for the special `local append` command:
+alternatively recognizable syntax for the special `append` command:
 
 ```xml
 <fabula>
