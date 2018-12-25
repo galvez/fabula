@@ -1,4 +1,6 @@
 
+import Module from 'module'
+
 import { readFileSync } from 'fs'
 import { parse } from 'path'
 
@@ -10,6 +12,13 @@ import { getConnection } from './ssh'
 
 import Command from './command'
 import commands from './commands'
+
+function requireFromString(code, name) {
+  const m = new Module()
+  m._compile(code, `components/${name}.js`)
+  m.loaded = true
+  return m.exports
+}
 
 compile.loadComponent = function (source) {
   source = source.split(/\n/g)
@@ -24,18 +33,21 @@ compile.loadComponent = function (source) {
   let string = {}
 
   for (const line of source) {
+    // eslint-disable-next-line no-cond-assign
     if (match = line.match(/^\s*<(?!\/)([^>]+)>/)) {
       element = match[1]
+      // eslint-disable-next-line no-cond-assign
       if (match = element.match(/^string\s+id="([^"]+)"/)) {
-        string = {id: match[1], lines: []}
+        string = { id: match[1], lines: [] }
         element = 'string'
       }
       continue
+    // eslint-disable-next-line no-cond-assign
     } else if (match = line.match(/^\s*<\/([^>]+)>/)) {
       if (match[1] === 'string') {
         strings.push(string)
       }
-      element = null      
+      element = null
       continue
     }
     switch (element) {
