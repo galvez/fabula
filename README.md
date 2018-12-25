@@ -137,6 +137,8 @@ To run it on the SSH server specified as `server` above, run:
 fabula server show-uptime
 ```
 
+<img width="756" alt="screen shot 2018-12-25 at 10 28 45 am" src="https://user-images.githubusercontent.com/12291/50422213-a66a9a00-082f-11e9-8342-2b4198d26aa3.png">
+
 That would be the same as running:
 
 ```sh
@@ -149,6 +151,8 @@ If there are, however, multiple servers and you need to choose, you can do:
 ```sh
 fabula server1,server2,server3 show-uptime
 ```
+
+Notice that **Fabula** will ask for a passphrase if you don't provide one (as `passphrase`) in the connection settings.
 
 See the **full documentation** (coming soon) for more.
 
