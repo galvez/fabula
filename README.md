@@ -3,7 +3,7 @@
   <span>Minimalist server configuration and task management.</span>
 </p>
 
-### Intro
+### 2-Minute Intro
 
 Let's start with the simplest of tasks:
 
