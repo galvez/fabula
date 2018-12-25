@@ -1,21 +1,19 @@
 
 import Module from 'module'
-
 import { readFileSync } from 'fs'
 import { parse } from 'path'
 
 import consola from 'consola'
 import template from 'lodash.template'
 
-import { getConnection } from './ssh'
-
 import Command from './command'
 import commands from './commands'
-
+import { getConnection } from './ssh'
 import { quote } from './utils'
 
 function requireFromString(code, name) {
   const m = new Module()
+  // Second parameter is here is a virtual unique path
   m._compile(code, `components/${name}.js`)
   m.loaded = true
   return m.exports
@@ -73,7 +71,7 @@ compile.compileTemplate = function (cmd, settings) {
   return cmdTemplate(settings)
 }
 
-compile.parseLine = function (command, line, push) {
+compile.parseLine = function (command, line, settings, push) {
   let cmd
 
   if (command) {
@@ -87,6 +85,7 @@ compile.parseLine = function (command, line, push) {
   for (cmd of commands) {
     if (cmd.match) {
       command = new Command(cmd, line)
+      command.settings = settings
       match = command.cmd.match.call(command, line)
       if (match) {
         break
@@ -151,7 +150,7 @@ export function compile(name, source, settings) {
   const parsedCommands = []
 
   for (const line of lines) {
-    currentCommand = compile.parseLine(currentCommand, line, (command) => {
+    currentCommand = compile.parseLine(currentCommand, line, settings, (command) => {
       parsedCommands.push(command)
     })
   }

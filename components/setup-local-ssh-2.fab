@@ -8,7 +8,8 @@ export default {
 </fabula>
 
 <commands>
-local echo -e '\n'<%= strings.sshConfig %> >> ~/.ssh/config
+local echo >> ~/.ssh/config # new line
+local append ~/.ssh/config strings.sshConfig
 </commands>
 
 <string id="sshConfig">
