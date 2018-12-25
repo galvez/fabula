@@ -1,3 +1,6 @@
+# This script runs on the remote instance
+# to add Github SSH configuration for deployment
+
 <fabula>
 export default {
   github: {
@@ -7,9 +10,6 @@ export default {
 </fabula>
 
 <script>
-# This script runs on the remote instance
-# to add Github SSH configuration for deployment
-
 mkdir -p ~/.keys
 chown -R ubuntu ~/.keys
 chmod 755 ~/.keys
@@ -24,3 +24,4 @@ echo ~/.ssh/config:
     User git
     StrictHostKeyChecking no
  </script>
+ 

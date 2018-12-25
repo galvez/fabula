@@ -1,13 +1,39 @@
 
 import { readFileSync } from 'fs'
 import consola from 'consola'
-
+import expat from 'node-expat'
 import template from 'lodash.template'
 
 import { getConnection } from './ssh'
 
 import Command from './command'
 import commands from './commands'
+
+compile.loadComponent = function (source) {
+  source = source.split(/\n/g)
+    .filter(line => line.startsWith('#')).join('\n')
+  const parser = new expat.Parser('UTF-8')
+
+  let fabula = ''
+  let script = ''
+  let strings = []
+  let element
+  parser.on('text', (text) => {
+    if (element === 'fabula') {
+      fabula += text
+    }
+  })
+  parser.on('startElement', (name, attrs) => {
+    element = name
+  })
+  parser.on('endElement', function (name) {
+    element = null
+  })
+  parser.on('error', function (error) {
+    consola.fatal(error)
+  })
+  parser.write(source)
+}
 
 compile.compileTemplate = function (cmd, settings) {
   const cmdTemplate = template(cmd, {
@@ -63,6 +89,9 @@ compile.splitMultiLines = function (source) {
 }
 
 export function compile(source, settings) {
+  if (source.match(/^\s*<fabula>/g)) {
+    compile.loadComponent(source)
+  }
   source = compile.compileTemplate(source, settings)
 
   const lines = compile.splitMultiLines(source)

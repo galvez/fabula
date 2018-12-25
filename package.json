@@ -24,8 +24,6 @@
     "esm": "^3.0.84",
     "lodash.template": "^4.4.0",
     "read": "^1.0.7",
-    "shell-escape": "^0.2.0",
-    "shell-quote": "^1.6.1",
     "ssh2": "^0.6.1"
   },
   "devDependencies": {
