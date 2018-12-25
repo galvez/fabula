@@ -1,9 +1,11 @@
 
 import { readFileSync } from 'fs'
+import { parse } from 'path'
+
 import consola from 'consola'
-import expat from 'node-expat'
 import template from 'lodash.template'
 
+import { requireFromString } from './node'
 import { getConnection } from './ssh'
 
 import Command from './command'
@@ -11,28 +13,44 @@ import commands from './commands'
 
 compile.loadComponent = function (source) {
   source = source.split(/\n/g)
-    .filter(line => line.startsWith('#')).join('\n')
-  const parser = new expat.Parser('UTF-8')
+    .filter(line => !line.startsWith('#'))
 
-  let fabula = ''
-  let script = ''
-  let strings = []
+  const fabula = []
+  const script = []
+  const strings = []
+
+  let match
   let element
-  parser.on('text', (text) => {
-    if (element === 'fabula') {
-      fabula += text
+  let string = {}
+
+  for (const line of source) {
+    if (match = line.match(/^\s*<(?!\/)([^>]+)>/)) {
+      element = match[1]
+      if (match = element.match(/^string\s+id="([^"]+)"/)) {
+        string = {id: match[1], lines: []}
+        element = 'string'
+      }
+      continue
+    } else if (match = line.match(/^\s*<\/([^>]+)>/)) {
+      if (match[1] === 'string') {
+        strings.push(string)
+      }
+      element = null      
+      continue
     }
-  })
-  parser.on('startElement', (name, attrs) => {
-    element = name
-  })
-  parser.on('endElement', function (name) {
-    element = null
-  })
-  parser.on('error', function (error) {
-    consola.fatal(error)
-  })
-  parser.write(source)
+    switch (element) {
+      case 'fabula':
+        fabula.push(line)
+        break
+      case 'commands':
+        script.push(line)
+        break
+      case 'string':
+        string.lines.push(line)
+        break
+    }
+  }
+  return { fabula, script, strings }
 }
 
 compile.compileTemplate = function (cmd, settings) {
@@ -88,9 +106,24 @@ compile.splitMultiLines = function (source) {
   }, [])
 }
 
-export function compile(source, settings) {
+function compileComponent(name, source, settings) {
+  const { fabula, script, strings } = compile.loadComponent(source)
+  const componentSettings = requireFromString(fabula.join('\n'), name)
+  const componentSource = script.join('\n')
+  const componentStrings = strings.reduce((hash, string) => {
+    return { ...hash, [string.id]: string.lines.join('\n') }
+  }, {})
+  settings = {
+    ...settings.options,
+    ...componentSettings.default,
+    strings: componentStrings
+  }
+  return compile(name, componentSource, settings)
+}
+
+export function compile(name, source, settings) {
   if (source.match(/^\s*<fabula>/g)) {
-    compile.loadComponent(source)
+    return compileComponent(name, source, settings)
   }
   source = compile.compileTemplate(source, settings)
 
@@ -110,8 +143,8 @@ export function compile(source, settings) {
   return parsedCommands
 }
 
-export async function runLocalString(str, settings) {
-  const commands = compile(str, settings)
+export async function runLocalString(name, str, settings) {
+  const commands = compile(name, str, settings)
   for (const command of commands) {
     try {
       if (!command.local) {
@@ -129,8 +162,8 @@ export async function runLocalString(str, settings) {
   }
 }
 
-export async function runString(server, conn, str, settings) {
-  const commands = compile(str, settings)
+export async function runString(server, conn, name, str, settings) {
+  const commands = compile(name, str, settings)
   for (const command of commands) {
     try {
       await command.run(conn)
@@ -144,13 +177,14 @@ export async function runString(server, conn, str, settings) {
 }
 
 export async function run(source, config, servers = []) {
+  const name = parse(source).name
   source = readFileSync(source).toString()
   const settings = { ...config }
   delete settings.ssh
 
   let remoteServers = servers
   if (servers.length === 0) {
-    await runLocalString(source, settings)
+    await runLocalString(name, source, settings)
     return
   } else if (servers.length === 1 && servers[0] === 'all') {
     remoteServers = Object.keys(config.ssh)
@@ -159,6 +193,6 @@ export async function run(source, config, servers = []) {
   let conn
   for (const server of remoteServers) {
     conn = await getConnection(config.ssh[server])
-    await runString(server, conn, source, settings)
+    await runString(server, conn, name, source, settings)
   }
 }
