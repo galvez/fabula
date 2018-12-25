@@ -12,6 +12,8 @@ import { getConnection } from './ssh'
 import Command from './command'
 import commands from './commands'
 
+import { quote } from './utils'
+
 function requireFromString(code, name) {
   const m = new Module()
   m._compile(code, `components/${name}.js`)
@@ -122,8 +124,9 @@ function compileComponent(name, source, settings) {
   const componentSettings = requireFromString(fabula.join('\n'), name)
   const componentSource = script.join('\n')
   const componentStrings = strings.reduce((hash, string) => {
-    return { ...hash, [string.id]: string.lines.join('\n') }
+    return { ...hash, [string.id]: quote(string.lines.join('\n'), true) }
   }, {})
+  
   settings = {
     ...settings.options,
     ...componentSettings.default,
@@ -133,9 +136,10 @@ function compileComponent(name, source, settings) {
 }
 
 export function compile(name, source, settings) {
-  if (source.match(/^\s*<fabula>/g)) {
+  if (source.match(/^\s*<(?:(?:fabula)|(commands))>/g)) {
     return compileComponent(name, source, settings)
   }
+  console.log('source>', source)
   source = compile.compileTemplate(source, settings)
 
   const lines = compile.splitMultiLines(source)
