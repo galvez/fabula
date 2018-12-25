@@ -1,7 +1,9 @@
 <p align="center">
   <h1>⚙ Fabula</h1>
-  <span>Minimalist server configuration and task management</span>
+  <span>Minimalist server configuration and task management.</span>
 </p>
+
+### 2-minute intro
 
 Let's start with the simplest of tasks: adding an entry to ~/.ssh/config on your
 **local computer**. 
