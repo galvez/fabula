@@ -7,13 +7,12 @@ export default {
 }
 </fabula>
 
-<script>
+<commands>
 mkdir -p ~/.ssh/
 chmod 755 ~/.ssh
-# sshConfig will contain a /tmp/ file path
 local append ~/.ssh/config #sshConfig
 chmod 640 sshConfig
-</script>
+</commands>
 
 <string id="sshConfig">
 Host <%= host %>
