@@ -7,7 +7,6 @@ import { parse } from 'path'
 import consola from 'consola'
 import template from 'lodash.template'
 
-import { requireFromString } from './node'
 import { getConnection } from './ssh'
 
 import Command from './command'

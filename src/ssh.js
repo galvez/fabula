@@ -63,8 +63,8 @@ export function exec(conn, cmd) {
     let stderr = ''
     const stream = await conn.exec(cmd).catch(reject)
     stream.on('close', (code, signal) => {
-      console.log('stdout:', stdout)
-      console.log('stderr:', stderr)
+      // console.log('stdout:', stdout)
+      // console.log('stderr:', stderr)
       resolve({ stdout, stderr, code, signal })
     })
     stream.on('data', (data) => { stdout += data })
