@@ -199,7 +199,6 @@ export async function run(source, config, servers = []) {
   const name = parse(source).name
   source = readFileSync(source).toString()
   const settings = { ...config }
-  delete settings.ssh
 
   let remoteServers = servers
   if (servers.length === 0) {

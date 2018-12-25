@@ -24,7 +24,7 @@ export default {
 
 The `<fabula>` block should contain an **ES module**.
 
-Next we can add a `local append` command to the `<commands>` section:
+Next we can add a `local` `append` command to the `<commands>` section:
 
 ```xml
 <fabula>
