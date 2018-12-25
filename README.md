@@ -1,46 +1,40 @@
 <p align="center">
-  <h1>⚙ fabula</h1>
+  <h1>⚙ Fabula</h1>
   <span>Minimalist server configuration and task management</span>
 </p>
 
-#### **tasks/setup-gh-deploy.fab**
+Let's start with the simplest of tasks: adding an entry to ~/.ssh/config on your
+**local computer**. First, we'll define some parameters we'll use:
 
-```sh
-mkdir -p ~/.keys
-chown -R deploy ~/.keys
-chmod 755 ~/.keys
+![Configuration](https://user-images.githubusercontent.com/12291/50420075-7913f100-081b-11e9-91da-7d90e2cba575.png)
 
-put <%= github.deployKey %> ~/.keys/deploy_key
-chmod 400 ~/.keys/deploy_key
+Next we can add a local append command to the `<commands>` section:
 
-echo ~/.ssh/config:
-  Host github.com
-    Hostname github.com
-    IdentityFile ~/.keys/deploy_key
-    User git
-    StrictHostKeyChecking no
- ```
+![Commands](https://user-images.githubusercontent.com/12291/50420084-8630e000-081b-11e9-9999-f538be84c534.png)
 
-#### **fabula.js**
+Any Bash statement will work inside `<commands>`, but a few particular 
+statements are recognized by handlers using **Fabula**'s modular compiler API, 
+which cause them to process and run differently. In this snippet, we're using
+Fabula's special `local append` command, which allows you to define an **indented
+block of text** (that gets **automatically dedendeted** when parsed) and append
+it to a file. Similarly, `local write` would overwrite the contents of the file,
+instead of simply appending to it. As minimalist and useful as these blocks of
+inline text can be (way prettier than using native Bash at least), they can 
+still be kind of funky for some people.
 
-```js
-export default {
-  // List remote servers in `ssh`
-  ssh: {
-  	server1: {
-  	  host: '1.2.3.4',
-  	  user: 'deploy',
-  	  privateKey: '/path/to/private-key'
-    }
-  },
-  // Add any other options you want
-  github: {
-  	deployKey: '/path/to/deploy-key'
-  }
-}
-```
+**Fabula** offers yet another alternative to this case, which is to add a 
+`<string>` block with an identifier, than can later be referenced by an 
+alternatively recognizable syntax for the special `local append` command:
 
-#### command line
+![Strings](https://user-images.githubusercontent.com/12291/50420095-921ca200-081b-11e9-8715-6d0250797bcf.png)
+
+## SSH
+
+To be written...
+
+## CLI
+
+d
 
 ```sh
 fabula all tasks/setup-gh-deploy.fab
