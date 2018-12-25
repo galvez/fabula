@@ -36,7 +36,7 @@ export function getConnection(settings) {
       conn.settings = settings
       resolve(conn)
     })
-    
+
     if (settings.privateKey) {
       const privateKey = readFileSync(settings.privateKey).toString()
       if (!settings.passphrase && isKeyEncrypted(privateKey)) {

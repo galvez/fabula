@@ -39,8 +39,8 @@ export default {
         this.params.fileLines = []
         return true
       } else if (this.string) {
-        // eslint-disable-next-line no-eval
         const settingsKey = this.match[2]
+        // eslint-disable-next-line no-eval
         this.params.fileBody = eval(`this.settings.${settingsKey}`)
         return false
       }

@@ -122,7 +122,7 @@ function compileComponent(name, source, settings) {
   const { fabula, script, strings } = compile.loadComponent(source)
   const componentSettings = requireFromString(fabula.join('\n'), name)
   const componentSource = script.join('\n')
-  
+
   settings = {
     ...settings.options,
     ...componentSettings.default
@@ -191,7 +191,7 @@ export async function runString(server, conn, name, str, settings) {
       }
       for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
         consola.error(`[${server}]`, line.trim())
-      }      
+      }
       consola.info(`[${server}] [OK]`, command.source[0])
     } catch (err) {
       consola.error(`[${server}] [FAIL]`, command.source[0])
