@@ -4,11 +4,13 @@
 </p>
 
 Let's start with the simplest of tasks: adding an entry to ~/.ssh/config on your
-**local computer**. First, we'll define some parameters we'll use:
+**local computer**. 
+
+First, we'll define some parameters we'll use:
 
 ![Configuration](https://user-images.githubusercontent.com/12291/50420075-7913f100-081b-11e9-91da-7d90e2cba575.png)
 
-Next we can add a local append command to the `<commands>` section:
+Next we can add a `local append` command to the `<commands>` section:
 
 ![Commands](https://user-images.githubusercontent.com/12291/50420084-8630e000-081b-11e9-9999-f538be84c534.png)
 
