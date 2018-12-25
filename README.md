@@ -5,8 +5,9 @@
 
 ### 2-minute intro
 
-Let's start with the simplest of tasks: adding an entry to `~/.ssh/config` on your
-**local computer**. 
+Let's start with the simplest of tasks:
+
+> add an entry to `~/.ssh/config` on your **local computer**. 
 
 First, we'll define some parameters we'll use:
 
@@ -20,6 +21,8 @@ export default {
 }
 </fabula>
 ```
+
+The `<fabula>` block should contain a **ES module**.
 
 Next we can add a `local append` command to the `<commands>` section:
 
