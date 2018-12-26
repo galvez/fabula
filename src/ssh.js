@@ -43,7 +43,10 @@ export function getConnection(settings) {
         settings.passphrase = await askPassphrase(settings.privateKey)
       }
       conn.connect({ ...settings, privateKey })
-    } else if (settings.agent) {
+    } else {
+      if (!settings.agent) {
+        settings.agent = process.env.SSH_AUTH_SOCK
+      }
       conn.connect({ ...settings })
     }
   })
