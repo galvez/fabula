@@ -14,7 +14,9 @@ export default {
   },
   command(conn) {
     if (this.local) {
-      return execLocal(this.params.cmd)
+      return execLocal(this.params.cmd, {
+        stdio: ['ignore', process.stdout, process.stderr]
+      })
     } else {
       return exec(conn, this.params.cmd)
     }

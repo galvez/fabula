@@ -1,10 +1,8 @@
 # Commands
 
-As stated in the introduction, every command available to the underlying Bash 
-shell will work in a **Fabula** task. Fabula does introduce a few convenience 
-commands that run on Fabric's own command interpreter.
-
-## Remote
+As stated in the introduction, **every command available to the underlying Bash 
+shell** will work in a **Fabula** task. There are however a few convenience 
+commands that are specific to **Fabula**.
 
 ## Local
 
@@ -17,7 +15,55 @@ local touch /tmp/foobar
 
 ## Append
 
+Appends a block text or string to the file in the specified path.
+
+> Availability: `local` and `remote`
+
+### Simple use
+
+```sh
+local append /path/to/file:
+  multi-line contents
+  to be appended to the file 
+```
+
+Text will be automatically dedendeted to the number of total white
+spaces in the **first line**.
+
+### With string id
+
+```sh
+<fabula>
+export default {
+  path: '/path/to/file '
+}
+</fabula>
+
+<commands>
+local append <%= path %> strings.contents
+</commands>
+
+<string id="contents">
+multi-line contents
+to be appended to the file 
+</string>
+```
+
 ## Write
+
+Writes a block text or string to the file in the specified path.
+
+> Availability: `local` and `remote`
+
+This command has essentially the same semantics of `append`, with the difference
+that it will never append to, but rather overwrite the contents of the target entirely.
+
+
+```sh
+local write <%= path %>:
+  multi-line contents
+  to be written to the file
+```
 
 ## Custom
 
