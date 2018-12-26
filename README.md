@@ -4,6 +4,8 @@
   <span>Minimalist server configuration and task management.</span>
 </p>
 
+Go straight to the [full documentation][docs] if you'd like.
+
 # Introduction
 
 At its core, **Fabula** is a simple Bash script preprocessor and runner. It lets
