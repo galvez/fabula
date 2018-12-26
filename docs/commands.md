@@ -114,7 +114,7 @@ export default {
 ### Advanced example
 
 We can write a special command handler that interprets more than one similar 
-command if it makes sense to do so. The proposed `append` and `echo` special 
+command if it makes sense to do so. The included `append` and `write` special 
 commands perform very similar tasks, that is, allowing us to write a body of
 text onto a file or appending to it. Its main idea is to perform automatically
 **dedention** of the body, similar to YAML strings.
@@ -122,18 +122,18 @@ text onto a file or appending to it. Its main idea is to perform automatically
 ```sh
 mkdir /tmp/files
 <% for (const file of files) { %>
-echo /tmp/files/<%= file %>:
+write /tmp/files/<%= file %>:
   this is the content of <%= file %>
 <% } %>
 ```
 
-This will generate a script with three `echo` calls, all of which have their own respective bodies. As we write the handler for this command,  we also need to 
+This will generate a script with three `write` calls, all of which have their own respective bodies. As we write the handler for this command,  we also need to 
 detect if it starts with `local`, and run the appropriate functions for local 
 and remote commands. This is the code that handles them:
 
 ```js
-import { echo, append } from '../ssh'
-import { localEcho, localAppend } from '../local'
+import { write, append } from '../ssh'
+import { localWrite, localAppend } from '../local'
 
 export default {
   name: 'write',
@@ -199,10 +199,10 @@ export default {
       : this.params.fileLines
 
     if (this.local) {
-      const cmd = ({ echo: localEcho, append: localAppend })[this.op]
+      const cmd = ({ write: localWrite, append: localAppend })[this.op]
       return cmd({ filePath, fileContents })
     } else {
-      return ({ echo, append })[this.op](conn, { filePath, fileContents })
+      return ({ write, append })[this.op](conn, { filePath, fileContents })
     }
   }
 }

@@ -7,7 +7,7 @@
     <meta name="description" content="Minimalist server configuration and task management.">
     
     
-    <link rel="preload" href="/fabula/assets/css/0.styles.22f05657.css" as="style"><link rel="preload" href="/fabula/assets/js/app.bed5c459.js" as="script"><link rel="preload" href="/fabula/assets/js/5.bd7aef58.js" as="script"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.9c2e3e97.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/6.4828798a.js"><link rel="prefetch" href="/fabula/assets/js/7.67a12805.js"><link rel="prefetch" href="/fabula/assets/js/8.883af14f.js">
+    <link rel="preload" href="/fabula/assets/css/0.styles.22f05657.css" as="style"><link rel="preload" href="/fabula/assets/js/app.79b7d8f2.js" as="script"><link rel="preload" href="/fabula/assets/js/5.13b0d303.js" as="script"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.9c2e3e97.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/6.4828798a.js"><link rel="prefetch" href="/fabula/assets/js/7.67a12805.js"><link rel="prefetch" href="/fabula/assets/js/8.883af14f.js">
     <link rel="stylesheet" href="/fabula/assets/css/0.styles.22f05657.css">
   </head>
   <body>
@@ -66,18 +66,18 @@ and every subsequent line as long as you keep returning <code>true</code>, which
 current command is <strong>done parsing</strong> and moves on.</p></li> <li><p>with <code>line()</code>, we can store data that is retrieved from each line in the
 command block, make it availble under <code>this.params</code> and later access it when
 actually calling <code>command()</code> (done automatically when running scripts).</p></li></ul> <h3 id="advanced-example"><a href="#advanced-example" aria-hidden="true" class="header-anchor">#</a> Advanced example</h3> <p>We can write a special command handler that interprets more than one similar
-command if it makes sense to do so. The proposed <code>append</code> and <code>echo</code> special
+command if it makes sense to do so. The included <code>append</code> and <code>write</code> special
 commands perform very similar tasks, that is, allowing us to write a body of
 text onto a file or appending to it. Its main idea is to perform automatically
 <strong>dedention</strong> of the body, similar to YAML strings.</p> <div class="language-sh extra-class"><pre class="language-text"><code>mkdir /tmp/files
 &lt;% for (const file of files) { %&gt;
-echo /tmp/files/&lt;%= file %&gt;:
+write /tmp/files/&lt;%= file %&gt;:
   this is the content of &lt;%= file %&gt;
 &lt;% } %&gt;
-</code></pre></div><p>This will generate a script with three <code>echo</code> calls, all of which have their own respective bodies. As we write the handler for this command,  we also need to
+</code></pre></div><p>This will generate a script with three <code>write</code> calls, all of which have their own respective bodies. As we write the handler for this command,  we also need to
 detect if it starts with <code>local</code>, and run the appropriate functions for local
-and remote commands. This is the code that handles them:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> echo<span class="token punctuation">,</span> append <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../ssh'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> localEcho<span class="token punctuation">,</span> localAppend <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../local'</span>
+and remote commands. This is the code that handles them:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> write<span class="token punctuation">,</span> append <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../ssh'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> localWrite<span class="token punctuation">,</span> localAppend <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../local'</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">'write'</span><span class="token punctuation">,</span>
@@ -143,10 +143,10 @@ and remote commands. This is the code that handles them:</p> <div class="languag
       <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>fileLines
 
     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>local<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">const</span> cmd <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> echo<span class="token punctuation">:</span> localEcho<span class="token punctuation">,</span> append<span class="token punctuation">:</span> localAppend <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>op<span class="token punctuation">]</span>
+      <span class="token keyword">const</span> cmd <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> write<span class="token punctuation">:</span> localWrite<span class="token punctuation">,</span> append<span class="token punctuation">:</span> localAppend <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>op<span class="token punctuation">]</span>
       <span class="token keyword">return</span> <span class="token function">cmd</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filePath<span class="token punctuation">,</span> fileContents <span class="token punctuation">}</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-      <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> echo<span class="token punctuation">,</span> append <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>op<span class="token punctuation">]</span><span class="token punctuation">(</span>conn<span class="token punctuation">,</span> <span class="token punctuation">{</span> filePath<span class="token punctuation">,</span> fileContents <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> write<span class="token punctuation">,</span> append <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>op<span class="token punctuation">]</span><span class="token punctuation">(</span>conn<span class="token punctuation">,</span> <span class="token punctuation">{</span> filePath<span class="token punctuation">,</span> fileContents <span class="token punctuation">}</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
@@ -159,6 +159,6 @@ and remote commands. This is the code that handles them:</p> <div class="languag
         </a>
         →
       </span></p></div> </div> <!----></div></div>
-    <script src="/fabula/assets/js/app.bed5c459.js" defer></script><script src="/fabula/assets/js/5.bd7aef58.js" defer></script>
+    <script src="/fabula/assets/js/app.79b7d8f2.js" defer></script><script src="/fabula/assets/js/5.13b0d303.js" defer></script>
   </body>
 </html>
