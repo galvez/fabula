@@ -3,7 +3,7 @@ module.exports = {
   description: 'Minimalist server configuration and task management.',
   base: '/fabula/',
   themeConfig: {
-    repo: 'nuxa/fabula',
+    repo: 'nuxt/fabula',
     editLinks: true,
     docsDir: 'docs',
     locales: {
