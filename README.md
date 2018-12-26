@@ -24,10 +24,12 @@ export default {
 
 <commands>
 local vuepress build <%= docsDir.local %>
-put docs/.vuepress/dist/ <%= docsDir.remote %>
+put <%= docsDir.local %>/.vuepress/dist/ <%= docsDir.remote %>
 sudo service nginx restart
 </commands>
 ```
+
+Inspired by Vue, it lets you keep commands and settings in concise **single-file components**.
 
 Please refer to the [full documentation][docs] to learn more.
 
