@@ -173,15 +173,12 @@ local append /path/to/file string.id
 append /path/to/file string.id
 ```
 
-The snippet above contains commands that are handled by the same internal Fabula
-code. Let's take a quick dive into how it works.
+The snippet above contains commands that are handled by [the same internal Fabula
+code](https://github.com/nuxt/fabula/blob/master/src/commands/write.js). Let's 
+take a quick dive into how it works.
 
 ```js
-import { write, append } from '../ssh'
-import { localWrite, localAppend } from '../local'
-
 export default {
-  name: 'write',
   patterns: {
     block: (argv) => {
       return new RegExp(`^(?:local\\s*)?${argv[0]}\\s+(.+?):$`)
@@ -255,15 +252,17 @@ which are then retrieved by `command()`.
 ```js
   command(conn) {
     const filePath = this.params.filePath
-    const fileContents = this.string
-      ? this.params.fileBody.split('\n')
-      : this.params.fileLines
-
     if (this.local) {
+      const fileContents = this.string
+        ? this.params.fileBody.split('\n')
+        : this.params.fileLines
       const cmd = ({ write: localWrite, append: localAppend })[this.op]
-      return cmd({ filePath, fileContents })
+      return cmd(filePath, fileContents)
     } else {
-      return ({ write, append })[this.op](conn, { filePath, fileContents })
+      const fileContents = this.string
+        ? this.params.fileBody
+        : this.params.fileLines.join('\n')
+      return ({ write, append })[this.op](conn, filePath, fileContents)
     }
   }
 }
