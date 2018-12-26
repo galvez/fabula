@@ -33,7 +33,7 @@ Inspired by Vue, it lets you keep settings and commands in concise **single-file
 
 Please refer to the [full documentation][docs] to learn more.
 
-[docs]: https://github.io/fabula/
+[docs]: https://nuxt.github.io/fabula/
 
 ## Meta
 
