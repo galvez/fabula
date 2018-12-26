@@ -1,4 +1,4 @@
-# Fabula
+# Introduction
 
 At its core, **Fabula** is a simple Bash script preprocessor and runner. It lets
 you run scripts **locally** and on **remote servers**. **Fabula** (latin for 
@@ -89,13 +89,7 @@ local echo <%= quote(files[file]) %> > <%= file %>
 </commands>
 ```
 
-You could write a **Fabula** script as follows:
-
-```sh
-<% for (const file in files) { %>
-local echo <%= quote(files[file]) %> > <%= file %>
-<% } %>
-```
+See more about Fabula components [in its dedicated section](/components)
 
 ## Motivation
 
