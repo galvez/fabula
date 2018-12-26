@@ -76,6 +76,7 @@ defined under `src/commands/put.js`:
 import { put } from '../ssh'
 
 export default {
+  name: 'put',
   match(line) {
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },
@@ -83,8 +84,8 @@ export default {
     this.params.sourcePath = this.match[1]
     this.params.targetPath = this.match[2]
   },
-  command() {
-    return put(this.conn, this.params.sourcePath, this.param.targetPath)
+  command(conn) {
+    return put(conn, this.params.sourcePath, this.param.targetPath)
   }
 }
 ```
@@ -92,15 +93,16 @@ export default {
 - `match()` is called once for every new line, if no previous command is still 
   being parsed. If `match()` returns `true`, `line()` will run for the current 
   and every subsequent line as long as you keep returning `true`, which means,
-  _continue parsing lines for the **current command**_. When `line()` returns 
-  `false` or `undefined`, the compiler understands the current command is 
-  **done parsing** and moves on.
+  _continue parsing lines for the **current command**_.
+
+- When `line()` returns  `false` or `undefined`, the compiler understands the 
+  current command is **done parsing** and moves on.
 
 - with `line()`, we can store data that is retrieved from each line in the 
   command block, make it availble under `this.params` and later access it when 
   actually calling `command()` (done automatically when running scripts).
 
-## Advanced
+### Advanced example
 
 We can write a special command handler that interprets more than one similar 
 command if it makes sense to do so. The proposed `append` and `echo` special 
@@ -121,5 +123,78 @@ detect if it starts with `local`, and run the appropriate functions for local
 and remote commands. This is the code that handles them:
 
 ```js
+import { echo, append } from '../ssh'
+import { localEcho, localAppend } from '../local'
 
+export default {
+  name: 'write',
+  patterns: {
+    block: (argv) => {
+      return new RegExp(`^(?:local\\s*)?${argv[0]}\\s+(.+?):$`)
+    },
+    string: (argv) => {
+      return new RegExp(`^(?:local\\s*)?${argv[0]}\\s+([^ ]+?)\\s+([^ :]+?)$`)
+    }
+  },
+  match(line) {
+    const argv = [...this.argv]
+    if (argv[0] === 'local') {
+      argv.shift()
+      this.local = true
+    }
+    this.op = argv[0]
+    this.dedent = 0
+    if (['append', 'write'].includes(argv[0])) {
+      let match
+      // eslint-disable-next-line no-cond-assign
+      if (match = line.match(this.cmd.patterns.block(argv))) {
+        this.block = true
+        return match
+      // eslint-disable-next-line no-cond-assign
+      } else if (match = line.match(this.cmd.patterns.string(argv))) {
+        this.string = true
+        return match
+      }
+    }
+  },
+  line(line) {
+    if (this.firstLine) {
+      this.params.filePath = this.match[1]
+      if (this.block) {
+        this.params.fileLines = []
+        return true
+      } else if (this.string) {
+        const settingsKey = this.match[2]
+        // eslint-disable-next-line no-eval
+        this.params.fileBody = eval(`this.settings.${settingsKey}`)
+        return false
+      }
+      return true
+    } else if (!/^\s+/.test(line)) {
+      return false
+    } else {
+      if (this.params.fileLines.length === 0) {
+        const match = line.match(/^\s+/)
+        if (match) {
+          this.dedent = match[0].length
+        }
+      }
+      this.params.fileLines.push(line.slice(this.dedent))
+      return true
+    }
+  },
+  command(conn) {
+    const filePath = this.params.filePath
+    const fileContents = this.string
+      ? this.params.fileBody.split('\n')
+      : this.params.fileLines
+
+    if (this.local) {
+      const cmd = ({ echo: localEcho, append: localAppend })[this.op]
+      return cmd({ filePath, fileContents })
+    } else {
+      return ({ echo, append })[this.op](conn, { filePath, fileContents })
+    }
+  }
+}
 ```

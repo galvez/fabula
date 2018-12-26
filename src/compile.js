@@ -66,6 +66,7 @@ compile.loadComponent = function (source) {
 
 compile.compileTemplate = function (cmd, settings) {
   const cmdTemplate = template(cmd, {
+    imports: { quote },
     interpolate: /<%=([\s\S]+?)%>/g
   })
   return cmdTemplate(settings)
