@@ -60,7 +60,7 @@ which cause them to process differently.
 As stated before, any line that starts with `local` is ran on the local 
 machine. But in this snippet, we're also using Fabula's special `append` command, 
 which allows you to define an **indented block of text** (that gets 
-**automatically dedendeted** when parsed) and append it to a file. 
+**automatically dedented** when parsed) and append it to a file. 
 
 Similarly, `local` `write` `...` would overwrite the contents of the 
 file, instead of simply appending to it. Both `append` and `write` are special

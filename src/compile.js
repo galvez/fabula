@@ -7,6 +7,7 @@ import consola from 'consola'
 import template from 'lodash.template'
 
 import Command from './command'
+import execCommand from './commands/exec'
 import commands from './commands'
 import { getConnection } from './ssh'
 import { quote } from './utils'
@@ -98,7 +99,12 @@ compile.parseLine = function (command, line, settings, push) {
     }
   }
   let match
-  for (cmd of commands) {
+  const commandSearchList = [...commands]
+  if (settings.commands) {
+    commandSearchList.push(...settings.commands)
+  }
+  commandSearchList.push(execCommand)
+  for (cmd of commandSearchList) {
     if (cmd.match) {
       command = new Command(cmd, line)
       command.settings = settings
@@ -178,7 +184,19 @@ export async function runLocalString(name, str, settings) {
         consola.fatal('No servers specified to run this remote command.')
         process.exit()
       }
-      await command.run()
+      const response = await command.run()
+      if (response) {
+        if (response.stdout) {
+          for (const line of response.stdout.split(/\n/g).filter(Boolean)) {
+            consola.info('[local]', line.trim())
+          }
+        }
+        if (response.stderr) {
+          for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
+            consola.error('[local]', line.trim())
+          }
+        }
+      }
       consola.info(`[local] [OK]`, command.source[0])
     } catch (err) {
       consola.info(`[local] [FAIL]`, command.source[0])

@@ -27,7 +27,7 @@ local append /path/to/file:
   to be appended to the file 
 ```
 
-Text will be automatically dedendeted to the number of total white
+Text will be automatically dedented to the number of total white
 spaces in the **first line**.
 
 ### With string id
@@ -111,25 +111,70 @@ export default {
   command block, make it availble under `this.params` and later access it when 
   actually calling `command()` (done automatically when running scripts).
 
-### Advanced example
+## Registration
 
-We can write a special command handler that interprets more than one similar 
-command if it makes sense to do so. The included `append` and `write` special 
-commands perform very similar tasks, that is, allowing us to write a body of
-text onto a file or appending to it. Its main idea is to perform automatically
-**dedention** of the body, similar to YAML strings.
+Say you want to register the command `special <arg>`, that can run only on the
+local machine. You can programmatically add a custom command handler to your
+`fabula.js` configuration file, under `commands`:
 
-```sh
-mkdir /tmp/files
-<% for (const file of files) { %>
-write /tmp/files/<%= file %>:
-  this is the content of <%= file %>
-<% } %>
+```js
+export default {
+  commands: [
+    {
+      match(line) {
+        this.local = true
+        const match = line.trim().match(/^special\s+(.+)/)
+        this.params.arg = match[1]
+        return match
+      },
+      command(conn) {
+        return { stdout: `From special command: ${this.params.arg}!` }
+      }
+    }
+  ]
+}
 ```
 
-This will generate a script with three `write` calls, all of which have their own respective bodies. As we write the handler for this command,  we also need to 
-detect if it starts with `local`, and run the appropriate functions for local 
-and remote commands. This is the code that handles them:
+Note that you could also use an external module:
+
+```js
+import specialCommand from './customCommand'
+
+export default {
+  commands: [ specialCommand ]
+}
+```
+
+If you have a `task.fab` file with `special foobar`, its output will be:
+
+```sh
+ℹ [local] From special command: foobar!
+ℹ [local] [OK] special foobar
+```
+
+Note that you have successfuly defined a local command that can be ran without
+being preceded by `local`. That is because you **manually** set it to `local`
+in `match()`. You can use `match()` to determine if the command is local or not
+and still make it work both ways. **Fabula**'s built-in `write` and `append` are
+good examples of this and the subject of the next topic.
+
+### Advanced example
+
+```sh
+local write /path/to/file:
+  contents
+local write /path/to/file string.id
+write /path/to/file:
+  contents
+write /path/to/file string.id
+local append /path/to/file:
+  contents
+local append /path/to/file string.id
+append /path/to/file string.id
+```
+
+The snippet above contains commands that are handled by the same internal Fabula
+code. Let's take a quick dive into how it works.
 
 ```js
 import { write, append } from '../ssh'
@@ -166,6 +211,14 @@ export default {
       }
     }
   },
+```
+
+First we importing all necessary dependencies and define `match()`, which uses 
+two kinds of patterns for matching the command: one is for dedented blocks of 
+text (`patterns.block`) and other for string references (`patterns.string`).
+`match()` also takes care of setting the `local` attribute for the command.
+
+```js
   line(line) {
     if (this.firstLine) {
       this.params.filePath = this.match[1]
@@ -192,6 +245,13 @@ export default {
       return true
     }
   },
+```
+
+The magic happens in `line()`, which will continue parsing the command in 
+subsequent lines if it's a block of text, or use the provided string reference.
+For convenience, we store the provided text in either `fileLines` or `fileBody`,
+which are then retrieved by `command()`.
+
   command(conn) {
     const filePath = this.params.filePath
     const fileContents = this.string
@@ -207,3 +267,7 @@ export default {
   }
 }
 ```
+
+As **Fabula** evolves, the code for this command and underlying functions it 
+calls will likely change, but the API for defining and parsing the commands is
+likely to stay the same as dissecated in this article.
