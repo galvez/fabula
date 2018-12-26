@@ -8,7 +8,7 @@ export function execLocal(cmd) {
   return execLocal.exec(cmd, { shell: '/bin/bash' })
 }
 
-export async function localEcho({ filePath, fileContents }) {
+export async function localWrite({ filePath, fileContents }) {
   await execLocal(`echo -e ${quote(fileContents[0])} > ${filePath}`)
   for (const line of fileContents.slice(1)) {
     await execLocal(`echo -e ${quote(line)} >> ${filePath}`)

@@ -49,19 +49,24 @@ export function getConnection(settings) {
   })
 }
 
-export async function echo(conn, { filePath, fileContents }) {
+export async function write(conn, { filePath, fileContents }) {
   const stream = await conn.sftp()
   return stream.writeFile(filePath, fileContents)
 }
 
 export async function append(conn, { filePath, fileContents }) {
-  // escape string
-  // run echo escaped(fileContents) >> filePath on the server
+  const stream = await conn.sftp()
+  return stream.appendFile(filePath, fileContents)
 }
 
-export async function put(conn, cmd) {
+export async function get(conn, remotePath, localPath) {
   const stream = await conn.sftp()
-  return stream.fastPut(cmd)
+  return stream.fastGet(remotePath, localPath)
+}
+
+export async function put(conn, localPath, remotePath) {
+  const stream = await conn.sftp()
+  return stream.fastPut(localPath, remotePath)
 }
 
 export function exec(conn, cmd) {
