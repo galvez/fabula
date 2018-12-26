@@ -65,6 +65,8 @@ local echo <%= quote(files[file]) %> > <%= file %>
 <% } %>
 ```
 
+**Fabula** will first process all interpolated JavaScript and then run the resulting script.
+
 ## Components
 
 Concentrating options in a single file (`fabula.js`) makes sense sometimes, but
@@ -119,10 +121,42 @@ closely to the metal (SSH), _so to speak_. Fabric avoids abstracting too much,
 it just lets you compose low-level commands with easier configuration and a 
 convenience transport layer independent from `ssh-agent`.
 
-Given there's [a mature SSH2 package for Node][ssh2], I set out to write a 
-Fabric **and** Nuxt inspired new tool.
+### Why not Flightplan?
+
+[Flightplan][fp] is an awesome Node.js project very similar to Fabric, that is,
+it offers a somewhat low-level abstraction for commands on top of SSH2. 
+
+Its API requires you to separate `local` and `remote` tasks, and never mix them:
+
+```js
+plan.target('production', {
+  host: 'www2.example.com',
+  username: 'pstadler',
+  agent: process.env.SSH_AUTH_SOCK
+})
+
+plan.local((local) => {
+})
+
+plan.remote((remote) => {
+})
+```
+
+Like Fabric, it also requires you to use the underlying language to write 
+commands (in this case, JavaScript), and also requires you to put all tasks
+into a single file. **Fabula** requires each task to be in its own file, even
+though one **Fabula** task can run as many other external **Fabula** tasks as you want.
+
+I personally never used Flightplan because I felt Python's syntax always made
+for simpler, easier to maintain scripts, but the real reason **Fabula** was born
+is that I felt I could avoid writing Python or JavaScript for most operations
+if I just made Bash scripts a little smarter. 
+
+That's how **Fabula**'s preprocessor came to be, as an intermediate layer 
+between these full-blown abstraction layers and pure Bash scripts.
 
 [f]: https://www.fabfile.org/
+[fp]: https://github.com/pstadler/flightplan
 [lodash]: https://lodash.com/docs/4.17.11#template
 [f-ops]: http://docs.fabfile.org/en/1.14/api/core/operations.html
 [pip]: https://pypi.org/project/pip/

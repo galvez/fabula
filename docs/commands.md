@@ -1,4 +1,25 @@
-## Special command handlers
+# Commands
+
+As stated in the introduction, every command available to the underlying Bash 
+shell will work in a **Fabula** task. Fabula does introduce a few convenience 
+commands that run on Fabric's own command interpreter.
+
+## Remote
+
+## Local
+
+Every command preceded by `local` will run on the local machine:
+
+```sh
+local mkdir -p /tmp/foobar
+local touch /tmp/foobar
+```
+
+## Append
+
+## Write
+
+## Custom
 
 To make the bash script parser as flexible and fault-tolerant as possible, 
 `fabula` introduces a simple, straight-forward compiler with an API for writing 
@@ -33,7 +54,7 @@ export default {
   command block, make it availble under `this.params` and later access it when 
   actually calling `command()` (done automatically when running scripts).
 
-### Advanced usage: echo and append
+## Advanced
 
 We can write a special command handler that interprets more than one similar 
 command if it makes sense to do so. The proposed `append` and `echo` special 
@@ -54,51 +75,5 @@ detect if it starts with `local`, and run the appropriate functions for local
 and remote commands. This is the code that handles them:
 
 ```js
-import { echo, append } from '../ssh'
-import { localEcho, localAppend } from '../local'
 
-export default {
-  match(line) {
-    const argv = [...this.argv]
-    if (argv[0] === 'local') {
-      argv.shift()
-      this.local = true
-    }
-    this.op = argv[0]
-    this.dedent = 0
-    if (['append', 'echo'].includes(argv[0])) {
-      return line.trim().match(
-        new RegExp(`^(?:local\\s*)?${argv[0]}\\s+(.+?):$`)
-      )
-    }
-  },
-  line(line) {
-    if (this.firstLine) {
-      this.params.filePath = this.match[1]
-      this.params.fileContents = []
-      return true
-    } else if (!/^\s+/.test(line)) {
-      return false
-    } else {
-      if (this.params.fileContents.length === 0) {
-        const match = line.match(/^\s+/)
-        if (match) {
-          this.dedent = match[0].length
-        }
-      }
-      this.params.fileContents.push(line.slice(this.dedent))
-      return true
-    }
-  },
-  command() {
-    const filePath = this.params.filePath
-    const fileContents = this.params.fileContents
-    if (this.local) {
-      const cmd = ({ echo: localEcho, append: localAppend })[this.op]
-      return cmd({ filePath, fileContents })
-    } else {
-      return ({ echo, append })[this.op](this.conn, { filePath, fileContents })
-    }
-  }
-}
 ```

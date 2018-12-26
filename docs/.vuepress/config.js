@@ -42,9 +42,9 @@ function sidebarLinks (locale) {
       collapsable: false,
       children: [
         '',
-        'authentication',
-        'dissecting',
-        'handlers'
+        'components',
+        'commands',
+        'authentication'
       ].map(child => localePageTitle(child))
     }
   ]
