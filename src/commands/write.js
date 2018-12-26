@@ -59,15 +59,17 @@ export default {
   },
   command(conn) {
     const filePath = this.params.filePath
-    const fileContents = this.string
-      ? this.params.fileBody.split('\n')
-      : this.params.fileLines
-
     if (this.local) {
+      const fileContents = this.string
+        ? this.params.fileBody.split('\n')
+        : this.params.fileLines
       const cmd = ({ write: localWrite, append: localAppend })[this.op]
-      return cmd({ filePath, fileContents })
+      return cmd(filePath, fileContents)
     } else {
-      return ({ write, append })[this.op](conn, { filePath, fileContents })
+      const fileContents = this.string
+        ? this.params.fileBody
+        : this.params.fileLines.join('\n')
+      return ({ write, append })[this.op](conn, filePath, fileContents)
     }
   }
 }

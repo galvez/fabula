@@ -49,12 +49,12 @@ export function getConnection(settings) {
   })
 }
 
-export async function write(conn, { filePath, fileContents }) {
+export async function write(conn, filePath, fileContents) {
   const stream = await conn.sftp()
   return stream.writeFile(filePath, fileContents)
 }
 
-export async function append(conn, { filePath, fileContents }) {
+export async function append(conn, filePath, fileContents) {
   const stream = await conn.sftp()
   return stream.appendFile(filePath, fileContents)
 }
