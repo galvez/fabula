@@ -7,7 +7,7 @@
     <meta name="description" content="Minimalist server configuration and task management.">
     
     
-    <link rel="preload" href="/fabula/assets/css/0.styles.22f05657.css" as="style"><link rel="preload" href="/fabula/assets/js/app.27ba7a08.js" as="script"><link rel="preload" href="/fabula/assets/js/5.fe356826.js" as="script"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.9c2e3e97.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/6.65d91907.js"><link rel="prefetch" href="/fabula/assets/js/7.2876f6ef.js"><link rel="prefetch" href="/fabula/assets/js/8.883af14f.js">
+    <link rel="preload" href="/fabula/assets/css/0.styles.22f05657.css" as="style"><link rel="preload" href="/fabula/assets/js/app.07d32a01.js" as="script"><link rel="preload" href="/fabula/assets/js/5.cf6a9bf9.js" as="script"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.9c2e3e97.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/6.65d91907.js"><link rel="prefetch" href="/fabula/assets/js/7.2876f6ef.js"><link rel="prefetch" href="/fabula/assets/js/8.883af14f.js">
     <link rel="stylesheet" href="/fabula/assets/css/0.styles.22f05657.css">
   </head>
   <body>
@@ -105,7 +105,10 @@ local append /path/to/file string.id
 append /path/to/file string.id
 </code></pre></div><p>The snippet above contains commands that are handled by <a href="https://github.com/nuxt/fabula/blob/master/src/commands/write.js" target="_blank" rel="noopener noreferrer">the same internal Fabula
 code<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>. Let's
-take a quick dive into how it works.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+take a quick dive into how it works.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> write<span class="token punctuation">,</span> append <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../ssh'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> localWrite<span class="token punctuation">,</span> localAppend <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../local'</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   patterns<span class="token punctuation">:</span> <span class="token punctuation">{</span>
     block<span class="token punctuation">:</span> <span class="token punctuation">(</span>argv<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
       <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RegExp</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`^(?:local\\s*)?</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">\\s+(.+?):$`</span></span><span class="token punctuation">)</span>
@@ -135,7 +138,7 @@ take a quick dive into how it works.</p> <div class="language-js extra-class"><p
       <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
-</code></pre></div><p>First we importing all necessary dependencies and define <code>match()</code>, which uses
+</code></pre></div><p>First we import all necessary dependencies and define <code>match()</code>, which uses
 two kinds of patterns for matching the command: one is for dedented blocks of
 text (<code>patterns.block</code>) and other for string references (<code>patterns.string</code>).
 <code>match()</code> also sets the <code>local</code> attribute for the command.</p> <div class="language-js extra-class"><pre class="language-js"><code>  <span class="token function">line</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -194,6 +197,6 @@ likely to stay the same as dissecated in this article.</p></div> <div class="pag
         </a>
         →
       </span></p></div> </div> <!----></div></div>
-    <script src="/fabula/assets/js/app.27ba7a08.js" defer></script><script src="/fabula/assets/js/5.fe356826.js" defer></script>
+    <script src="/fabula/assets/js/app.07d32a01.js" defer></script><script src="/fabula/assets/js/5.cf6a9bf9.js" defer></script>
   </body>
 </html>

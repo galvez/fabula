@@ -178,6 +178,9 @@ code](https://github.com/nuxt/fabula/blob/master/src/commands/write.js). Let's
 take a quick dive into how it works.
 
 ```js
+import { write, append } from '../ssh'
+import { localWrite, localAppend } from '../local'
+
 export default {
   patterns: {
     block: (argv) => {
@@ -210,7 +213,7 @@ export default {
   },
 ```
 
-First we importing all necessary dependencies and define `match()`, which uses 
+First we import all necessary dependencies and define `match()`, which uses 
 two kinds of patterns for matching the command: one is for dedented blocks of 
 text (`patterns.block`) and other for string references (`patterns.string`).
 `match()` also sets the `local` attribute for the command.
