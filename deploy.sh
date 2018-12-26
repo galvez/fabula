@@ -1,4 +1,5 @@
-yarn build:docs
+rm -rf docs/assets
+vuepress build docs
 mv docs/.vuepress/dist/* docs/
 rm -rf docs/.vuepress/dist/
 git add docs
