@@ -29,7 +29,7 @@ sudo service nginx restart
 </commands>
 ```
 
-Inspired by Vue, it lets you keep commands and settings in concise **single-file components**.
+Inspired by Vue, it lets you keep settings and commands in concise **single-file components**.
 
 Please refer to the [full documentation][docs] to learn more.
 
