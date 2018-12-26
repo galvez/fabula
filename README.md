@@ -10,6 +10,8 @@ At its core, **Fabula** is a simple Bash script preprocessor and runner. It lets
 you run scripts **locally** and on **remote servers**. **Fabula** (latin for 
 _story_) is inspired by Python's [Fabric][f].
 
+[f]: https://www.fabfile.org/
+
 ```xml
 <fabula>
 export default {
