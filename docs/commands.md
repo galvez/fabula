@@ -114,8 +114,8 @@ export default {
 ## Registration
 
 Say you want to register the command `special <arg>`, that can run only on the
-local machine. You can programmatically add a custom command handler to your
-`fabula.js` configuration file, under `commands`:
+local machine. You can add a custom command handler to your `fabula.js`
+configuration file under `commands`:
 
 ```js
 export default {
@@ -216,7 +216,7 @@ export default {
 First we importing all necessary dependencies and define `match()`, which uses 
 two kinds of patterns for matching the command: one is for dedented blocks of 
 text (`patterns.block`) and other for string references (`patterns.string`).
-`match()` also takes care of setting the `local` attribute for the command.
+`match()` also sets the `local` attribute for the command.
 
 ```js
   line(line) {
@@ -252,6 +252,7 @@ subsequent lines if it's a block of text, or use the provided string reference.
 For convenience, we store the provided text in either `fileLines` or `fileBody`,
 which are then retrieved by `command()`.
 
+```js
   command(conn) {
     const filePath = this.params.filePath
     const fileContents = this.string
