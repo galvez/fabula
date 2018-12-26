@@ -54,7 +54,7 @@ Any Bash statement will work inside `<commands>` (like the first one), but a few
 particular statements are recognized by handlers using **Fabula**'s modular 
 compiler API, which cause them to process and run differently. 
 
-First off, anything line that starts with `local` is run on the local machine.
+First off, anything line that starts with `local` is ran on the local machine.
 
 In this snippet, we're using Fabula's special `append` command, which allows you 
 to define an **indented block of text** (that gets **automatically dedendeted** 
