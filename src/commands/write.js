@@ -1,8 +1,7 @@
-import { echo, append } from '../ssh'
-import { localEcho, localAppend } from '../local'
+import { write, append } from '../ssh'
+import { localWrite, localAppend } from '../local'
 
 export default {
-  name: 'write',
   patterns: {
     block: (argv) => {
       return new RegExp(`^(?:local\\s*)?${argv[0]}\\s+(.+?):$`)
@@ -65,10 +64,10 @@ export default {
       : this.params.fileLines
 
     if (this.local) {
-      const cmd = ({ echo: localEcho, append: localAppend })[this.op]
+      const cmd = ({ write: localWrite, append: localAppend })[this.op]
       return cmd({ filePath, fileContents })
     } else {
-      return ({ echo, append })[this.op](conn, { filePath, fileContents })
+      return ({ write, append })[this.op](conn, { filePath, fileContents })
     }
   }
 }

@@ -18,7 +18,7 @@
     "test": "jest",
     "lint": "eslint --fix --ext .js,.vue src",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "source deploy.sh"
   },
   "dependencies": {
     "arg": "3.0.0",

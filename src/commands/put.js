@@ -1,7 +1,6 @@
 import { put } from '../ssh'
 
 export default {
-  name: 'put',
   match(line) {
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },

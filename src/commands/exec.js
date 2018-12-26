@@ -2,7 +2,6 @@ import { exec } from '../ssh'
 import { execLocal } from '../local'
 
 export default {
-  name: 'exec',
   match(line) {
     if (this.argv[0] === 'local') {
       this.local = true

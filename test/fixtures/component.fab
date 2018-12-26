@@ -1,3 +1,12 @@
+<commands>
+local echo -e <%= strings.foobar %> > /tmp/fabula
+</commands>
+
+<string id="foobar">
+Fabula is awesome for
+writing config files.
+</string>
+
 <fabula>
 export default {
   path1: '/tmp/fabula1',
