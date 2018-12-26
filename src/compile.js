@@ -71,6 +71,21 @@ compile.compileTemplate = function (cmd, settings) {
   return cmdTemplate(settings)
 }
 
+compile.splitMultiLines = function (source) {
+  let multiline
+  return source.split(/\n/g).reduce((_lines, line) => {
+    if (multiline) {
+      line = line.trimLeft()
+      multiline = /\\\s*$/.test(line)
+      const index = _lines.length ? _lines.length - 1 : 0
+      _lines[index] += line.replace(/\s*\\\s*$/, ' ')
+      return _lines
+    }
+    multiline = /\\\s*$/.test(line)
+    return _lines.concat([line.replace(/\s*\\\s*$/, ' ')])
+  }, [])
+}
+
 compile.parseLine = function (command, line, settings, push) {
   let cmd
 
@@ -103,21 +118,6 @@ compile.parseLine = function (command, line, settings, push) {
   }
 }
 
-compile.splitMultiLines = function (source) {
-  let multiline
-  return source.split(/\n/g).reduce((_lines, line) => {
-    if (multiline) {
-      line = line.trimLeft()
-      multiline = /\\\s*$/.test(line)
-      const index = _lines.length ? _lines.length - 1 : 0
-      _lines[index] += line.replace(/\s*\\\s*$/, ' ')
-      return _lines
-    }
-    multiline = /\\\s*$/.test(line)
-    return _lines.concat([line.replace(/\s*\\\s*$/, ' ')])
-  }, [])
-}
-
 function compileComponent(name, source, settings) {
   const { fabula, script, strings } = compile.loadComponent(source)
   const componentSettings = requireFromString(fabula.join('\n'), name)
@@ -137,11 +137,18 @@ function compileComponent(name, source, settings) {
 }
 
 export function compile(name, source, settings) {
+  // If <fabula> or at least <commands> is detected,
+  // process as a component and return
   if (source.match(/^\s*<(?:(?:fabula)|(commands))>/g)) {
     return compileComponent(name, source, settings)
   }
+
+  // If no marked section is found, proceed to
+  // regular commands compilation
   source = compile.compileTemplate(source, settings)
 
+  // splitMultiLines() will merge lines ending in `\`
+  // with the subsequent one, preserving Bash's behaviour
   const lines = compile.splitMultiLines(source)
     .filter(Boolean)
     .filter(line => !line.startsWith('#'))
@@ -150,6 +157,9 @@ export function compile(name, source, settings) {
   const parsedCommands = []
 
   for (const line of lines) {
+    // If a component's line() handler returns true,
+    // the same command object will be returned, allowing
+    // parsing of custom mult-line special commands
     currentCommand = compile.parseLine(currentCommand, line, settings, (command) => {
       parsedCommands.push(command)
     })
