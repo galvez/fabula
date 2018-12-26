@@ -197,11 +197,17 @@ export async function runString(server, conn, name, str, settings) {
   for (const command of commands) {
     try {
       const response = await command.run(conn)
-      for (const line of response.stdout.split(/\n/g).filter(Boolean)) {
-        consola.info(`[${server}]`, line.trim())
-      }
-      for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
-        consola.error(`[${server}]`, line.trim())
+      if (response) {
+        if (response.stdout) {
+          for (const line of response.stdout.split(/\n/g).filter(Boolean)) {
+            consola.info(`[${server}]`, line.trim())
+          }
+        }
+        if (response.stderr) {
+          for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
+            consola.error(`[${server}]`, line.trim())
+          }
+        }
       }
       consola.info(`[${server}] [OK]`, command.source[0])
     } catch (err) {
