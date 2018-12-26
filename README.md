@@ -10,31 +10,24 @@ At its core, **Fabula** is a simple Bash script preprocessor and runner. It lets
 you run scripts **locally** and on **remote servers**. **Fabula** (latin for 
 _story_) is inspired by Python's [Fabric][f].
 
-```sh
-local echo "This runs on the local machine"
-echo "This runs on the server"
-```
-
-If you place the above snippet in a file named `echo.fab` and configure a remote
-server in Fabula's configuration file (`fabula.js`):
-
-```js
+```xml
+<fabula>
 export default {
-  ssh: {
-    server: {
-      hostname: '1.2.3.4',
-      username: 'user',
-      privateKey: '/path/to/key'
-    }
+  docsDir: {
+    local: './docs',
+    remote: '/remote/path/www' 
   }
 }
+</fabula>
+
+<commands>
+local vuepress build <%= docsDir.local %>
+put docs/.vuepress/dist/ <%= docsDir.remote %>
+sudo service nginx restart
+</commands>
 ```
 
-Executing `fabula server echo` will run the script on `server` (as specified 
-under `ssh` in `fabula.js`), but every command preceded by `local` will run 
-on the local machine.
-
-Please refer to the [full documentation][docs].
+Please refer to the [full documentation][docs] to learn more.
 
 [docs]: https://github.io/fabula/
 
