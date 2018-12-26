@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Fabula',
   description: 'Minimalist server configuration and task management.',
-  base: '/fabula',
+  base: '/fabula/',
   themeConfig: {
     repo: 'nuxa/fabula',
     editLinks: true,
