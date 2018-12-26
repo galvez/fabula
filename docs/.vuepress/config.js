@@ -42,6 +42,7 @@ function sidebarLinks (locale) {
       collapsable: false,
       children: [
         '',
+        'installation',
         'components',
         'commands',
         'authentication'
