@@ -45,7 +45,7 @@ local append ~/.ssh/config:
 </commands>
 ```
 
-Save as `add-to-local-ssh.fab` and run with:
+Save as `add-to-ssh.fab` and run with:
 
 ```sh
 fabula add-to-ssh

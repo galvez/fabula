@@ -11,7 +11,7 @@ yarn global add fabula
 
 **Fabula** is currently in **beta phase**, that is to say, we're still testing
 on several projects and making sure all potential issues are addressed. Don't 
-use it in production just yet unless you're sure what you're doing. Adn please 
+use it in production just yet unless you're sure what you're doing. And please 
 [file an issue on Github][gh-issue] if you find anything that needs attention.
 
 [npm]: https://www.npmjs.com/
