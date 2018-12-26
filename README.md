@@ -1,6 +1,6 @@
 <p align="center">
   <h1>⚙ Fabula</h1>
-  <img src="https://badge.fury.io/js/fabula.svg"><br>
+  <img src="https://badge.fury.io/js/fabula.svg">
   <span>Minimalist server configuration and task management.</span>
 </p>
 
