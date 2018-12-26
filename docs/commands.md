@@ -60,9 +60,19 @@ that it will never append to, but rather overwrite the contents of the target en
 
 
 ```sh
-local write <%= path %>:
+local write /path/to/file:
   multi-line contents
   to be written to the file
+```
+
+## Put
+
+Copies file in path from the local machine to path on the remote server.
+
+> Availability: `remote`
+
+```sh
+put /path/to/local/file /path/on/remote/server
 ```
 
 ## Custom
@@ -76,7 +86,6 @@ defined under `src/commands/put.js`:
 import { put } from '../ssh'
 
 export default {
-  name: 'put',
   match(line) {
     return line.trim().match(/^put\s+(.+)\s+(.+)/)
   },

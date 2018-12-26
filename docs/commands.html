@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Commands | Fabula</title>
+    <meta name="description" content="Minimalist server configuration and task management.">
+    
+    
+    <link rel="preload" href="/fabula/assets/css/0.styles.ce056f27.css" as="style"><link rel="preload" href="/fabula/assets/js/app.248077ed.js" as="script"><link rel="preload" href="/fabula/assets/js/5.bd7aef58.js" as="script"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.9c2e3e97.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/6.4828798a.js"><link rel="prefetch" href="/fabula/assets/js/7.549c9dc5.js">
+    <link rel="stylesheet" href="/fabula/assets/css/0.styles.ce056f27.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/fabula/" class="home-link router-link-active"><!----> <span class="site-name">Fabula</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/nuxa/fabula" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"> <a href="https://github.com/nuxa/fabula" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first"><p class="sidebar-heading open"><span>Guide</span> <!----></p> <ul class="sidebar-group-items"><li><a href="/fabula/" class="sidebar-link">Introduction</a></li><li><a href="/fabula/components.html" class="sidebar-link">Components</a></li><li><a href="/fabula/commands.html" class="active sidebar-link">Commands</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/fabula/commands.html#local" class="sidebar-link">Local</a></li><li class="sidebar-sub-header"><a href="/fabula/commands.html#append" class="sidebar-link">Append</a></li><li class="sidebar-sub-header"><a href="/fabula/commands.html#write" class="sidebar-link">Write</a></li><li class="sidebar-sub-header"><a href="/fabula/commands.html#put" class="sidebar-link">Put</a></li><li class="sidebar-sub-header"><a href="/fabula/commands.html#custom" class="sidebar-link">Custom</a></li></ul></li><li><a href="/fabula/authentication.html" class="sidebar-link">Authentication</a></li></ul></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="commands"><a href="#commands" aria-hidden="true" class="header-anchor">#</a> Commands</h1> <p>As stated in the introduction, <strong>every command available to the underlying Bash
+shell</strong> will work in a <strong>Fabula</strong> task. There are however a few convenience
+commands that are specific to <strong>Fabula</strong>.</p> <h2 id="local"><a href="#local" aria-hidden="true" class="header-anchor">#</a> Local</h2> <p>Every command preceded by <code>local</code> will run on the local machine:</p> <div class="language-sh extra-class"><pre class="language-text"><code>local mkdir -p /tmp/foobar
+local touch /tmp/foobar
+</code></pre></div><h2 id="append"><a href="#append" aria-hidden="true" class="header-anchor">#</a> Append</h2> <p>Appends a block text or string to the file in the specified path.</p> <blockquote><p>Availability: <code>local</code> and <code>remote</code></p></blockquote> <h3 id="simple-use"><a href="#simple-use" aria-hidden="true" class="header-anchor">#</a> Simple use</h3> <div class="language-sh extra-class"><pre class="language-text"><code>local append /path/to/file:
+  multi-line contents
+  to be appended to the file 
+</code></pre></div><p>Text will be automatically dedendeted to the number of total white
+spaces in the <strong>first line</strong>.</p> <h3 id="with-string-id"><a href="#with-string-id" aria-hidden="true" class="header-anchor">#</a> With string id</h3> <div class="language-sh extra-class"><pre class="language-text"><code>&lt;fabula&gt;
+export default {
+  path: '/path/to/file '
+}
+&lt;/fabula&gt;
+
+&lt;commands&gt;
+local append &lt;%= path %&gt; strings.contents
+&lt;/commands&gt;
+
+&lt;string id=&quot;contents&quot;&gt;
+multi-line contents
+to be appended to the file 
+&lt;/string&gt;
+</code></pre></div><h2 id="write"><a href="#write" aria-hidden="true" class="header-anchor">#</a> Write</h2> <p>Writes a block text or string to the file in the specified path.</p> <blockquote><p>Availability: <code>local</code> and <code>remote</code></p></blockquote> <p>This command has essentially the same semantics of <code>append</code>, with the difference
+that it will never append to, but rather overwrite the contents of the target entirely.</p> <div class="language-sh extra-class"><pre class="language-text"><code>local write /path/to/file:
+  multi-line contents
+  to be written to the file
+</code></pre></div><h2 id="put"><a href="#put" aria-hidden="true" class="header-anchor">#</a> Put</h2> <p>Copies file in path from the local machine to path on the remote server.</p> <blockquote><p>Availability: <code>remote</code></p></blockquote> <div class="language-sh extra-class"><pre class="language-text"><code>put /path/to/local/file /path/on/remote/server
+</code></pre></div><h2 id="custom"><a href="#custom" aria-hidden="true" class="header-anchor">#</a> Custom</h2> <p>To make the bash script parser as flexible and fault-tolerant as possible,
+<code>fabula</code> introduces a simple, straight-forward compiler with an API for writing
+command handlers. The special <code>put</code> built-in command for instance, is
+defined under <code>src/commands/put.js</code>:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> put <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../ssh'</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token function">match</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> line<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token regex">/^put\s+(.+)\s+(.+)/</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function">line</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>sourcePath <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>match<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>targetPath <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>match<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function">command</span><span class="token punctuation">(</span>conn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">put</span><span class="token punctuation">(</span>conn<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>sourcePath<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>param<span class="token punctuation">.</span>targetPath<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><p><code>match()</code> is called once for every new line, if no previous command is still
+being parsed. If <code>match()</code> returns <code>true</code>, <code>line()</code> will run for the current
+and every subsequent line as long as you keep returning <code>true</code>, which means,
+<em>continue parsing lines for the <strong>current command</strong></em>.</p></li> <li><p>When <code>line()</code> returns  <code>false</code> or <code>undefined</code>, the compiler understands the
+current command is <strong>done parsing</strong> and moves on.</p></li> <li><p>with <code>line()</code>, we can store data that is retrieved from each line in the
+command block, make it availble under <code>this.params</code> and later access it when
+actually calling <code>command()</code> (done automatically when running scripts).</p></li></ul> <h3 id="advanced-example"><a href="#advanced-example" aria-hidden="true" class="header-anchor">#</a> Advanced example</h3> <p>We can write a special command handler that interprets more than one similar
+command if it makes sense to do so. The proposed <code>append</code> and <code>echo</code> special
+commands perform very similar tasks, that is, allowing us to write a body of
+text onto a file or appending to it. Its main idea is to perform automatically
+<strong>dedention</strong> of the body, similar to YAML strings.</p> <div class="language-sh extra-class"><pre class="language-text"><code>mkdir /tmp/files
+&lt;% for (const file of files) { %&gt;
+echo /tmp/files/&lt;%= file %&gt;:
+  this is the content of &lt;%= file %&gt;
+&lt;% } %&gt;
+</code></pre></div><p>This will generate a script with three <code>echo</code> calls, all of which have their own respective bodies. As we write the handler for this command,  we also need to
+detect if it starts with <code>local</code>, and run the appropriate functions for local
+and remote commands. This is the code that handles them:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> echo<span class="token punctuation">,</span> append <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../ssh'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> localEcho<span class="token punctuation">,</span> localAppend <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../local'</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'write'</span><span class="token punctuation">,</span>
+  patterns<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    block<span class="token punctuation">:</span> <span class="token punctuation">(</span>argv<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RegExp</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`^(?:local\\s*)?</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">\\s+(.+?):$`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    string<span class="token punctuation">:</span> <span class="token punctuation">(</span>argv<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RegExp</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`^(?:local\\s*)?</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">\\s+([^ ]+?)\\s+([^ :]+?)$`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function">match</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> argv <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span><span class="token keyword">this</span><span class="token punctuation">.</span>argv<span class="token punctuation">]</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">===</span> <span class="token string">'local'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      argv<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>local <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>op <span class="token operator">=</span> argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>dedent <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'append'</span><span class="token punctuation">,</span> <span class="token string">'write'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> match
+      <span class="token comment">// eslint-disable-next-line no-cond-assign</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>match <span class="token operator">=</span> line<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>cmd<span class="token punctuation">.</span>patterns<span class="token punctuation">.</span><span class="token function">block</span><span class="token punctuation">(</span>argv<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>block <span class="token operator">=</span> <span class="token boolean">true</span>
+        <span class="token keyword">return</span> match
+      <span class="token comment">// eslint-disable-next-line no-cond-assign</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>match <span class="token operator">=</span> line<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>cmd<span class="token punctuation">.</span>patterns<span class="token punctuation">.</span><span class="token function">string</span><span class="token punctuation">(</span>argv<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>string <span class="token operator">=</span> <span class="token boolean">true</span>
+        <span class="token keyword">return</span> match
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function">line</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>firstLine<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>filePath <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>match<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>block<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>fileLines <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>string<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> settingsKey <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>match<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+        <span class="token comment">// eslint-disable-next-line no-eval</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>fileBody <span class="token operator">=</span> <span class="token function">eval</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`this.settings.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>settingsKey<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token regex">/^\s+/</span><span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>fileLines<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> match <span class="token operator">=</span> line<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token regex">/^\s+/</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>match<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>dedent <span class="token operator">=</span> match<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>length
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>fileLines<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>dedent<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function">command</span><span class="token punctuation">(</span>conn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> filePath <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>filePath
+    <span class="token keyword">const</span> fileContents <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>string
+      <span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>fileBody<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>params<span class="token punctuation">.</span>fileLines
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>local<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> cmd <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> echo<span class="token punctuation">:</span> localEcho<span class="token punctuation">,</span> append<span class="token punctuation">:</span> localAppend <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>op<span class="token punctuation">]</span>
+      <span class="token keyword">return</span> <span class="token function">cmd</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filePath<span class="token punctuation">,</span> fileContents <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> echo<span class="token punctuation">,</span> append <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>op<span class="token punctuation">]</span><span class="token punctuation">(</span>conn<span class="token punctuation">,</span> <span class="token punctuation">{</span> filePath<span class="token punctuation">,</span> fileContents <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <div class="page-edit"><div class="edit-link"><a href="https://github.com/nuxa/fabula/edit/master/docs/commands.md" target="_blank" rel="noopener noreferrer">Edit this page on GitHub</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/fabula/components.html" class="prev">
+          Components
+        </a></span> <span class="next"><a href="/fabula/authentication.html">
+          Authentication
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/fabula/assets/js/app.248077ed.js" defer></script><script src="/fabula/assets/js/5.bd7aef58.js" defer></script>
+  </body>
+</html>

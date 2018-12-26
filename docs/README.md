@@ -124,7 +124,7 @@ local echo <%= quote(files[file]) %> > <%= file %>
 </commands>
 ```
 
-See more about Fabula components [in its dedicated section](/components)
+See more about Fabula components [in its dedicated section](/components.html).
 
 ## Motivation
 
