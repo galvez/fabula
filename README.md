@@ -1,7 +1,7 @@
 <p align="center">
   <h1>⚙ Fabula</h1>
   <a href="http://npmjs.com/package/fabula"><img src="https://badge.fury.io/js/fabula.svg?updated"></a>
-  <span>Minimalist server configuration and task management.</span>
+  <br><span>Minimalist server configuration and task management.</span>
 </p>
 
 # Introduction
