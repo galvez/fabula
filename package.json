@@ -16,7 +16,9 @@
   ],
   "scripts": {
     "test": "jest",
-    "lint": "eslint --fix --ext .js,.vue src"
+    "lint": "eslint --fix --ext .js,.vue src",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "arg": "3.0.0",
