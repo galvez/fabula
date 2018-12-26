@@ -102,6 +102,7 @@ compile.parseLine = function (command, line, settings, push) {
   const commandSearchList = [...commands]
   if (settings.commands) {
     commandSearchList.push(...settings.commands)
+    delete settings.commands
   }
   commandSearchList.push(execCommand)
   for (cmd of commandSearchList) {
