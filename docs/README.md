@@ -40,6 +40,39 @@ context-hybrid scripts and strictly local ones.
 
 To run on all available servers, use `fabula all <task>`.
 
+## Context
+
+If you have a **Fabula** task that is bound to run on multiple servers and
+parts of the commands rely on information specific to each server, you can
+reference the current server settings via `$server`:
+
+In `fabula.js`:
+
+```js
+export default {
+  ssh: {
+    server1: {
+      hostname: '1.2.3.4',
+      customSetting: 'foo'
+    },
+    server2: {
+      hostname: '1.2.3.4',
+      customSetting: 'bar'
+    }
+  }
+}
+```
+
+In `task.fab`:
+
+```sh
+echo <%= quote($server.customSetting) %>
+```
+
+Running `fab all task` will cause the correct command to run for each server.
+Note that `quote()` is a special function that quotes strings for Bash, and 
+is provided automatically by **Fabula**.
+
 ## Preprocessor
 
 Fabula's compiler will respect Bash's semantics for most cases, but allows
