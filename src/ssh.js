@@ -1,8 +1,23 @@
 
 import { readFileSync } from 'fs'
 import { promisify } from 'util'
+import consola from 'consola'
 import read from 'read'
 import { Client } from 'ssh2'
+
+function exit(err) {
+  consola.fatal(err.message || err)
+  process.exit()
+}
+
+async function exitOnError(promise) {
+  try {
+    return await promise()
+  } catch (err) {
+    consola.fatal(err.message || err)
+    process.exit()
+  }
+}
 
 function askPassphrase(privateKey) {
   return new Promise((resolve) => {
@@ -31,52 +46,54 @@ export function getConnection(settings) {
     const conn = new Client()
     conn.exec = promisify(conn.exec).bind(conn)
     conn.sftp = promisify(conn.sftp).bind(conn)
-    conn.on('error', reject)
+    conn.on('error', exit)
     conn.on('ready', () => {
       conn.settings = settings
       resolve(conn)
     })
 
+    let connect
     if (settings.privateKey) {
       const privateKey = readFileSync(settings.privateKey).toString()
       if (!settings.passphrase && isKeyEncrypted(privateKey)) {
         settings.passphrase = await askPassphrase(settings.privateKey)
       }
-      conn.connect({ ...settings, privateKey })
+      connect = () => conn.connect({ ...settings, privateKey })
     } else {
       if (!settings.agent) {
         settings.agent = process.env.SSH_AUTH_SOCK
       }
-      conn.connect({ ...settings })
+      connect = () => conn.connect({ ...settings })
     }
+    await exitOnError(connect)
   })
 }
 
 export async function write(conn, filePath, fileContents) {
   const stream = await conn.sftp()
-  return stream.writeFile(filePath, fileContents)
+  return exitOnError(() => stream.writeFile(filePath, fileContents))
 }
 
 export async function append(conn, filePath, fileContents) {
   const stream = await conn.sftp()
-  return stream.appendFile(filePath, fileContents)
+  return exitOnError(() => stream.appendFile(filePath, fileContents))
 }
 
 export async function get(conn, remotePath, localPath) {
   const stream = await conn.sftp()
-  return stream.fastGet(remotePath, localPath)
+  return exitOnError(() => stream.fastGet(remotePath, localPath))
 }
 
 export async function put(conn, localPath, remotePath) {
   const stream = await conn.sftp()
-  return stream.fastPut(localPath, remotePath)
+  return exitOnError(() => stream.fastPut(localPath, remotePath))
 }
 
 export function exec(conn, cmd) {
   return new Promise(async (resolve, reject) => {
     let stdout = ''
     let stderr = ''
-    const stream = await conn.exec(cmd).catch(reject)
+    const stream = await exitOnError(() => conn.exec(cmd))
     stream.on('close', (code, signal) => {
       resolve({ stdout, stderr, code, signal })
     })
