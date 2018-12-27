@@ -238,9 +238,6 @@ export async function runString(server, conn, name, str, settings) {
 }
 
 export async function run(source, config, servers = []) {
-  if (!source.endsWith('.fab')) {
-    source += '.fab'
-  }
   const name = parse(source).name
   source = readFileSync(source).toString()
   const settings = { ...config }

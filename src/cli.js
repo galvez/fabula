@@ -46,13 +46,23 @@ export default async function () {
     // fabula all <script>
     const servers = args._[0].split(/,/g)
     const source = args._[1]
+    if (!source.endsWith('.fab')) {
+      source = `${source}.fab`
+    }
+    if (!existsSync(source)) {
+      consola.fatal(`Task source doesn\'t exist: ${source}.`)
+      process.exit()
+    }
     await run(source, config, servers)
   } else if (args._.length === 1) {
     // Run strictly locally (non-local commands will cause an error)
     // fabula <local-script>
     const source = args._[0]
+    if (!source.endsWith('.fab')) {
+      source = `${source}.fab`
+    }
     if (!existsSync(source)) {
-      consola.fatal('Task source doesn\'t exist.')
+      consola.fatal(`Task source doesn\'t exist: ${source}.`)
       process.exit()
     }
     await run(source, config)
