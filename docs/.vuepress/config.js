@@ -43,6 +43,7 @@ function sidebarLinks (locale) {
       children: [
         '',
         'installation',
+        'environment',
         'components',
         'commands',
         'authentication'
