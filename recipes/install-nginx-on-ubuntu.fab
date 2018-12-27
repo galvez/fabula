@@ -1,0 +1,54 @@
+
+# From https://do.co/2OcRBq4
+# How To Install Nginx on Ubuntu 18.04
+# And register an example.com website afterwards
+
+<fabula>
+export default {
+  env: {
+    DEBIAN_FRONTEND: 'noninteractive'
+  },
+  domain: 'example.com',
+  dirs: {
+    html: '/var/www/${domain}/html'
+    conf: '/var/www/${domain}/conf'
+  }
+}
+</fabula>
+
+<commands>
+sudo apt update -y
+sudo apt install nginx -y
+sudo mkdir -p <%= dirs.html %>
+sudo chown -R <%= user %>:<%= user %> <%= dirs.html %>
+sudo chmod -R 755 <%= dirs.html %>
+sudo write <%= dirs.html %> strings['nginx.html']
+sudo write <%= dirs.conf %> strings['nginx.conf']
+sudo ln -s <%= dirs.conf %> /etc/nginx/sites-enabled/<%= domain %>
+sudo systemctl reload nginx
+</commands>
+
+<string id="index.html" dedented>
+  <html>
+    <head>
+      <title>Welcome to Example.com!</title>
+    </head>
+    <body>
+      <h1>Success! The example.com server block is working!</h1>
+    </body>
+  </html>
+</string>
+
+<string id="nginx.conf">
+server {
+  listen 80;
+  listen [::]:80;
+
+  root /var/www/<%= domain %>/html;
+  index index.html;
+  server_name <%= domain %> www.<%= domain %>;
+  location / {
+    try_files $uri $uri/ =404;
+  }
+}
+</string>

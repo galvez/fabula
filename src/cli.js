@@ -34,6 +34,17 @@ function showHelpAndExit() {
   process.exit()
 }
 
+function ensureSource(source) {
+  if (!source.endsWith('.fab')) {
+    source = `${source}.fab`
+  }
+  if (!existsSync(source)) {
+    consola.fatal(`Task source doesn't exist: ${source}.`)
+    process.exit()
+  }
+  return source
+}
+
 export default async function () {
   const args = arg({})
   if (args._.length === 0 || args._[0] === 'help') {
@@ -45,26 +56,12 @@ export default async function () {
     // fabula <server1,server2,..> <script>
     // fabula all <script>
     const servers = args._[0].split(/,/g)
-    let source = args._[1]
-    if (!source.endsWith('.fab')) {
-      source = `${source}.fab`
-    }
-    if (!existsSync(source)) {
-      consola.fatal(`Task source doesn't exist: ${source}.`)
-      process.exit()
-    }
+    const source = ensureSource(args._[1])
     await run(source, config, servers)
   } else if (args._.length === 1) {
     // Run strictly locally (non-local commands will cause an error)
     // fabula <local-script>
-    let source = args._[0]
-    if (!source.endsWith('.fab')) {
-      source = `${source}.fab`
-    }
-    if (!existsSync(source)) {
-      consola.fatal(`Task source doesn't exist: ${source}.`)
-      process.exit()
-    }
+    const source = ensureSource(args._[0])
     await run(source, config)
   } else {
     showHelpAndExit()

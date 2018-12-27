@@ -9,7 +9,7 @@ export default {
 }
 </fabula>
 
-<script>
+<commands>
 mkdir -p /app/.keys
 chown -R ubuntu /app/.keys
 chmod 755 /app/.keys
@@ -23,5 +23,5 @@ echo /home/<%= conn.settings.user %>/.ssh/config:
     IdentityFile /app/.keys/deploy_key
     User git
     StrictHostKeyChecking no
- </script>
+ </commands>
  
