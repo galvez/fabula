@@ -18,15 +18,28 @@ function loadConfig() {
     rcFile = null
   }
   if (rcFile === null) {
-    consola.fatal('Fabula configuration not found.')
+    consola.fatal('Fabula configuration file not found.')
     process.exit()
   }
   return require(resolvePath(rcFile)).default
 }
 
+function showHelpAndExit() {
+  process.stdout.write(
+    '\n' +
+    '  Usage: fabula <server1,server2,...> <task> (run on specified servers)\n' + 
+    '         fabula all <task> (run on all servers)\n' + 
+    '         fabula <task> (run local only)\n\n'
+  )
+  process.exit()
+}
+
 export default async function () {
-  const config = loadConfig()
   const args = arg({})
+  if (args._.length == 0 || args._[0] === 'help') {
+    showHelpAndExit()
+  }
+  const config = loadConfig()
   if (args._.length === 2) {
     // Run on remote servers:
     // fabula <server1,server2,..> <script>
@@ -38,13 +51,12 @@ export default async function () {
     // Run strictly locally (non-local commands will cause an error)
     // fabula <local-script>
     const source = args._[0]
-    if (!source) {
-      consola.fatal('No source specified.')
+    if (!existsSync(source)) {
+      consola.fatal('Task source doesn\'t exist.')
       process.exit()
     }
     await run(source, config)
   } else {
-    consola.fatal('Unrecognized number of parameters.')
-    process.exit()
+    showHelpAndExit()
   }
 }
