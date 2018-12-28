@@ -25,6 +25,7 @@
     "arg": "3.0.0",
     "consola": "2.3.0",
     "esm": "3.0.84",
+    "lodash.defaultsdeep": "^4.6.0",
     "lodash.template": "4.4.0",
     "read": "1.0.7",
     "ssh2": "0.6.1"

@@ -5,6 +5,7 @@ import { parse } from 'path'
 
 import consola from 'consola'
 import template from 'lodash.template'
+import defaultsDeep from 'lodash.defaultsdeep'
 
 import Command from './command'
 import execCommand from './commands/exec'
@@ -129,12 +130,12 @@ compile.parseLine = function (command, line, settings, env, push) {
 function compileComponent(name, source, settings) {
   const { fabula, script, strings } = compile.loadComponent(source)
   const componentSource = script.join('\n')
-  
+
   const componentSettings = {
     ...requireFromString(fabula.join('\n'), name).default
   }
 
-  const globalEnv = { ...globalSettings.env }
+  const globalEnv = { ...settings.env }
   delete globalEnv.local
   delete globalEnv.ssh
 
@@ -147,7 +148,7 @@ function compileComponent(name, source, settings) {
   // Can't override any of these from a component
   delete componentSettings.agent
   delete componentSettings.ssh
-  
+
   settings = defaultsDeep({}, settings, componentSettings)
 
   settings.strings = strings.reduce((hash, string) => {

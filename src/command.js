@@ -21,12 +21,12 @@ export default class Command {
     if (this.local) {
       return {
         ...this.settings.env.local,
-        ...this._env,
+        ...this._env
       }
     } else {
       return {
         ...this.settings.env.ssh,
-        ...this._env,
+        ...this._env
       }
     }
   }
