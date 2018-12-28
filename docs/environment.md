@@ -3,9 +3,26 @@
 Environment variables can bet set in various ways in **Fabula**'s configuration
 file and also in individual **Fabula** task components.
 
+## Global
+
+To set environment variables globally for both local and remote settings, 
+assign keys to the `env` object in **Fabula**'s configuration file:
+
+```js
+export default {
+  env: {
+    local: {
+      FOOBAR: 'foobar'
+    }
+  }
+}
+```
+
+Note, however, that he keys `local` and `ssh` are reserved.
+
 ## Local
 
-In **Fabula**'s configuration file (`fabula.js`):
+Use `env.local` in **Fabula**'s configuration file (`fabula.js`):
 
 ```js
 export default {
@@ -17,7 +34,9 @@ export default {
 }
 ```
 
-## All servers
+## Remote
+
+Use `env.ssh` in **Fabula**'s configuration file (`fabula.js`):
 
 ```js
 export default {
@@ -30,9 +49,11 @@ export default {
 ```
 
 This sets environment variables for all remote servers. These variables are used
-in every remote command, from any **Fabula** task file.
+in **every remote command**, from any **Fabula** task file.
 
 ## Per server
+
+You may also place `env` underneath each SSH server:
 
 ```js
 export default {
