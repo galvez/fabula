@@ -1,19 +1,40 @@
+</fabula>
 export default {
   k8s: {
     clusterName: 'my-cluster'
   },
-  servers: [
-  	{
-      hostname: 'hostname-1',
-      host: 'host-2',
-      port: 2222,
-      privateKey: '/keys/key-2'
-  	},
-  	{
-      hostname: 'hostname-2',
-      host: 'host-2',
-      port: 2222,
-      privateKey: '/keys/key-2'
-  	}
-  ]
+  files: {
+    file1: 'Contents of file1',
+    file2: 'Contents of file2'
+  }
 }
+</fabula>
+
+<commands>
+local cd ~
+local mkdir -p test
+write /tmp/test:
+  goes into the file
+
+sudo service nginx restart
+
+# Write will resolve its third argument
+# to the settings object (settings.file1 etc)
+<% for (const file in files) { %>
+local write /tmp/<%= file %> <%= file %>
+<% } %>
+
+# quote() prepares a string for the shell,
+# wrapping it in a single quote if needed and
+# escaping all unsafe characters
+<% for (const file of files) { %>
+local echo <%= quote(file1) %> > /tmp/<%= file %>
+<% } %>
+
+# Lines ending in \ continue into the next line (like Bash)
+gcloud container clusters create <%= k8s.clusterName %> \
+  --machine-type=n1-standard-2 \
+  --zone=southamerica-east1-a \
+  --num-nodes=4
+
+ls test
