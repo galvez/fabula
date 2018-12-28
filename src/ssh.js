@@ -89,11 +89,11 @@ export async function put(conn, localPath, remotePath) {
   return exitOnError(() => stream.fastPut(localPath, remotePath))
 }
 
-export function exec(conn, cmd) {
+export function exec(conn, cmd, env = {}) {
   return new Promise(async (resolve, reject) => {
     let stdout = ''
     let stderr = ''
-    const stream = await exitOnError(() => conn.exec(cmd))
+    const stream = await exitOnError(() => conn.exec(cmd, { env }))
     stream.on('close', (code, signal) => {
       resolve({ stdout, stderr, code, signal })
     })

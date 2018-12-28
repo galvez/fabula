@@ -16,16 +16,16 @@ export default {
 }
 </fabula>
 
-<commands>
-sudo apt update -y
-sudo apt install nginx -y
-sudo mkdir -p <%= dirs.html %>
-sudo chown -R <%= user %>:<%= user %> <%= dirs.html %>
-sudo chmod -R 755 <%= dirs.html %>
-sudo write <%= dirs.html %> strings['nginx.html']
-sudo write <%= dirs.conf %> strings['nginx.conf']
-sudo ln -s <%= dirs.conf %> /etc/nginx/sites-enabled/<%= domain %>
-sudo systemctl reload nginx
+<commands sudo>
+apt update -y
+apt install nginx -y
+mkdir -p <%= dirs.html %>
+chown -R <%= user %>:<%= user %> <%= dirs.html %>
+chmod -R 755 <%= dirs.html %>
+write <%= dirs.html %> strings['nginx.html']
+write <%= dirs.conf %> strings['nginx.conf']
+ln -s <%= dirs.conf %> /etc/nginx/sites-enabled/<%= domain %>
+systemctl reload nginx
 </commands>
 
 <string id="index.html" dedented>

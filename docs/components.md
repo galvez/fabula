@@ -108,5 +108,15 @@ Every string block is made available internally in the global settings object
 as `strings.$id`, which in this case, is referenced internally by the 
 `append` command handler.
 
+### Dedent modifier
+
+You can force dedention of text to the number of total white spaces in the first line by appending the `dedented` modifier.
+
+```xml  
+<string id="config" dedented>
+  White space at the beginning will be removed.
+</string>
+```
+
 Learn more about commands and custom commands [in the next section](/commands.html).
 

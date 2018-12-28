@@ -14,13 +14,13 @@ export default {
   command(conn) {
     if (this.local) {
       try {
-        const result = execLocal(this.params.cmd)
+        const result = execLocal(this.params.cmd, this.env)
         return { stdout: result }
       } catch (io) {
         return { stdout: io.stdout, stderr: io.stderr }
       }
     } else {
-      return exec(conn, this.params.cmd)
+      return exec(conn, this.params.cmd, this.env)
     }
   }
 }

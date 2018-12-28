@@ -88,7 +88,7 @@ compile.splitMultiLines = function (source) {
   }, [])
 }
 
-compile.parseLine = function (command, line, settings, push) {
+compile.parseLine = function (command, line, settings, env, push) {
   let cmd
 
   if (command) {
@@ -107,7 +107,7 @@ compile.parseLine = function (command, line, settings, push) {
   commandSearchList.push(execCommand)
   for (cmd of commandSearchList) {
     if (cmd.match) {
-      command = new Command(cmd, line)
+      command = new Command(cmd, line, env)
       command.settings = settings
       match = command.cmd.match.call(command, line)
       if (match) {
@@ -128,23 +128,37 @@ compile.parseLine = function (command, line, settings, push) {
 
 function compileComponent(name, source, settings) {
   const { fabula, script, strings } = compile.loadComponent(source)
-  const componentSettings = requireFromString(fabula.join('\n'), name)
   const componentSource = script.join('\n')
-
-  settings = {
-    ...settings.options,
-    ...componentSettings.default
+  
+  const componentSettings = {
+    ...requireFromString(fabula.join('\n'), name).default
   }
+
+  const globalEnv = { ...globalSettings.env }
+  delete globalEnv.local
+  delete globalEnv.ssh
+
+  const env = {
+    ...globalEnv,
+    ...componentSettings.env
+  }
+  delete componentSettings.env
+
+  // Can't override any of these from a component
+  delete componentSettings.agent
+  delete componentSettings.ssh
+  
+  settings = defaultsDeep({}, settings, componentSettings)
 
   settings.strings = strings.reduce((hash, string) => {
     const compiledString = compile.compileTemplate(string.lines.join('\n'), settings)
     return { ...hash, [string.id]: quote(compiledString, true) }
   }, {})
 
-  return compile(name, componentSource, settings)
+  return compile(name, componentSource, settings, env)
 }
 
-export function compile(name, source, settings) {
+export function compile(name, source, settings, env = {}) {
   // If <fabula> or at least <commands> is detected,
   // process as a component and return
   if (source.match(/^\s*<(?:(?:fabula)|(commands))>/g)) {
@@ -168,7 +182,7 @@ export function compile(name, source, settings) {
     // If a component's line() handler returns true,
     // the same command object will be returned, allowing
     // parsing of custom mult-line special commands
-    currentCommand = compile.parseLine(currentCommand, line, settings, (command) => {
+    currentCommand = compile.parseLine(currentCommand, line, settings, env, (command) => {
       parsedCommands.push(command)
     })
   }

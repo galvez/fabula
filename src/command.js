@@ -1,10 +1,10 @@
 
 export default class Command {
-  constructor(cmd, line, match) {
+  constructor(cmd, line, env) {
     this.cmd = { ...cmd }
     this.name = this.cmd.name
     this.params = {}
-    this.match = match
+    this._env = env
     this.argv = this._expandTildes(line.split(/\s+/))
     this.source = []
     this.firstLine = true
@@ -16,6 +16,19 @@ export default class Command {
       }
       return arg
     })
+  }
+  get env() {
+    if (this.local) {
+      return {
+        ...this.settings.env.local,
+        ...this._env,
+      }
+    } else {
+      return {
+        ...this.settings.env.ssh,
+        ...this._env,
+      }
+    }
   }
   handleLine(line) {
     if (!this.cmd.line) {

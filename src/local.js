@@ -4,8 +4,8 @@ import { quote } from './utils'
 
 execLocal.exec = promisify(exec)
 
-export function execLocal(cmd) {
-  return execLocal.exec(cmd, { shell: '/bin/bash' })
+export function execLocal(cmd, env = {}) {
+  return execLocal.exec(cmd, { env, shell: '/bin/bash' })
 }
 
 export async function localWrite(filePath, fileContents) {
