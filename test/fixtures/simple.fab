@@ -11,6 +11,7 @@ module.exports = {
 cd ~
 local mkdir -p foobar
 local git checkout <%= branch %>
+git checkout <%= branch %>-2
 local echo "foobarfobar" > foobar
 
 <% if (someFlag) { %>

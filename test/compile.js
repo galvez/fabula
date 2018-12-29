@@ -11,6 +11,7 @@ export function compileForTest(source, config) {
   const commands = compile(name, source, {})
   return commands.map((cmd) => {
     return {
+      local: cmd.local,
       source: cmd.source,
       params: cmd.params
     }
