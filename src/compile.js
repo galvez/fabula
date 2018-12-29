@@ -35,7 +35,7 @@ compile.loadComponent = function (source) {
 
   for (const line of source) {
     // eslint-disable-next-line no-cond-assign
-    if (match = line.match(/^\s*<(?!\/)([^>]+)>/)) {
+    if (match = line.match(/^\s*<(?![\/%])([^>]+)>/)) {
       element = match[1].split(/\s+/g)
       // eslint-disable-next-line no-cond-assign
       if (match = match[1].match(/^string\s+id="([^"]+)"/)) {
@@ -49,6 +49,8 @@ compile.loadComponent = function (source) {
         strings.push(string)
       }
       element = null
+    }
+    if (!element) {
       continue
     }
     switch (element[0]) {
