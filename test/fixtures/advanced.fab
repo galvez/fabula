@@ -1,5 +1,5 @@
-</fabula>
-export default {
+<fabula>
+module.exports = {
   k8s: {
     clusterName: 'my-cluster'
   },
@@ -38,3 +38,4 @@ gcloud container clusters create <%= k8s.clusterName %> \
   --num-nodes=4
 
 ls test
+</commands>

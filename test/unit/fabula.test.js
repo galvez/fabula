@@ -12,11 +12,11 @@ describe('test preprocessor syntax', () => {
     expect(result).not.toBe(undefined)
   })
 
-  test('advanced', () => {
-    const testPath = resolve(__dirname, '..', 'fixtures', 'advanced')
-    const result = compileForTest(testPath)
-    console.log(result)
-    expect(result).not.toBe(undefined)
-  })
+  // test('advanced', () => {
+  //   const testPath = resolve(__dirname, '..', 'fixtures', 'advanced')
+  //   const result = compileForTest(testPath)
+  //   console.log(result)
+  //   expect(result).not.toBe(undefined)
+  // })
 
 })

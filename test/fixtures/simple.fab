@@ -1,7 +1,9 @@
 <fabula>
-export default {
-  branch: 'my-branch',
-  someFlag: true
+module.exports = {
+  default: {
+    branch: 'my-branch',
+    someFlag: true
+  }
 }
 </fabula>
 
