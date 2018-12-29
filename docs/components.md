@@ -69,12 +69,16 @@ commands provided by **Fabula**.
 ## Prepend
 
 You can append a command within the `<commands>` tag to automatically prepepend 
-in every command within the block.
+it every command within the block. Note that `sudo` is never prepended to 
+**special** or **custom** commands, because those run under the same permission
+as the **Fabula** task is running on.
 
 ```xml
 <commands local sudo>
 apt update -y
 apt install nginx -y
+write /tmp/file:
+  test contents
 </commands>
 ```
 

@@ -7,7 +7,7 @@
     <meta name="description" content="Minimalist server configuration and task management.">
     
     
-    <link rel="preload" href="/fabula/assets/css/0.styles.22f05657.css" as="style"><link rel="preload" href="/fabula/assets/js/app.e69d40d9.js" as="script"><link rel="preload" href="/fabula/assets/js/6.635c0865.js" as="script"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.9c2e3e97.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/5.7b5987cb.js"><link rel="prefetch" href="/fabula/assets/js/7.16234a24.js"><link rel="prefetch" href="/fabula/assets/js/8.b9815d33.js"><link rel="prefetch" href="/fabula/assets/js/9.39ca1094.js">
+    <link rel="preload" href="/fabula/assets/css/0.styles.22f05657.css" as="style"><link rel="preload" href="/fabula/assets/js/app.9827d273.js" as="script"><link rel="preload" href="/fabula/assets/js/6.d2d326c7.js" as="script"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.9c2e3e97.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/5.7b5987cb.js"><link rel="prefetch" href="/fabula/assets/js/7.16234a24.js"><link rel="prefetch" href="/fabula/assets/js/8.b9815d33.js"><link rel="prefetch" href="/fabula/assets/js/9.39ca1094.js">
     <link rel="stylesheet" href="/fabula/assets/css/0.styles.22f05657.css">
   </head>
   <body>
@@ -53,9 +53,13 @@ which allows you to define an <strong>indented block of text</strong> (that gets
 <strong>automatically dedented</strong> when parsed) and append it to a file.</p> <p>Similarly, <code>local</code> <code>write</code> <code>...</code> would overwrite the contents of the
 file, instead of simply appending to it. Both <code>append</code> and <code>write</code> are special
 commands provided by <strong>Fabula</strong>.</p> <h2 id="prepend"><a href="#prepend" aria-hidden="true" class="header-anchor">#</a> Prepend</h2> <p>You can append a command within the <code>&lt;commands&gt;</code> tag to automatically prepepend
-in every command within the block.</p> <div class="language-xml extra-class"><pre class="language-xml"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>commands</span> <span class="token attr-name">local</span> <span class="token attr-name">sudo</span><span class="token punctuation">&gt;</span></span>
+it every command within the block. Note that <code>sudo</code> is never prepended to
+<strong>special</strong> or <strong>custom</strong> commands, because those run under the same permission
+as the <strong>Fabula</strong> task is running on.</p> <div class="language-xml extra-class"><pre class="language-xml"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>commands</span> <span class="token attr-name">local</span> <span class="token attr-name">sudo</span><span class="token punctuation">&gt;</span></span>
 apt update -y
 apt install nginx -y
+write /tmp/file:
+  test contents
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>commands</span><span class="token punctuation">&gt;</span></span>
 </code></pre></div><p>Would be interpreted as:</p> <div class="language-xml extra-class"><pre class="language-xml"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>commands</span><span class="token punctuation">&gt;</span></span>
 local sudo apt update -y
@@ -104,6 +108,6 @@ as <code>strings.$id</code>, which in this case, is referenced internally by the
         </a>
         →
       </span></p></div> </div> <!----></div></div>
-    <script src="/fabula/assets/js/app.e69d40d9.js" defer></script><script src="/fabula/assets/js/6.635c0865.js" defer></script>
+    <script src="/fabula/assets/js/app.9827d273.js" defer></script><script src="/fabula/assets/js/6.d2d326c7.js" defer></script>
   </body>
 </html>
