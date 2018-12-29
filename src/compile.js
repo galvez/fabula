@@ -54,7 +54,7 @@ compile.loadComponent = function (source) {
     switch (element[0]) {
       case 'fabula':
         if (element.length > 1) {
-          fabula.push(`${element.slice(1).join(' ')} ${line}`)  
+          fabula.push(`${element.slice(1).join(' ')} ${line}`)
         } else {
           fabula.push(line)
         }
