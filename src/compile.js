@@ -34,8 +34,8 @@ compile.loadComponent = function (source) {
   let string = {}
 
   for (const line of source) {
-    // eslint-disable-next-line no-cond-assign
-    if (match = line.match(/^\s*<(?![/%])([^>]+)>/)) {
+    // eslint-disable-next-line
+    if (match = line.match(/^\s*<([^\/%][^>]+)>/)) {
       element = match[1].split(/\s+/g)
       // eslint-disable-next-line no-cond-assign
       if (match = match[1].match(/^string\s+id="([^"]+)"/)) {
@@ -55,14 +55,14 @@ compile.loadComponent = function (source) {
     }
     switch (element[0]) {
       case 'fabula':
-        if (element.length > 1) {
-          fabula.push(`${element.slice(1).join(' ')} ${line}`)
-        } else {
-          fabula.push(line)
-        }
+        fabula.push(line)
         break
       case 'commands':
-        script.push(line)
+        if (element.length > 1) {
+          script.push(`${element.slice(1).join(' ')} ${line}`)
+        } else {
+          script.push(line)
+        }
         break
       case 'string':
         string.lines.push(line)
@@ -168,7 +168,7 @@ function compileComponent(name, source, settings) {
 export function compile(name, source, settings, env = {}) {
   // If <fabula> or at least <commands> is detected,
   // process as a component and return
-  if (source.match(/^\s*<(?:(?:fabula)|(commands))>/g)) {
+  if (source.match(/^\s*<(?:(?:fabula)|(commands))[^>]*>/g)) {
     return compileComponent(name, source, settings)
   }
 

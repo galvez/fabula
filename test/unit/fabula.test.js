@@ -11,6 +11,8 @@ describe('test preprocessor syntax', () => {
   beforeAll(() => {
     results.simple = compileForTest(fixture`simple`)
     results.advanced = compileForTest(fixture`advanced`)
+    results.prepend = compileForTest(fixture`prepend`)
+    console.log(results.prepend)
   })
 
   test('cd +', () => {
@@ -78,5 +80,14 @@ describe('test preprocessor syntax', () => {
     expect(results.advanced[8].params.cmd).toBe(
       'gcloud container clusters create my-cluster --machine-type=n1-standard-2 --zone=southamerica-east1-a --num-nodes=4'
     )
+  })
+
+  test('prepend local sudo', () => {
+    expect(results.prepend[0].local).toBe(true)
+    expect(results.prepend[0].source[0]).toBe('local sudo touch /usr/bin/sudotest')
+    expect(results.prepend[0].params.cmd).toBe('sudo touch /usr/bin/sudotest')
+    expect(results.prepend[1].local).toBe(true)
+    expect(results.prepend[1].source[0]).toBe('local sudo service restart nginx')
+    expect(results.prepend[1].params.cmd).toBe('sudo service restart nginx')
   })
 })

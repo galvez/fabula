@@ -1,0 +1,4 @@
+<commands local sudo>
+touch /usr/bin/sudotest
+service restart nginx
+</commands>
