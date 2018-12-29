@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/12291/50539441-742aa680-0b67-11e9-9965-dfed5476915a.png">
+<img src="https://user-images.githubusercontent.com/12291/50539499-688baf80-0b68-11e9-9eb9-da8f85722ce7.png">
 
 <p align="center">
   <h1>Fabula 
