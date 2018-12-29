@@ -6,7 +6,7 @@ export default class Command {
     this.params = {}
     this._env = env
     this.argv = line.split(/\s+/)
-    this.local = this.argv[0] === 'local') {
+    this.local = this.argv[0] === 'local'
     this.source = [line]
     this.firstLine = true
   }
