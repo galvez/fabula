@@ -7,6 +7,11 @@ npm install fabula -g
 yarn global add fabula
 ```
 
+## Highlighting
+
+As new and experimental as **Fabula** is, there's no code editor or IDE plugin available providing specialized syntax highlighting. For the moment, just set
+your editor's syntax settings to **XML** when editing **Fabula** files.
+
 ## Disclaimer
 
 **Fabula** is currently in **beta phase**, that is to say, we're still testing

@@ -66,6 +66,27 @@ Similarly, `local` `write` `...` would overwrite the contents of the
 file, instead of simply appending to it. Both `append` and `write` are special
 commands provided by **Fabula**.
 
+## Prepend
+
+You can append a command within the `<commands>` tag to automatically prepepend 
+in every command within the block.
+
+```xml
+<commands local sudo>
+apt update -y
+apt install nginx -y
+</commands>
+```
+
+Would be interpreted as:
+
+```xml
+<commands>
+local sudo apt update -y
+local sudo apt install nginx -y
+</commands>
+```
+
 ## Strings
 
 As simple as these blocks of inline text can be (way 

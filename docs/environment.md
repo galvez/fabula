@@ -1,7 +1,6 @@
 # Environment
 
-Environment variables can bet set in various ways in **Fabula**'s configuration
-file and also in individual **Fabula** task components.
+Environment variables can bet set in various ways.
 
 ## Global
 
@@ -11,14 +10,12 @@ assign keys to the `env` object in **Fabula**'s configuration file:
 ```js
 export default {
   env: {
-    local: {
-      FOOBAR: 'foobar'
-    }
+    FOOBAR: 'foobar'
   }
 }
 ```
 
-Note, however, that he keys `local` and `ssh` are reserved.
+Note, however, that the keys `local` and `ssh` are reserved.
 
 ## Local
 
@@ -81,6 +78,7 @@ export default {
     FOOBAR: 'foobar'
   }
 }
+</fabula>
 ```
 
 Environment variables set in a **Fabula** component are only used for the

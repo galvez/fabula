@@ -67,7 +67,17 @@ local write /path/to/file:
 
 ## Put
 
-Copies file in path from the local machine to path on the remote server.
+Copies file at path on the remote server to path at the local machine.
+
+> Availability: `remote`
+
+```sh
+put /path/to/local/file /path/on/remote/server
+```
+
+## Put
+
+Copies file at path from the local machine to path at the remote server.
 
 > Availability: `remote`
 
