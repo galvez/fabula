@@ -1,6 +1,9 @@
 <fabula>
 module.exports = {
   default: {
+    env: {
+      COMPONENT_VAR: 'COMPONENT_VAR'
+    },
     branch: 'my-branch',
     someFlag: true
   }

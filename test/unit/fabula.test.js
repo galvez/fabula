@@ -102,8 +102,10 @@ describe('test preprocessor', () => {
 
   test('global environment variables', () => {
     expect(results.simple[0].local).toBe(false)
-    expect(Object.keys(results.simple[0].env)).toMatchObject(['GLOBAL_SSH_VAR', 'GLOBAL_VAR'])
+    expect(Object.keys(results.simple[0].env)).toMatchObject(['GLOBAL_SSH_VAR', 'GLOBAL_VAR', 'COMPONENT_VAR'])
     expect(results.simple[1].local).toBe(true)
-    expect(Object.keys(results.simple[1].env)).toMatchObject(['GLOBAL_LOCAL_VAR', 'GLOBAL_VAR'])
+    expect(Object.keys(results.simple[1].env)).toMatchObject(['GLOBAL_LOCAL_VAR', 'GLOBAL_VAR', 'COMPONENT_VAR'])
+    expect(results.advanced[0].local).toBe(true)
+    expect(Object.keys(results.advanced[1].env)).toMatchObject(['GLOBAL_LOCAL_VAR', 'GLOBAL_VAR'])
   })
 })
