@@ -58,7 +58,12 @@ compile.loadComponent = function (source) {
         fabula.push(line)
         break
       case 'commands':
-        if (element.length > 1) {
+        if (element.length > 1 && !/^\s+/.test(line)) {
+          if (/:$/.test(line)) {
+            // Custom commands run under the same permission 
+            // **Fabula** is running on -- so sudo is never prepended
+            element = element.filter(a => a !== 'sudo')
+          }
           script.push(`${element.slice(1).join(' ')} ${line}`)
         } else {
           script.push(line)
@@ -69,6 +74,7 @@ compile.loadComponent = function (source) {
         break
     }
   }
+  console.log('script', script)
   return { fabula, script, strings }
 }
 

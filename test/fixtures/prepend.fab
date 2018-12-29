@@ -1,4 +1,6 @@
 <commands local sudo>
 touch /usr/bin/sudotest
 service restart nginx
+write /tmp/file:
+  test with prepend
 </commands>

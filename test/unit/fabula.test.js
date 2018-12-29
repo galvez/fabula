@@ -83,21 +83,18 @@ describe('test preprocessor', () => {
   })
 
   test('prepend local sudo', () => {
+    expect(results.prepend.length).toBe(3)
     expect(results.prepend[0].local).toBe(true)
     expect(results.prepend[0].source[0]).toBe('local sudo touch /usr/bin/sudotest')
     expect(results.prepend[0].params.cmd).toBe('sudo touch /usr/bin/sudotest')
     expect(results.prepend[1].local).toBe(true)
     expect(results.prepend[1].source[0]).toBe('local sudo service restart nginx')
     expect(results.prepend[1].params.cmd).toBe('sudo service restart nginx')
-  })
-
-  test('prepend local sudo', () => {
-    expect(results.prepend[0].local).toBe(true)
-    expect(results.prepend[0].source[0]).toBe('local sudo touch /usr/bin/sudotest')
-    expect(results.prepend[0].params.cmd).toBe('sudo touch /usr/bin/sudotest')
-    expect(results.prepend[1].local).toBe(true)
-    expect(results.prepend[1].source[0]).toBe('local sudo service restart nginx')
-    expect(results.prepend[1].params.cmd).toBe('sudo service restart nginx')
+    expect(results.prepend[2].local).toBe(true)
+    expect(results.prepend[2].source[0]).toBe('local write /tmp/file:')
+    expect(results.prepend[2].source[1]).toBe('  test with prepend')
+    expect(results.prepend[2].params.filePath).toBe('/tmp/file')
+    expect(results.prepend[2].params.fileContents).toBe('test with prepend')
   })
 
   test('global environment variables', () => {
