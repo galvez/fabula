@@ -1,6 +1,6 @@
 workflow "CI" {
   on = "push"
-  resolves = ["Install", "Audit", "Lint", "Test"]
+  resolves = ["Install", "Audit", "Lint"]
 }
 
 action "Install" {
@@ -21,5 +21,6 @@ action "Lint" {
 
 action "Test" {
   uses = "actions/npm@master"
+  needs = ["Install"]
   args = "test"
 }
