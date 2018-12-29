@@ -36,11 +36,11 @@ compile.loadComponent = function (source) {
   for (const line of source) {
     // eslint-disable-next-line no-cond-assign
     if (match = line.match(/^\s*<(?!\/)([^>]+)>/)) {
-      element = match[1]
+      element = match[1].split(/\s+/g)
       // eslint-disable-next-line no-cond-assign
-      if (match = element.match(/^string\s+id="([^"]+)"/)) {
+      if (match = match[1].match(/^string\s+id="([^"]+)"/)) {
         string = { id: match[1], lines: [] }
-        element = 'string'
+        element = ['string']
       }
       continue
     // eslint-disable-next-line no-cond-assign
@@ -51,9 +51,13 @@ compile.loadComponent = function (source) {
       element = null
       continue
     }
-    switch (element) {
+    switch (element[0]) {
       case 'fabula':
-        fabula.push(line)
+        if (element.length > 1) {
+          fabula.push(`${element.slice(1).join(' ')} ${line}`)  
+        } else {
+          fabula.push(line)
+        }
         break
       case 'commands':
         script.push(line)
