@@ -43,9 +43,40 @@ describe('test preprocessor syntax', () => {
     expect(results.simple[4].params.cmd).toBe('echo "foobarfobar" > foobar')
   })
 
-  test('advanced', () => {
-    console.log(results.advanced)
-    expect(results.advanced).not.toBe(undefined)
+  test('write /tmp/test: <block>', () => {
+    expect(results.advanced[2].local).toBe(false)
+    expect(results.advanced[2].source[0]).toBe('write /tmp/test:')
+    expect(results.advanced[2].source[1]).toBe('  goes into the file')
+    expect(results.advanced[2].params.filePath).toBe('/tmp/test')
+    expect(results.advanced[2].params.fileContents).toBe('goes into the file')
   })
 
+  test('write /tmp/file2 <ref>', () => {
+    expect(results.advanced[5].local).toBe(true)
+    expect(results.advanced[5].source[0]).toBe('local write /tmp/file2 files[1].contents')
+    expect(results.advanced[5].params.filePath).toBe('/tmp/file2')
+    expect(results.advanced[5].params.fileContents).toBe('Contents \' of file2')
+  })
+
+  test('local echo <string-with-newline> > /tmp/file1"', () => {
+    expect(results.advanced[6].local).toBe(true)
+    expect(results.advanced[6].source[0]).toBe(`local echo 'Contents \\nof file1' > /tmp/file1`)
+    expect(results.advanced[6].params.cmd).toBe(`echo 'Contents \\nof file1' > /tmp/file1`)
+  })
+
+  test('local echo <string-with-quote> > /tmp/file2"', () => {
+    expect(results.advanced[7].local).toBe(true)
+    expect(results.advanced[7].source[0]).toBe(`local echo 'Contents '"'"' of file2' > /tmp/file2`)
+    expect(results.advanced[7].params.cmd).toBe(`echo 'Contents '"'"' of file2' > /tmp/file2`)
+  })
+
+  test('gcloud container clusters create my-cluster <multline-options>', () => {
+    expect(results.advanced[8].local).toBe(false)
+    expect(results.advanced[8].source[0]).toBe(
+      'gcloud container clusters create my-cluster --machine-type=n1-standard-2 --zone=southamerica-east1-a --num-nodes=4'
+    )
+    expect(results.advanced[8].params.cmd).toBe(
+      'gcloud container clusters create my-cluster --machine-type=n1-standard-2 --zone=southamerica-east1-a --num-nodes=4'
+    )
+  })
 })

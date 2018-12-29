@@ -44,6 +44,7 @@ export default {
         return true
       }
     } else if (!/^\s+/.test(line)) {
+      this.params.fileContents = this.params.fileContents.replace(/\n$/g, '')
       return false
     } else {
       if (this.params.fileContents.length === 0) {

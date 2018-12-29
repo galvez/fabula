@@ -2439,14 +2439,14 @@ caniuse-api@^1.5.2:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000923"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000923.tgz#0724b5fbd7f9fe424060b788b11e6b8d77102deb"
-  integrity sha512-PlFnZSgXcf/Z1kuNhTRq9vV4FnzizSDHpcgs5b/EY9sN60F3aBpkJwvEsHNeACHZi56/L8Cm3VsONdY1bOus/g==
+  version "1.0.30000925"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000925.tgz#6acaffc511dfe5e88e612409c4cae45cb5fcb394"
+  integrity sha512-jOgMZuEmPLaWhw1NQI9mjFiVvGHE+j5/ByXUIugG0yw2bIdoHD9Am1hOi6poaArWYXbxJn3cofRawq3ZxS/sng==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000864:
-  version "1.0.30000923"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000923.tgz#148f9bda508024b5ce957b463ae2e8302b451bb2"
-  integrity sha512-j5ur7eeluOFjjPUkydtXP4KFAsmH3XaQNch5tvWSO+dLHYt5PE+VgJZLWtbVOodfWij6m6zas28T4gB/cLYq1w==
+  version "1.0.30000925"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000925.tgz#f1a3b9aae2a83071b1eccfa39959d72440409b08"
+  integrity sha512-zcYupoUxtW46rOikuDF7vfL9N1Qe9ZuUBTz3n3q8fFsoJIs/h9UN6Vg/0QpjsmvImXw9mVc3g+ZBfqvUz/iALA==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -3702,9 +3702,9 @@ eslint-visitor-keys@^1.0.0:
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
 eslint@^5.9.0:
-  version "5.11.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.11.0.tgz#51a0e70f137a425fe044cd48273b96f28a774b1f"
-  integrity sha512-gbEg0ttToZPkZUv2yYjpipxuYrv/9aSSmgM4V6GkiO3u04QosHYBtduUCqLEulEg3YvNDAkk3OWzyQJ/heZ3Nw==
+  version "5.11.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.11.1.tgz#8deda83db9f354bf9d3f53f9677af7e0e13eadda"
+  integrity sha512-gOKhM8JwlFOc2acbOrkYR05NW8M6DCMSvfcJiBB5NDxRE1gv8kbvxKaC9u69e6ZGEMWXcswA/7eKR229cEIpvg==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.5.3"
@@ -5950,9 +5950,9 @@ loader-utils@^0.2.16:
     object-assign "^4.0.1"
 
 loader-utils@^1.0.2, loader-utils@^1.1.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.2.1.tgz#64bbbac69aa5840d03754ba676a963dec568e844"
-  integrity sha512-3Zhx4qDqBQ9U8udWB3RMJ29nLu5a3ObNOSzk87woPvge01pi0wABowgv7F79Z4mL0DGtHRi/oOndT34EVhInoQ==
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.2.3.tgz#1ff5dc6911c9f0a062531a4c04b609406108c2c7"
+  integrity sha512-fkpz8ejdnEMG3s37wGL07iSBDg99O9D5yflE9RGNH3hRdx9SOwYfnGYdZOUIZitN8E+E2vkq3MUMYMvPYl5ZZA==
   dependencies:
     big.js "^5.2.2"
     emojis-list "^2.0.0"
@@ -6473,10 +6473,15 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
 
-mute-stream@0.0.7, mute-stream@~0.0.4:
+mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
+
+mute-stream@~0.0.4:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
+  integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
 mz@^2.6.0:
   version "2.7.0"
@@ -8254,9 +8259,9 @@ semver-diff@^2.0.0:
   integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
 
 serialize-javascript@^1.3.0, serialize-javascript@^1.4.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.6.0.tgz#b30ce5ddd6517f2c445e129ff5834a399fb5861e"
-  integrity sha512-AQxrNqu4EXWt03dJdgKXI+Au9+pvEuM5+Nk5g6+TmuxMCkEL03VhZ31HM+VKeaaZbFpDHaoSruiHq4PW9AIrOQ==
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.6.1.tgz#4d1f697ec49429a847ca6f442a2a755126c4d879"
+  integrity sha512-A5MOagrPFga4YaKQSWHryl7AXvbQkEqpw4NNYMTNYUNV51bA8ABHgYFpqKx+YFFrw59xMV1qGH1R4AgoNIVgCw==
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
@@ -8831,9 +8836,9 @@ term-size@^1.2.0:
     execa "^0.7.0"
 
 terser-webpack-plugin@^1.1.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-1.2.0.tgz#24697213f2128009080f39f081c18cb2221d91ff"
-  integrity sha512-QW7RACLS89RalHtLDb0s8+Iqcs/IAEw1rnVrV+mS7Gx1kgPG8o1g33JhAGDgc/CQ84hLsTW5WrAMdVysh692yg==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-1.2.1.tgz#7545da9ae5f4f9ae6a0ac961eb46f5e7c845cc26"
+  integrity sha512-GGSt+gbT0oKcMDmPx4SRSfJPE1XaN3kQRWG4ghxKQw9cn5G9x6aCKSsgYdvyM0na9NJ4Drv0RG6jbBByZ5CMjw==
   dependencies:
     cacache "^11.0.2"
     find-cache-dir "^2.0.0"
