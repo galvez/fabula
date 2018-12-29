@@ -88,7 +88,7 @@ put /path/to/local/file /path/on/remote/server
 ## Custom
 
 To make the bash script parser as flexible and fault-tolerant as possible, 
-`fabula` introduces a simple, straight-forward compiler with an API for writing 
+**Fabula** introduces a simple, straight-forward compiler with an API for writing 
 command handlers. The special `put` built-in command for instance, is 
 defined under `src/commands/put.js`:
 
