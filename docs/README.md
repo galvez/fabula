@@ -1,3 +1,5 @@
+![Fabula][https://user-images.githubusercontent.com/12291/50539441-742aa680-0b67-11e9-9965-dfed5476915a.png]
+
 # Introduction
 
 At its core, **Fabula** is a simple Bash script preprocessor and runner. It lets
