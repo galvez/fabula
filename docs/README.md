@@ -1,4 +1,4 @@
-![Fabula][https://user-images.githubusercontent.com/12291/50539530-e780e800-0b68-11e9-9453-e066015d0c2a.png]
+![Fabula](https://user-images.githubusercontent.com/12291/50539530-e780e800-0b68-11e9-9453-e066015d0c2a.png)
 
 # Introduction
 
