@@ -21,5 +21,6 @@ action "Lint" {
 
 action "Test" {
   uses = "actions/npm@master"
+  needs = ["Install"]
   args = "test"
 }
