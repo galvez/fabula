@@ -9,7 +9,7 @@ export default class Command {
     if (this.argv[0] === 'local') {
       this.local = true
     }
-    this.source = []
+    this.source = [line]
     this.firstLine = true
   }
   get env() {
@@ -27,14 +27,15 @@ export default class Command {
   }
   handleLine(line) {
     if (!this.cmd.line) {
-      this.source.push(line)
       if (this.firstLine) {
         this.firstLine = false
       }
       return false
     }
     const continueCommand = this.cmd.line.call(this, line)
-    this.source.push(line)
+    if (continueCommand) {
+      this.source.push(line)
+    }
     if (this.firstLine) {
       this.firstLine = false
     }

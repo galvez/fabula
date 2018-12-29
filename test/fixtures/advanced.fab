@@ -4,10 +4,10 @@ module.exports = {
     k8s: {
       clusterName: 'my-cluster'
     },
-    files: {
-      file1: 'Contents of file1',
-      file2: 'Contents of file2'
-    }
+    files: [
+      { name: 'file1', contents: 'Contents \nof file1' },
+      { name: 'file2', contents: 'Contents \' of file2' }
+    ]
   }
 }
 </fabula>
@@ -22,15 +22,15 @@ sudo service nginx restart
 
 # Write will resolve its third argument
 # to the settings object (settings.file1 etc)
-<% for (const file in files) { %>
-local write /tmp/<%= file %> <%= file %>
+<% for (const file of files) { %>
+local write /tmp/<%= file.name %> <%= file.name %>
 <% } %>
 
 # quote() prepares a string for the shell,
 # wrapping it in a single quote if needed and
 # escaping all unsafe characters
-<% for (const file of files) { %>
-local echo <%= quote(file1) %> > /tmp/<%= file %>
+<% for (const file of  files) { %>
+local echo <%= quote(file.contents) %> > /tmp/<%= file.name %>
 <% } %>
 
 # Lines ending in \ continue into the next line (like Bash)

@@ -10,6 +10,7 @@ describe('test preprocessor syntax', () => {
 
   beforeAll(() => {
     results.simple = compileForTest(fixture`simple`)
+    results.advanced = compileForTest(fixture`advanced`)
   })
 
   test('cd +', () => {
@@ -42,11 +43,9 @@ describe('test preprocessor syntax', () => {
     expect(results.simple[4].params.cmd).toBe('echo "foobarfobar" > foobar')
   })
 
-  // test('advanced', () => {
-  //   const testPath = resolve(__dirname, '..', 'fixtures', 'advanced')
-  //   const result = compileForTest(testPath)
-  //   console.log(result)
-  //   expect(result).not.toBe(undefined)
-  // })
+  test('advanced', () => {
+    console.log(results.advanced)
+    expect(results.advanced).not.toBe(undefined)
+  })
 
 })
