@@ -1,6 +1,22 @@
-workflow "CI/Test" {
+workflow "CI" {
   on = "push"
-  resolves = ["Test"]
+  resolves = ["Install", "Audit", "Lint", "Test"]
+}
+
+action "Install" {
+  uses = "nuxt/actions-yarn@master"
+  args = "install --frozen-lockfile --non-interactive"
+}
+
+action "Audit" {
+  uses = "nuxt/actions-yarn@master"
+  args = "audit"
+}
+
+action "Lint" {
+  uses = "nuxt/actions-yarn@master"
+  needs = ["Install"]
+  args = "lint"
 }
 
 action "Test" {
