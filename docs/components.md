@@ -88,6 +88,8 @@ Would be interpreted as:
 <commands>
 local sudo apt update -y
 local sudo apt install nginx -y
+local write /tmp/file:
+  test contents
 </commands>
 ```
 
