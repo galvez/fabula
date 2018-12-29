@@ -5,17 +5,9 @@ export default class Command {
     this.name = this.cmd.name
     this.params = {}
     this._env = env
-    this.argv = this._expandTildes(line.split(/\s+/))
+    this.argv = line.split(/\s+/)
     this.source = []
     this.firstLine = true
-  }
-  _expandTildes(argv) {
-    return argv.map((arg) => {
-      if (arg.startsWith('~')) {
-        return `${process.env.HOME}${arg.slice(1)}`
-      }
-      return arg
-    })
   }
   get env() {
     if (this.local) {
