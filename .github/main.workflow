@@ -1,6 +1,6 @@
 workflow "CI" {
   on = "push"
-  resolves = ["Install", "Audit", "Lint"]
+  resolves = ["Install", "Audit", "Lint", "Test"]
 }
 
 action "Install" {
