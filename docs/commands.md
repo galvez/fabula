@@ -232,26 +232,26 @@ text (`patterns.block`) and other for string references (`patterns.string`).
   line(line) {
     if (this.firstLine) {
       this.params.filePath = this.match[1]
-      if (this.block) {
-        this.params.fileLines = []
-        return true
-      } else if (this.string) {
+      this.params.fileContents = ''
+      if (this.string) {
         const settingsKey = this.match[2]
         // eslint-disable-next-line no-eval
-        this.params.fileBody = eval(`this.settings.${settingsKey}`)
+        this.params.fileContents = eval(`this.settings.${settingsKey}`)
         return false
+      } else {
+        return true
       }
-      return true
     } else if (!/^\s+/.test(line)) {
+      this.params.fileContents = this.params.fileContents.replace(/\n$/g, '')
       return false
     } else {
-      if (this.params.fileLines.length === 0) {
+      if (this.params.fileContents.length === 0) {
         const match = line.match(/^\s+/)
         if (match) {
           this.dedent = match[0].length
         }
       }
-      this.params.fileLines.push(line.slice(this.dedent))
+      this.params.fileContents += `${line.slice(this.dedent)}\n`
       return true
     }
   },
@@ -259,26 +259,19 @@ text (`patterns.block`) and other for string references (`patterns.string`).
 
 The magic happens in `line()`, which will continue parsing the command in 
 subsequent lines if it's a block of text, or use the provided string reference.
-For convenience, we store the provided text in either `fileLines` or `fileBody`,
-which are then retrieved by `command()`.
+We store the provided text in `fileContents`, which is then retrieved by `command()`.
 
 ```js
   command(conn) {
     const filePath = this.params.filePath
+    const fileContents = this.params.fileContents
     if (this.local) {
-      const fileContents = this.string
-        ? this.params.fileBody.split('\n')
-        : this.params.fileLines
       const cmd = ({ write: localWrite, append: localAppend })[this.op]
       return cmd(filePath, fileContents)
     } else {
-      const fileContents = this.string
-        ? this.params.fileBody
-        : this.params.fileLines.join('\n')
       return ({ write, append })[this.op](conn, filePath, fileContents)
     }
   }
-}
 ```
 
 As **Fabula** evolves, the code for this command and underlying functions it 
