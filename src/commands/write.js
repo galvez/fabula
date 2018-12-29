@@ -34,41 +34,35 @@ export default {
   line(line) {
     if (this.firstLine) {
       this.params.filePath = this.match[1]
-      if (this.block) {
-        this.params.fileLines = []
-        return true
-      } else if (this.string) {
+      this.params.fileContents = ''
+      if (this.string) {
         const settingsKey = this.match[2]
         // eslint-disable-next-line no-eval
-        this.params.fileBody = eval(`this.settings.${settingsKey}`)
+        this.params.fileContents = eval(`this.settings.${settingsKey}`)
         return false
+      } else {
+        return true
       }
-      return true
     } else if (!/^\s+/.test(line)) {
       return false
     } else {
-      if (this.params.fileLines.length === 0) {
+      if (this.params.fileContents.length === 0) {
         const match = line.match(/^\s+/)
         if (match) {
           this.dedent = match[0].length
         }
       }
-      this.params.fileLines.push(line.slice(this.dedent))
+      this.params.fileContents += `${line.slice(this.dedent)}\n`
       return true
     }
   },
   command(conn) {
     const filePath = this.params.filePath
+    const fileContents = this.params.fileContents
     if (this.local) {
-      const fileContents = this.string
-        ? this.params.fileBody.split('\n')
-        : this.params.fileLines
       const cmd = ({ write: localWrite, append: localAppend })[this.op]
       return cmd(filePath, fileContents)
     } else {
-      const fileContents = this.string
-        ? this.params.fileBody
-        : this.params.fileLines.join('\n')
       return ({ write, append })[this.op](conn, filePath, fileContents)
     }
   }

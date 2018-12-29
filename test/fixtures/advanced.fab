@@ -20,10 +20,10 @@ write /tmp/test:
 
 sudo service nginx restart
 
-# Write will resolve its third argument
-# to the settings object (settings.file1 etc)
-<% for (const file of files) { %>
-local write /tmp/<%= file.name %> <%= file.name %>
+# write will resolve its third argument
+# to the settings object (settings.files[index] etc)
+<% for (const file in files) { %>
+local write /tmp/<%= files[file].name %> files[<%= file %>].contents
 <% } %>
 
 # quote() prepares a string for the shell,

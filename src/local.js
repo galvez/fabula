@@ -1,3 +1,4 @@
+import { writeFileSync, appendFileSync } from 'fs'
 import { promisify } from 'util'
 import { exec } from 'child_process'
 import { quote } from './utils'
@@ -9,14 +10,9 @@ export function execLocal(cmd, env = {}) {
 }
 
 export async function localWrite(filePath, fileContents) {
-  await execLocal(`echo -e ${quote(fileContents[0])} > ${filePath}`)
-  for (const line of fileContents.slice(1)) {
-    await execLocal(`echo -e ${quote(line)} >> ${filePath}`)
-  }
+  writeFileSync(filePath, fileContents)
 }
 
 export async function localAppend(filePath, fileContents) {
-  for (const line of fileContents) {
-    await execLocal(`echo -e ${quote(line)} >> ${filePath}`)
-  }
+  appendFileSync(filePath, fileContents)
 }

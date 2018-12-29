@@ -33,7 +33,7 @@ export default class Command {
       return false
     }
     const continueCommand = this.cmd.line.call(this, line)
-    if (continueCommand) {
+    if (!this.firstLine && continueCommand) {
       this.source.push(line)
     }
     if (this.firstLine) {
