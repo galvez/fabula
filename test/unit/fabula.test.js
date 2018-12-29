@@ -1,14 +1,20 @@
 
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
-import { runScriptTest } from '../util'
+import { compileForTest } from '../compile'
 
 describe('test preprocessor syntax', () => {
 
   test('simple', () => {
+    const testPath = resolve(__dirname, '..', 'fixtures', 'simple')
+    const result = compileForTest(testPath)
+    console.log(result)
+    expect(result).not.toBe(undefined)
+  })
 
-    const testPath = resolve(__dirname, '..', 'fixtures', 'syntax', 'simple')
-    const result = runScriptTest(testPath)
+  test('advanced', () => {
+    const testPath = resolve(__dirname, '..', 'fixtures', 'advanced')
+    const result = compileForTest(testPath)
     console.log(result)
     expect(result).not.toBe(undefined)
   })
