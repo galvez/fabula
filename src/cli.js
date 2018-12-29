@@ -9,19 +9,23 @@ function resolvePath(path) {
   return resolve(process.cwd(), ...path.split('/'))
 }
 
-function loadConfig() {
-  let rcFile
-  for (rcFile of ['fabula.js', '.fabularc.js', '.fabularc']) {
-    if (existsSync(resolvePath(rcFile))) {
-      break
+export function loadConfig(rcFile = null) {
+  let config
+  if (rcFile === null) {
+    for (rcFile of ['fabula.js', '.fabularc.js', '.fabularc']) {
+      if (existsSync(resolvePath(rcFile))) {
+        config = require(resolvePath(rcFile))
+      }
+      rcFile = null
     }
-    rcFile = null
+  } else {
+    config = require(rcFile)
   }
   if (rcFile === null) {
     consola.fatal('Fabula configuration file not found.')
     process.exit()
   }
-  return require(resolvePath(rcFile)).default
+  return config.default || config
 }
 
 function showHelpAndExit() {

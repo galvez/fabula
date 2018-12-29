@@ -1,6 +1,7 @@
 import { parse } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import { compile } from '../src/compile'
+export { loadConfig } from '../src/cli'
 
 export function compileForTest(source, config) {
   const name = parse(source).name
@@ -8,12 +9,5 @@ export function compileForTest(source, config) {
     source += '.fab'
   }
   source = readFileSync(source).toString()
-  const commands = compile(name, source, {})
-  return commands.map((cmd) => {
-    return {
-      local: cmd.local,
-      source: cmd.source,
-      params: cmd.params
-    }
-  })
+  return compile(name, source, config)
 }

@@ -1,21 +1,21 @@
 
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
-import { compileForTest } from '../compile'
+import { loadConfig, compileForTest } from '../util'
 
 const results = {}
 const fixture = (f) => resolve(__dirname, '..', 'fixtures', f[0])
 
-describe('test preprocessor syntax', () => {
+describe('test preprocessor', () => {
 
   beforeAll(() => {
-    results.simple = compileForTest(fixture`simple`)
-    results.advanced = compileForTest(fixture`advanced`)
-    results.prepend = compileForTest(fixture`prepend`)
-    console.log(results.prepend)
+    const config = loadConfig(resolve(__dirname, '..', 'fixtures', 'fabula.js'))
+    results.simple = compileForTest(fixture`simple`, config)
+    results.advanced = compileForTest(fixture`advanced`, config)
+    results.prepend = compileForTest(fixture`prepend`, config)
   })
 
-  test('cd +', () => {
+  test('cd ~', () => {
     expect(results.simple[0].local).not.toBe(true)
     expect(results.simple[0].source[0]).toBe('cd ~')
     expect(results.simple[0].params.cmd).toBe('cd ~')
@@ -89,5 +89,21 @@ describe('test preprocessor syntax', () => {
     expect(results.prepend[1].local).toBe(true)
     expect(results.prepend[1].source[0]).toBe('local sudo service restart nginx')
     expect(results.prepend[1].params.cmd).toBe('sudo service restart nginx')
+  })
+
+  test('prepend local sudo', () => {
+    expect(results.prepend[0].local).toBe(true)
+    expect(results.prepend[0].source[0]).toBe('local sudo touch /usr/bin/sudotest')
+    expect(results.prepend[0].params.cmd).toBe('sudo touch /usr/bin/sudotest')
+    expect(results.prepend[1].local).toBe(true)
+    expect(results.prepend[1].source[0]).toBe('local sudo service restart nginx')
+    expect(results.prepend[1].params.cmd).toBe('sudo service restart nginx')
+  })
+
+  test('global environment variables', () => {
+    expect(results.simple[0].local).toBe(false)
+    expect(Object.keys(results.simple[0].env)).toMatchObject(['GLOBAL_SSH_VAR', 'GLOBAL_VAR'])
+    expect(results.simple[1].local).toBe(true)
+    expect(Object.keys(results.simple[1].env)).toMatchObject(['GLOBAL_LOCAL_VAR', 'GLOBAL_VAR'])
   })
 })
