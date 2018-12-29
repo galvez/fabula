@@ -1,5 +1,7 @@
+<img src="https://user-images.githubusercontent.com/12291/50539441-742aa680-0b67-11e9-9965-dfed5476915a.png">
+
 <p align="center">
-  <h1>⚙ Fabula 
+  <h1>Fabula 
   <a href="http://npmjs.com/package/fabula"><img src="https://badge.fury.io/js/fabula.svg?0.1.2"></a>
   <a href="https://github.com/nuxt/fabula/actions"><img src="https://img.shields.io/badge/build-passing-47c11f.svg"></a></h1>
   <span>Minimalist server configuration and task management.</span>
