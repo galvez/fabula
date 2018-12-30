@@ -24,6 +24,7 @@ Next we can add a `local` `append` command to the `<commands>` section:
 ```xml
 <fabula>
 export default {
+  fail: false,
   host: 'server',
   hostname: '1.2.3.4',
   username: 'ubuntu',
@@ -50,6 +51,22 @@ Save as `add-to-ssh.fab` and run with:
 ```sh
 fabula add-to-ssh
 ```
+
+## Settings
+
+The `<fabula>` block should contain an **ES module**. The 
+module can either export an object containing all settings, or an 
+optionally async function that returns such an object.
+
+<fabula>
+export default async (fabula) => ({
+  fail: false,
+  host: 'server',
+  hostname: '1.2.3.4',
+  username: await fabula.prompt('Username:'),
+  privateKey: await fabula.prompt('Private key:'),
+})
+</fabula>
 
 ## Syntax
 
@@ -147,3 +164,36 @@ You can force dedention of text to the number of total white spaces in the first
 
 Learn more about commands and custom commands [in the next section](/commands.html).
 
+## Chaining
+
+Since a **Fabula** component may itself run other components, you may want to 
+pass the settings and context of the parent component down to its children.
+
+Use a dot as second parameter to `fabula` to do so:
+
+```xml
+<commands>
+fabula . tasks/another-task
+fabula . tasks/some-other-task
+</commands>
+```
+
+When `tasks/another-task` runs, all settings from the caller component will be
+merged with its own settings -- the latter having precedence. 
+
+Alternatively, you may also use the **Fabula** component's settings function, 
+as discussed earlier in this section. The default handler will run before any commands and also allow you to **access its parent settings and current 
+execution state** through its **second and third** arguments:
+
+```xml
+<fabula>
+export default (fabula, settings, commands) => {
+  consola.info('Commands ran so far:', state.commands.length)
+  return { ...settings, newSetting: 'foobar' }
+}
+</fabula>
+```
+
+The `commands` parameter is an Array with the result objects of every command
+executed up to that point. Each result object contains `code`, `stdout`, 
+`stderr` and `cmd` (the **Fabula** object representing the parsed command).

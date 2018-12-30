@@ -3,8 +3,8 @@
 To install, use [`npm`][npm] or [`yarn`][yarn]:
 
 ```sh
-npm install fabula -g
-yarn global add fabula
+$ npm install fabula -g
+$ yarn global add fabula
 ```
 
 ## Highlighting

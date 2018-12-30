@@ -44,8 +44,10 @@ function sidebarLinks (locale) {
         '',
         'installation',
         'environment',
+        'logging',
         'components',
         'commands',
+        'failure',
         'authentication'
       ].map(child => localePageTitle(child))
     }
