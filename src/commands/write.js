@@ -34,17 +34,16 @@ export default {
   line(line) {
     if (this.firstLine) {
       this.params.filePath = this.match[1]
-      this.params.fileContents = ''
+      this.params.fileContents = []
       if (this.string) {
         const settingsKey = this.match[2]
         // eslint-disable-next-line no-eval
-        this.params.fileContents = eval(`this.settings.${settingsKey}`)
+        this.params.fileContents = eval(`this.settings.${settingsKey}`).split(/\n/g)
         return false
       } else {
         return true
       }
     } else if (!/^\s+/.test(line)) {
-      this.params.fileContents = this.params.fileContents.replace(/\n$/g, '')
       return false
     } else {
       if (this.params.fileContents.length === 0) {
@@ -53,13 +52,13 @@ export default {
           this.dedent = match[0].length
         }
       }
-      this.params.fileContents += `${line.slice(this.dedent)}\n`
+      this.params.fileContents.push(line.slice(this.dedent))
       return true
     }
   },
   command(conn) {
     const filePath = this.params.filePath
-    const fileContents = this.params.fileContents
+    const fileContents = this.params.fileContents.join('\n')
     if (this.local) {
       const cmd = ({ write: localWrite, append: localAppend })[this.op]
       return cmd(filePath, fileContents)

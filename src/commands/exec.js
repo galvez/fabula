@@ -2,6 +2,10 @@ import { exec } from '../ssh'
 import { execLocal } from '../local'
 
 export default {
+  prepend(prepend) {
+    // Don't filter sudo from prepend for exec
+    return prepend
+  },
   match(line) {
     if (this.local) {
       this.params.cmd = line.split(/^local\s+/)[1]
