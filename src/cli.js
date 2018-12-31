@@ -3,7 +3,7 @@ import { existsSync } from 'fs'
 import { resolve } from 'path'
 import consola from 'consola'
 import arg from 'arg'
-import { run } from './compile'
+import { run } from './run'
 
 function resolvePath(path) {
   return resolve(process.cwd(), ...path.split('/'))
@@ -15,6 +15,7 @@ export function loadConfig(rcFile = null) {
     for (rcFile of ['fabula.js', '.fabularc.js', '.fabularc']) {
       if (existsSync(resolvePath(rcFile))) {
         config = require(resolvePath(rcFile))
+        break
       }
       rcFile = null
     }
@@ -71,3 +72,7 @@ export default async function () {
     showHelpAndExit()
   }
 }
+
+process.on('unhandledRejection', (err) => {
+  consola.error(err)
+})
