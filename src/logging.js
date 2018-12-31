@@ -1,3 +1,4 @@
+import consola from 'consola'
 import { createWriteStream } from 'fs'
 
 class Reporter {
@@ -9,46 +10,55 @@ class Reporter {
   }
 }
 
-createLogger.loggers = {
-  $servers: {}
-}
-
-createLogger.addLogger = function(logger, path) {
-  const stream = createWriteStream(path, {flags: 'a'})
-  createLogger.loggers[logger] = consola.create(({
-    reporters: [new Reporter(stream)]
-  }))
-}
-
-createLogger.addServerLogger = function(server, path) {
-  const stream = createWriteStream(path, {flags: 'a'})
-  createLogger.loggers.$servers[server] = consola.create(({
-    reporters: [new Reporter(stream)]
-  }))
-}
-
-export function createLogger(config) {
-  const loggers = createLogger.loggers
-  if (!config.logs) {
-    return loggers
-  }
-  for (const logContext of ['global', 'local', 'ssh']) {
-    if (logContext in config.logs) {
-      createLogger.addLogger(logContext, config.logs[logContext])
+class Logger {
+  constructor(config) {
+    this.context = []
+    this.loggers = {
+      $servers: {}
+    }
+    if (!config.logs) {
+      return loggers
+    }
+    for (const logContext of ['global', 'local', 'ssh']) {
+      if (logContext in config.logs) {
+        this.addLogger(logContext, config.logs[logContext])
+      }
     }
   }
+  setContext (...context) {
+    this.context = context
+  }
+  addLogger (logger, path) {
+    const stream = createWriteStream(path, {flags: 'a'})
+    this.loggers[logger] = consola.create(({
+      reporters: [new Reporter(stream)]
+    }))
+  }
+  addServerLogger(server, path) {
+    const stream = createWriteStream(path, {flags: 'a'})
+    this.loggers.$servers[server] = consola.create(({
+      reporters: [new Reporter(stream)]
+    }))
+  }
+}
+
+export function createLogger (config) {
+  const logger = new Logger(config)
   return new Proxy({}, {
     get (_, prop) {
-      return (context, ...msg) => {
+      if (['addLogger', 'addServerLogger', 'setContext'].includes(prop)) {
+        return logger[prop].bind(logger)
+      }
+      return (...msg) => {
         // Log normally to stdout
         consola[prop](...msg)
-        for (const logContext of context) {
+        for (const logContext of logger.context) {
           // Global, Local, SSH contexts
-          if (logContext in loggers) {
-            loggers[logContext][prop](...msg)
+          if (logContext in logger.loggers) {
+            logger.loggers[logContext][prop](...msg)
           // Server contexts
-          } else if (logContext in loggers.$servers) {
-            loggers.$servers[logContext][prop](...msg)
+          } else if (logContext in logger.loggers.$servers) {
+            logger.loggers.$servers[logContext][prop](...msg)
           }
         }
       }
