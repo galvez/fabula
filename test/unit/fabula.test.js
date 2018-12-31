@@ -1,7 +1,7 @@
 
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
-import { loadConfig, compileForTest } from '../util'
+import { loadConfig, compileForTest, parseArgv } from '../util'
 
 const results = {}
 const fixture = (f) => resolve(__dirname, '..', 'fixtures', f[0])
@@ -13,6 +13,17 @@ describe('test preprocessor', () => {
     results.simple = compileForTest(fixture`simple`, config)
     results.advanced = compileForTest(fixture`advanced`, config)
     results.prepend = compileForTest(fixture`prepend`, config)
+  })
+
+  test('parseArgv test', () => {
+    expect(parseArgv(`echo -e "foobar foobar"`))
+      .toMatchObject([ 'echo', '-e', '"foobar foobar"'])
+    expect(parseArgv(`echo -e foobar foobar`))
+      .toMatchObject([ 'echo', '-e', 'foobar', 'foobar'])
+    expect(parseArgv(`echo -e 'foobar foobar' foobar`))
+      .toMatchObject([ 'echo', '-e', "'foobar foobar'", 'foobar'])
+    expect(parseArgv(`echo-e'foobarfoobar'foobar`))
+      .toMatchObject([ "echo-e'foobarfoobar'foobar"])
   })
 
   test('cd ~', () => {
@@ -50,14 +61,14 @@ describe('test preprocessor', () => {
     expect(results.advanced[2].source[0]).toBe('write /tmp/test:')
     expect(results.advanced[2].source[1]).toBe('  goes into the file')
     expect(results.advanced[2].params.filePath).toBe('/tmp/test')
-    expect(results.advanced[2].params.fileContents).toBe('goes into the file')
+    expect(results.advanced[2].params.fileContents).toMatchObject(['goes into the file'])
   })
 
   test('write /tmp/file2 <ref>', () => {
     expect(results.advanced[5].local).toBe(true)
     expect(results.advanced[5].source[0]).toBe('local write /tmp/file2 files[1].contents')
     expect(results.advanced[5].params.filePath).toBe('/tmp/file2')
-    expect(results.advanced[5].params.fileContents).toBe('Contents \' of file2')
+    expect(results.advanced[5].params.fileContents).toMatchObject(['Contents \' of file2'])
   })
 
   test('local echo <string-with-newline> > /tmp/file1"', () => {
@@ -94,7 +105,7 @@ describe('test preprocessor', () => {
     expect(results.prepend[2].source[0]).toBe('local write /tmp/file:')
     expect(results.prepend[2].source[1]).toBe('  test with prepend')
     expect(results.prepend[2].params.filePath).toBe('/tmp/file')
-    expect(results.prepend[2].params.fileContents).toBe('test with prepend')
+    expect(results.prepend[2].params.fileContents).toMatchObject(['test with prepend'])
   })
 
   test('global environment variables', () => {
