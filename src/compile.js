@@ -1,7 +1,5 @@
 
 import Module from 'module'
-import { readFileSync } from 'fs'
-import { parse } from 'path'
 
 import consola from 'consola'
 import template from 'lodash.template'
@@ -198,85 +196,4 @@ export function compile(name, source, settings, prepend, env = {}) {
   }
 
   return parsedCommands
-}
-
-export async function runLocalString(name, str, settings) {
-  const commands = compile(name, str, settings)
-  for (const command of commands) {
-    try {
-      if (!command.local) {
-        consola.info(`[FAIL]`, command.source[0])
-        consola.fatal('No servers specified to run this remote command.')
-        process.exit()
-      }
-      const response = await command.run()
-      if (response) {
-        if (response.stdout) {
-          for (const line of response.stdout.split(/\n/g).filter(Boolean)) {
-            consola.info('[local]', line.trim())
-          }
-        }
-        if (response.stderr) {
-          for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
-            consola.error('[local]', line.trim())
-          }
-        }
-      }
-      consola.info(`[local] [OK]`, command.source[0])
-    } catch (err) {
-      consola.info(`[local] [FAIL]`, command.source[0])
-      consola.fatal(err)
-      break
-    }
-  }
-}
-
-export async function runString(server, conn, name, str, settings) {
-  settings = {
-    ...settings,
-    $server: conn.settings
-  }
-  const commands = compile(name, str, settings)
-  for (const command of commands) {
-    try {
-      const response = await command.run(conn)
-      if (response) {
-        if (response.stdout) {
-          for (const line of response.stdout.split(/\n/g).filter(Boolean)) {
-            consola.info(`[${server}]`, line.trim())
-          }
-        }
-        if (response.stderr) {
-          for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
-            consola.error(`[${server}]`, line.trim())
-          }
-        }
-      }
-      consola.info(`[${server}] [OK]`, command.source[0])
-    } catch (err) {
-      consola.error(`[${server}] [FAIL]`, command.source[0])
-      consola.fatal(err)
-      break
-    }
-  }
-}
-
-export async function run(source, config, servers = []) {
-  const name = parse(source).name
-  source = readFileSync(source).toString()
-  const settings = { ...config }
-
-  let remoteServers = servers
-  if (servers.length === 0) {
-    await runLocalString(name, source, settings)
-    return
-  } else if (servers.length === 1 && servers[0] === 'all') {
-    remoteServers = Object.keys(config.ssh)
-  }
-
-  let conn
-  for (const server of remoteServers) {
-    conn = await getConnection(config.ssh[server])
-    await runString(server, conn, name, source, settings)
-  }
 }
