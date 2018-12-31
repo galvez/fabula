@@ -1,0 +1,6 @@
+# cd ~
+# write foo:
+#   this should be in ~/foo
+# rm foo
+
+local touch /tmp/fabula-test
