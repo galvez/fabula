@@ -14,11 +14,11 @@ export default {
     }
     return true
   },
-  command(conn) {
+  async command(conn) {
     if (this.local) {
       try {
-        const result = execLocal(this.params.cmd, this.env)
-        return { stdout: result }
+        const result = await execLocal(this.params.cmd, this.env)
+        return result
       } catch (io) {
         return { stdout: io.stdout, stderr: io.stderr }
       }
