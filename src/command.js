@@ -2,7 +2,6 @@
 export default class Command {
   constructor(cmd, line, env) {
     this.cmd = { ...cmd }
-    this.name = this.cmd.name
     this.params = {}
     this._env = env
     this.argv = line.split(/\s+/)
@@ -22,6 +21,16 @@ export default class Command {
         ...this._env
       }
     }
+  }
+  prepend(prepend, line) {
+    if (this.cmd.prepend) {
+      prepend = this.cmd.prepend(prepend)
+    }
+    line = `${prepend} ${line}`
+    this.argv = line.split(/\s+/)
+    this.local = this.argv[0] === 'local'
+    this.source = [line]
+    return line
   }
   handleLine(line) {
     if (!this.cmd.line) {
