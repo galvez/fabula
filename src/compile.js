@@ -32,15 +32,18 @@ compile.loadComponent = function (source) {
   let match
   let element
   let string = {}
+  let prepend
 
   for (const line of source) {
     // eslint-disable-next-line
     if (match = line.match(/^\s*<([^\/%][^>]+)>/)) {
       element = match[1].split(/\s+/g)
+      prepend = element.slice(1).join(' ')
+      element = element[0]
       // eslint-disable-next-line no-cond-assign
       if (match = match[1].match(/^string\s+id="([^"]+)"/)) {
         string = { id: match[1], lines: [] }
-        element = ['string']
+        element = 'string'
       }
       continue
     // eslint-disable-next-line no-cond-assign
@@ -53,23 +56,19 @@ compile.loadComponent = function (source) {
     if (!element) {
       continue
     }
-    switch (element[0]) {
+    switch (element) {
       case 'fabula':
         fabula.push(line)
         break
       case 'commands':
-        if (element.length > 1 && !/^\s+/.test(line)) {
-          script.push(`${element.slice(1).join(' ')} ${line}`)
-        } else {
-          script.push(line)
-        }
+        script.push(line)
         break
       case 'string':
         string.lines.push(line)
         break
     }
   }
-  return { fabula, script, strings }
+  return { fabula, script, strings, prepend }
 }
 
 compile.compileTemplate = function (cmd, settings) {
@@ -95,7 +94,7 @@ compile.splitMultiLines = function (source) {
   }, [])
 }
 
-compile.parseLine = function (command, line, settings, env, push) {
+compile.parseLine = function (command, line, prepend, settings, env, push) {
   let cmd
 
   if (command) {
@@ -116,7 +115,11 @@ compile.parseLine = function (command, line, settings, env, push) {
     if (cmd.match) {
       command = new Command(cmd, line, env)
       command.settings = settings
-      match = command.cmd.match.call(command, line)
+      let _line = line
+      if (prepend && !/^\s+/.test(line)) {
+        _line = command.prepend(prepend, line)
+      }
+      match = command.cmd.match.call(command, _line)
       if (match) {
         break
       }
@@ -134,7 +137,7 @@ compile.parseLine = function (command, line, settings, env, push) {
 }
 
 function compileComponent(name, source, settings) {
-  const { fabula, script, strings } = compile.loadComponent(source)
+  const { fabula, script, strings, prepend } = compile.loadComponent(source)
   const componentSource = script.join('\n')
 
   const componentSettings = {
@@ -162,10 +165,10 @@ function compileComponent(name, source, settings) {
     return { ...hash, [string.id]: quote(compiledString, true) }
   }, {})
 
-  return compile(name, componentSource, settings, env)
+  return compile(name, componentSource, settings, prepend, env)
 }
 
-export function compile(name, source, settings, env = {}) {
+export function compile(name, source, settings, prepend, env = {}) {
   // If <fabula> or at least <commands> is detected,
   // process as a component and return
   if (source.match(/^\s*<(?:(?:fabula)|(commands))[^>]*>/g)) {
@@ -189,7 +192,7 @@ export function compile(name, source, settings, env = {}) {
     // If a component's line() handler returns true,
     // the same command object will be returned, allowing
     // parsing of custom mult-line special commands
-    currentCommand = compile.parseLine(currentCommand, line, settings, env, (command) => {
+    currentCommand = compile.parseLine(currentCommand, line, prepend, settings, env, (command) => {
       parsedCommands.push(command)
     })
   }
