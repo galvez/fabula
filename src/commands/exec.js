@@ -2,6 +2,11 @@ import { exec } from '../ssh'
 import { execLocal } from '../local'
 
 export default {
+  prepend(command) {
+    // Custom commands run under the same permission
+    // **Fabula** is running on -- so sudo is never prepended
+    return command.replace(/\bsudo\s+/, '')
+  },
   match(line) {
     if (this.local) {
       this.params.cmd = line.split(/^local\s+/)[1]
