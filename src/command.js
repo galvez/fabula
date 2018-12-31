@@ -1,10 +1,34 @@
 
+export function parseArgv(line) {
+  const tokens = []
+  let token = ''
+  let quote = false
+  let escape = false
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === ' ' && !quote && !escape) {
+      tokens.push(token)
+      token = ''
+    } else if (line[i].match(/\\/)) {
+      escape = true
+    } else if (line[i].match(/['"`]/) && !escape) {
+      quote = !quote
+      token += line[i]
+    } else {
+      token += line[i]
+    }
+  }
+  if (token.length) {
+    tokens.push(token)
+  }
+  return tokens
+}
+
 export default class Command {
   constructor(cmd, line, env) {
     this.cmd = { ...cmd }
     this.params = {}
     this._env = env
-    this.argv = line.split(/\s+/)
+    this.argv = parseArgv(line)
     this.local = this.argv[0] === 'local'
     this.source = [line]
     this.firstLine = true
@@ -25,6 +49,11 @@ export default class Command {
   prepend(prepend, line) {
     if (this.cmd.prepend) {
       prepend = this.cmd.prepend(prepend)
+    } else {
+      // Custom commands run under the same permission
+      // **Fabula** is running on -- so sudo is never prepended
+      prepend = parseArgv(prepend)
+        .filter((part) => part !== 'sudo').join(' ')
     }
     line = `${prepend} ${line}`
     this.argv = line.split(/\s+/)
