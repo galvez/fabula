@@ -5,29 +5,30 @@ import { createLogger } from './logging'
 
 export async function runLocalString(name, str, settings, logger) {
   const commands = compile(name, str, settings)
+  logger.setContext('global', 'local')
   for (const command of commands) {
     try {
       if (!command.local) {
-        logger.info(['global', 'local'], `[FAIL]`, command.source[0])
-        logger.fatal(['global', 'local'], 'No servers specified to run this remote command.')
+        logger.info('[FAIL]', command.source[0])
+        logger.fatal('No servers specified to run this remote command.')
         process.exit()
       }
       const response = await command.run()
       if (response) {
         if (response.stdout) {
           for (const line of response.stdout.split(/\n/g).filter(Boolean)) {
-            logger.info(['global', 'local'], '[local]', line.trim())
+            logger.info(line.trim())
           }
         }
         if (response.stderr) {
           for (const line of response.stderr.trim().split(/\n/g).filter(Boolean)) {
-            logger.error(['global', 'local'], '[local]', line.trim())
+            logger.error(line.trim())
           }
         }
       }
-      logger.info(['global', 'local'], `[local] [OK]`, command.source[0])
+      logger.info('[OK]', command.source[0])
     } catch (err) {
-      logger.info(['global', 'local'], `[local] [FAIL]`, command.source[0])
+      logger.info('[FAIL]', command.source[0])
       logger.fatal(err)
       break
     }
@@ -35,6 +36,7 @@ export async function runLocalString(name, str, settings, logger) {
 }
 
 export async function runString(server, conn, name, str, settings, logger) {
+  logger.setContext('global', 'ssh', server)
   settings = {
     ...settings,
     $server: conn.settings

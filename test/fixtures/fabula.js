@@ -1,6 +1,7 @@
 export default {
   logs: {
-    global: 'global-log.log'
+    global: 'global-log.log',
+    local: 'local-log.log'
   },
   env: {
     GLOBAL_VAR: 'GLOBAL_VAR',
