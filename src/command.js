@@ -85,7 +85,6 @@ export default class Command {
     }
   }
   get env() {
-    console.log('this.settings', this.settings)
     if (this.local) {
       return {
         ...this.settings.env.local,

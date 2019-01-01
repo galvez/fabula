@@ -29,7 +29,7 @@ describe('test preprocessor', () => {
   test('cd ~', () => {
     expect(results.simple[0].local).not.toBe(true)
     expect(results.simple[0].source[0]).toBe('cd ~')
-    expect(results.simple[0].params.cmd).toBe('cd ~')
+    expect(results.simple[0].settings.$cwd).toBe('~')
   })
 
   test('local mkdir -p foobar', () => {
