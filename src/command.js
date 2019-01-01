@@ -40,6 +40,12 @@ export default class Command {
     this.source = [line]
     this.firstLine = true
   }
+  registerHandler(line) {
+    let match
+    if (match = line.match(/(@[\w\d_]+)\s+$/)) {
+      this.handler = match[1]  
+    }
+  },
   prepend(prepend, line) {
     if (this.cmd.prepend) {
       prepend = this.cmd.prepend(prepend)
