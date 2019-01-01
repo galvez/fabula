@@ -118,11 +118,28 @@ export default class Command {
     return ctx
   }
   async run(conn, logger) {
+    let abort = this.settings.fail
     const result = await this.cmd.command.call(this, conn, logger)
+    if (this.handler && this.settings[handler]) {
+      const fabula = {
+        abort: () => {
+          abort = true  
+        }
+      }
+      await this.settings[handler](result, fabula)
+    }
     if (result) {
       this.logLines(result.stdout, line => logger.info(this.context, line))
       this.logLines(result.stderr, line => logger.info(this.context, line))
-      logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
+      if (abort) {
+        logger.info(this.context, '[ABORT]', this.argv.join(' ')) 
+        return true
+      } else {
+        logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
+      }
+    }
+    if (abort) {
+      return true
     }
   }
 }
