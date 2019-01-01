@@ -73,5 +73,5 @@ export async function run(source, config, servers = [], logger = null) {
       resolve()
     }))
   }
-  await Promise.all(runners.map((runner) => runner()))
+  await Promise.all(runners.map(runner => runner()))
 }

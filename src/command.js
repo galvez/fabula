@@ -48,7 +48,7 @@ export default class Command {
     } else {
       return line
     }
-  },
+  }
   prepend(prepend, line) {
     if (this.cmd.prepend) {
       prepend = this.cmd.prepend(prepend)
@@ -117,22 +117,28 @@ export default class Command {
     this._context = ctx
     return ctx
   }
-  async run(conn, logger) {
+  async run(conn, logger, retry = null) {
     let abort = this.settings.fail
     const result = await this.cmd.command.call(this, conn, logger)
     if (this.handler && this.settings[handler]) {
       const fabula = {
         abort: () => {
-          abort = true  
+          abort = true
         }
       }
       await this.settings[handler](result, fabula)
     }
     if (result) {
+      if (result.code && retry) {
+        return this.run(conn, logger, retry - 1)
+      }
+      if (result.code && typeof this.settings.retry === 'number') {
+        return this.run(conn, logger, this.settings.retry)
+      }
       this.logLines(result.stdout, line => logger.info(this.context, line))
       this.logLines(result.stderr, line => logger.info(this.context, line))
       if (abort) {
-        logger.info(this.context, '[ABORT]', this.argv.join(' ')) 
+        logger.info(this.context, '[ABORT]', this.argv.join(' '))
         return true
       } else {
         logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
