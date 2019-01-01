@@ -39,8 +39,14 @@ export async function runSource(server, conn, name, str, settings, logger) {
 export async function run(source, config, servers = [], logger = null) {
   const name = parse(source).name
   source = readFileSync(source).toString()
+
+  // Setup main settings
+  if (typeof config.fail === 'undefined') {
+    config.fail = true
+  }
   const settings = { ...config }
 
+  // Create logger if not provided
   if (logger == null) {
     logger = createLogger(name, config)
   }

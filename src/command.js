@@ -42,8 +42,11 @@ export default class Command {
   }
   registerHandler(line) {
     let match
-    if (match = line.match(/(@[\w\d_]+)\s+$/)) {
-      this.handler = match[1]  
+    if (match = line.match(/^(.+?)(@[\w\d_]+)\s+$/)) {
+      this.handler = match[2]
+      return match[1]
+    } else {
+      return line
     }
   },
   prepend(prepend, line) {
