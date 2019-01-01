@@ -14,11 +14,11 @@ export default {
     }
     return true
   },
-  async command(conn) {
+  command(conn) {
     if (this.local) {
-      return execLocal([this.argv[0], this.argv.slice(1)], this.env)
+      return execLocal([this.argv[0], this.argv.slice(1)], this.env, this.settings.$cwd)
     } else {
-      return exec(conn, this.params.cmd, this.env)
+      return exec(conn, this.params.cmd, this.env, this.settings.$cwd)
     }
   }
 }

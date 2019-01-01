@@ -85,6 +85,7 @@ export default class Command {
     }
   }
   get env() {
+    console.log('this.settings', this.settings)
     if (this.local) {
       return {
         ...this.settings.env.local,
@@ -105,12 +106,15 @@ export default class Command {
     if (this.settings.$server) {
       ctx.server = this.settings.$server.$id
     }
-    return this._context = ctx
+    this._context = ctx
+    return ctx
   }
   async run(conn, logger) {
-    const result = await this.cmd.command.call(this, conn)
-    this.logLines(result.stdout, line => logger.info(this.context, line))
-    this.logLines(result.stderr, line => logger.info(this.context, line))
-    logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
+    const result = await this.cmd.command.call(this, conn, logger)
+    if (result) {
+      this.logLines(result.stdout, line => logger.info(this.context, line))
+      this.logLines(result.stderr, line => logger.info(this.context, line))
+      logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
+    }
   }
 }
