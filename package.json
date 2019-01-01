@@ -1,6 +1,6 @@
 {
   "name": "fabula",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Minimalist server configuration and task management",
   "author": "Jonas Galvez <jonasgalvez@gmail.com>",
   "license": "MIT",
