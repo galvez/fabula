@@ -52,18 +52,26 @@ export async function run(source, config, servers = [], logger = null) {
   }
 
   let remoteServers = servers
+
+  // If no servers provided, run in local mode
   if (servers.length === 0) {
     await runLocalSource(name, source, settings, logger)
     return
   }
 
+  // Run in all servers
   if (servers.length === 1 && servers[0] === 'all') {
     remoteServers = Object.keys(config.ssh)
   }
 
   let conn
+  const runners = []
   for (const server of remoteServers) {
-    conn = await getConnection(config.ssh[server])
-    await runSource(server, conn, name, source, settings, logger)
+    runners.push(() => new Promise(async (resolve) => {
+      conn = await getConnection(config.ssh[server])
+      await runSource(server, conn, name, source, settings, logger)
+      resolve()
+    }))
   }
+  await Promise.all(runners.map((runner) => runner()))
 }
