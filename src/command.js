@@ -107,7 +107,7 @@ export default class Command {
   async run(conn, logger) {
     const result = await this.cmd.command.call(this, conn)
     this.logLines(result.stdout, line => logger.info(this.context, line))
-    this.logLines(result.stderr, line => logger.fatal(this.context, line))
-    logger.info(this.context, '[OK]', this.argv.join(' '))
+    this.logLines(result.stderr, line => logger.info(this.context, line))
+    logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
   }
 }

@@ -16,12 +16,7 @@ export default {
   },
   async command(conn) {
     if (this.local) {
-      try {
-        const result = await execLocal(this.params.cmd, this.env)
-        return result
-      } catch (io) {
-        return { stdout: io.stdout, stderr: io.stderr }
-      }
+      return execLocal([this.argv[0], this.argv.slice(1)], this.env)
     } else {
       return exec(conn, this.params.cmd, this.env)
     }
