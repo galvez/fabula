@@ -50,8 +50,11 @@ export default class Command {
         .filter(part => part !== 'sudo').join(' ')
     }
     line = `${prepend} ${line}`
-    this.argv = line.split(/\s+/)
+    this.argv = parseArgv(line)
     this.local = this.argv[0] === 'local'
+    if (this.local) {
+      this.argv.shift()
+    }
     this.source = [line]
     return line
   }
