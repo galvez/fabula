@@ -34,21 +34,11 @@ export default class Command {
     this._env = env
     this.argv = parseArgv(line)
     this.local = this.argv[0] === 'local'
+    if (this.local) {
+      this.argv.shift()
+    }
     this.source = [line]
     this.firstLine = true
-  }
-  get env() {
-    if (this.local) {
-      return {
-        ...this.settings.env.local,
-        ...this._env
-      }
-    } else {
-      return {
-        ...this.settings.env.ssh,
-        ...this._env
-      }
-    }
   }
   prepend(prepend, line) {
     if (this.cmd.prepend) {
@@ -57,7 +47,7 @@ export default class Command {
       // Custom commands run under the same permission
       // Fabula is running on -- so sudo is never prepended
       prepend = parseArgv(prepend)
-        .filter((part) => part !== 'sudo').join(' ')
+        .filter(part => part !== 'sudo').join(' ')
     }
     line = `${prepend} ${line}`
     this.argv = line.split(/\s+/)
@@ -81,7 +71,43 @@ export default class Command {
     }
     return continueCommand
   }
-  run(conn) {
-    return this.cmd.command.call(this, conn)
+  logLines(out, writer) {
+    if (typeof out !== 'string') {
+      return
+    }
+    for (const line of out.split(/\n/g)) {
+      if (line) {
+        writer(line)
+      }
+    }
+  }
+  get env() {
+    if (this.local) {
+      return {
+        ...this.settings.env.local,
+        ...this._env
+      }
+    } else {
+      return {
+        ...this.settings.env.ssh,
+        ...this._env
+      }
+    }
+  }
+  get context() {
+    if (this._context) {
+      return this._context
+    }
+    const ctx = { local: this.local }
+    if (this.settings.$server) {
+      ctx.server = this.settings.$server.$id
+    }
+    return this._context = ctx
+  }
+  async run(conn, logger) {
+    const result = await this.cmd.command.call(this, conn)
+    this.logLines(result.stdout, line => logger.info(this.context, line))
+    this.logLines(result.stderr, line => logger.fatal(this.context, line))
+    logger.info(this.context, '[OK]', this.argv.join(' '))
   }
 }
