@@ -1,4 +1,6 @@
-import put from './put'
-import write from './write'
 
-export default [ put, write ]
+export default [
+  () => import('./put'),
+  () => import('./write'),
+  () => import('./cd')
+]

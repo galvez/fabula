@@ -5,7 +5,8 @@ import { compile } from './compile'
 import { createLogger } from './logging'
 
 export async function runLocalSource(name, str, settings, logger) {
-  const commands = compile(name, str, settings)
+  settings = { ...settings, $name: name }
+  const commands = await compile(name, str, settings)
   for (const command of commands) {
     if (!command.local) {
       logger.info('[FAIL]', command.source[0])
@@ -24,9 +25,10 @@ export async function runSource(server, conn, name, str, settings, logger) {
       $id: server,
       ...conn.settings
     },
+    $name: name,
     ...settings
   }
-  const commands = compile(name, str, settings)
+  const commands = await compile(name, str, settings)
   for (const command of commands) {
     if (await command.run(conn, logger)) {
       process.exit()

@@ -1,9 +1,8 @@
 
 import Module from 'module'
 
-import consola from 'consola'
 import template from 'lodash.template'
-import defaultsDeep from 'lodash.defaultsdeep'
+import merge from 'lodash.merge'
 
 import Command from './command'
 import execCommand from './commands/exec'
@@ -91,9 +90,8 @@ compile.splitMultiLines = function (source) {
   }, [])
 }
 
-compile.parseLine = function (command, line, prepend, settings, env, push) {
+compile.parseLine = function (commands, command, line, prepend, settings, env, push) {
   let cmd
-
   if (command) {
     if (command.handleLine(line)) {
       return command
@@ -155,7 +153,7 @@ function compileComponent(name, source, settings) {
   delete componentSettings.agent
   delete componentSettings.ssh
 
-  settings = defaultsDeep({}, settings, componentSettings)
+  merge(settings, componentSettings)
 
   settings.strings = strings.reduce((hash, string) => {
     const compiledString = compile.compileTemplate(string.lines.join('\n'), settings)
@@ -165,7 +163,7 @@ function compileComponent(name, source, settings) {
   return compile(name, componentSource, settings, prepend, env)
 }
 
-export function compile(name, source, settings, prepend, env = {}) {
+export async function compile(name, source, settings, prepend, env = {}) {
   // If <fabula> or at least <commands> is detected,
   // process as a component and return
   if (source.match(/^\s*<(?:(?:fabula)|(commands))[^>]*>/g)) {
@@ -182,6 +180,10 @@ export function compile(name, source, settings, prepend, env = {}) {
     .filter(Boolean)
     .filter(line => !line.startsWith('#'))
 
+  const _commands = await Promise.all(
+    commands.map(cmd => cmd().then(c => c.default))
+  )
+
   let currentCommand
   const parsedCommands = []
 
@@ -189,7 +191,7 @@ export function compile(name, source, settings, prepend, env = {}) {
     // If a component's line() handler returns true,
     // the same command object will be returned, allowing
     // parsing of custom mult-line special commands
-    currentCommand = compile.parseLine(currentCommand, line, prepend, settings, env, (command) => {
+    currentCommand = compile.parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
       parsedCommands.push(command)
     })
   }
