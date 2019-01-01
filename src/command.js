@@ -42,6 +42,7 @@ export default class Command {
   }
   registerHandler(line) {
     let match
+    // eslint-disable-next-line no-cond-assign
     if (match = line.match(/^(.+?)(@[\w\d_]+)\s+$/)) {
       this.handler = match[2]
       return match[1]
@@ -120,13 +121,13 @@ export default class Command {
   async run(conn, logger, retry = null) {
     let abort = this.settings.fail
     const result = await this.cmd.command.call(this, conn, logger)
-    if (this.handler && this.settings[handler]) {
+    if (this.handler && this.settings[this.handler]) {
       const fabula = {
         abort: () => {
           abort = true
         }
       }
-      await this.settings[handler](result, fabula)
+      await this.settings[this.handler](result, fabula)
     }
     if (result) {
       if (result.code && retry) {
