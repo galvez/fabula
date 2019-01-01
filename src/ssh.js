@@ -10,15 +10,6 @@ function exit(err) {
   process.exit()
 }
 
-async function exitOnError(promise) {
-  try {
-    return await promise()
-  } catch (err) {
-    consola.fatal(err.message || err)
-    process.exit()
-  }
-}
-
 function askPassphrase(privateKey) {
   return new Promise((resolve) => {
     const prompt = {
@@ -65,35 +56,35 @@ export function getConnection(settings) {
       }
       connect = () => conn.connect({ ...settings })
     }
-    await exitOnError(connect)
+    await connect()
   })
 }
 
 export async function write(conn, filePath, fileContents) {
   const stream = await conn.sftp()
-  return exitOnError(() => stream.writeFile(filePath, fileContents))
+  return stream.writeFile(filePath, fileContents)
 }
 
 export async function append(conn, filePath, fileContents) {
   const stream = await conn.sftp()
-  return exitOnError(() => stream.appendFile(filePath, fileContents))
+  return stream.appendFile(filePath, fileContents)
 }
 
 export async function get(conn, remotePath, localPath) {
   const stream = await conn.sftp()
-  return exitOnError(() => stream.fastGet(remotePath, localPath))
+  return stream.fastGet(remotePath, localPath)
 }
 
 export async function put(conn, localPath, remotePath) {
   const stream = await conn.sftp()
-  return exitOnError(() => stream.fastPut(localPath, remotePath))
+  return stream.fastPut(localPath, remotePath)
 }
 
 export function exec(conn, cmd, env = {}) {
   return new Promise(async (resolve, reject) => {
     let stdout = ''
     let stderr = ''
-    const stream = await exitOnError(() => conn.exec(cmd, { env }))
+    const stream = await conn.exec(cmd, { env })
     stream.on('close', (code, signal) => {
       resolve({ stdout, stderr, code, signal })
     })

@@ -8,11 +8,11 @@ const fixture = (f) => resolve(__dirname, '..', 'fixtures', f[0])
 
 describe('test preprocessor', () => {
 
-  beforeAll(() => {
+  beforeAll(async () => {
     const config = loadConfig(resolve(__dirname, '..', 'fixtures', 'fabula.js'))
-    results.simple = compileForTest(fixture`simple`, config)
-    results.advanced = compileForTest(fixture`advanced`, config)
-    results.prepend = compileForTest(fixture`prepend`, config)
+    results.simple = await compileForTest(fixture`simple`, config)
+    results.advanced = await compileForTest(fixture`advanced`, config)
+    results.prepend = await compileForTest(fixture`prepend`, config)
   })
 
   test('parseArgv test', () => {

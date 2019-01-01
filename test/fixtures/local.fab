@@ -3,4 +3,5 @@
 #   this should be in ~/foo
 # rm foo
 
-local touch /tmp3/fabula-test
+local cd /tmp: 
+  touch fabula-test

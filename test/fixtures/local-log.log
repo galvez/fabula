@@ -23,3 +23,16 @@
 {"date":"2019-01-01T03:20:12.323Z","args":["[local]","touch: /tmp3/fabula-test: No such file or directory"],"type":"info","level":3}
 {"date":"2019-01-01T03:20:41.603Z","args":["[local]","touch: /tmp3/fabula-test: No such file or directory"],"type":"info","level":3}
 {"date":"2019-01-01T03:21:44.630Z","args":["[local]","touch: /tmp3/fabula-test: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:38:47.016Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:41:05.565Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:41:31.103Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:42:40.103Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:43:27.689Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:44:10.690Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:45:17.638Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:45:48.002Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:47:01.555Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:48:52.811Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:49:22.819Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T05:50:51.407Z","args":["[local]","/usr/bin/cd: line 4: cd: /tmp:: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-01T06:13:30.885Z","args":["[local]","[OK]","touch fabula-test"],"type":"info","level":3}
