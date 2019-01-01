@@ -8,7 +8,6 @@ import defaultsDeep from 'lodash.defaultsdeep'
 import Command from './command'
 import execCommand from './commands/exec'
 import commands from './commands'
-import { getConnection } from './ssh'
 import { quote } from './utils'
 
 function requireFromString(code, name) {

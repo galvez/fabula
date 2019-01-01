@@ -1,11 +1,17 @@
 import { writeFileSync, appendFileSync } from 'fs'
-import { promisify } from 'util'
-import { exec } from 'child_process'
-
-execLocal.exec = promisify(exec)
+import { spawn } from 'child_process'
 
 export function execLocal(cmd, env = {}) {
-  return execLocal.exec(cmd, { env, shell: '/bin/bash' })
+  return new Promise((resolve) => {
+    let stdout = ''
+    let stderr = ''
+    const stream = spawn(...cmd, { env })
+    stream.on('close', (code) => {
+      resolve({ stdout, stderr, code })
+    })
+    stream.on('data', (data) => { stdout += data })
+    stream.stderr.on('data', (data) => { stderr += data })
+  })
 }
 
 export function localWrite(filePath, fileContents) {

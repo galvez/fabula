@@ -11,21 +11,16 @@ export default {
     }
   },
   match(line) {
-    const argv = [...this.argv]
-    if (argv[0] === 'local') {
-      argv.shift()
-      this.local = true
-    }
-    this.op = argv[0]
+    this.op = this.argv[0]
     this.dedent = 0
-    if (['append', 'write'].includes(argv[0])) {
+    if (['append', 'write'].includes(this.argv[0])) {
       let match
       // eslint-disable-next-line no-cond-assign
-      if (match = line.match(this.cmd.patterns.block(argv))) {
+      if (match = line.match(this.cmd.patterns.block(this.argv))) {
         this.block = true
         return match
       // eslint-disable-next-line no-cond-assign
-      } else if (match = line.match(this.cmd.patterns.string(argv))) {
+      } else if (match = line.match(this.cmd.patterns.string(this.argv))) {
         this.string = true
         return match
       }
