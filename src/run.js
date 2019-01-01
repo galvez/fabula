@@ -1,5 +1,6 @@
-import { readFileSync, createWriteStream } from 'fs'
+import { readFileSync } from 'fs'
 import { parse } from 'path'
+import { getConnection } from './ssh'
 import { compile } from './compile'
 import { createLogger } from './logging'
 
@@ -18,7 +19,13 @@ export async function runLocalSource(name, str, settings, logger) {
 }
 
 export async function runSource(server, conn, name, str, settings, logger) {
-  settings = { $server: conn.settings, ...settings }
+  settings = {
+    $server: {
+      $id: server,
+      ...conn.settings
+    },
+    ...settings
+  }
   const commands = compile(name, str, settings)
   for (const command of commands) {
     if (await command.run(conn, logger)) {
@@ -27,15 +34,18 @@ export async function runSource(server, conn, name, str, settings, logger) {
   }
 }
 
-export async function run(source, config, servers = []) {
+export async function run(source, config, servers = [], logger = null) {
   const name = parse(source).name
   source = readFileSync(source).toString()
   const settings = { ...config }
-  const logger = createLogger(config)
+
+  if (logger == null) {
+    logger = createLogger(name, config)
+  }
 
   let remoteServers = servers
   if (servers.length === 0) {
-    await runLocalString(name, source, settings, logger)
+    await runLocalSource(name, source, settings, logger)
     return
   }
 
@@ -46,9 +56,6 @@ export async function run(source, config, servers = []) {
   let conn
   for (const server of remoteServers) {
     conn = await getConnection(config.ssh[server])
-    if (config.ssh[server].log) {
-      logger.addServerLogger(server, config.ssh[server].log)
-    }
-    await runString(server, conn, name, source, settings, logger)
+    await runSource(server, conn, name, source, settings, logger)
   }
 }
