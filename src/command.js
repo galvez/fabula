@@ -119,7 +119,7 @@ export default class Command {
     return ctx
   }
   async run(conn, logger, retry = null) {
-    let abort = this.settings.fail
+    let abort = false
     const result = await this.cmd.command.call(this, conn, logger)
     if (this.handler && this.settings[this.handler]) {
       const fabula = {
@@ -140,14 +140,14 @@ export default class Command {
       }
       this.logLines(result.stdout, line => logger.info(this.context, line))
       this.logLines(result.stderr, line => logger.info(this.context, line))
-      if (abort) {
-        logger.info(this.context, '[ABORT]', this.argv.join(' '))
+      if (abort || (result.code && this.settings.fail)) {
+        logger.info(this.context, abort ? '[ABORT]' : '[FAIL]', this.argv.join(' '))
         return true
       } else {
         logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
       }
     }
-    if (abort) {
+    if (abort || (result.code && this.settings.fail)) {
       return true
     }
   }
