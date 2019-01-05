@@ -1,0 +1,8 @@
+<fabula>
+export default {
+  
+}
+</fabula>
+
+node ../bin.js --code 0 --stdout "success test"
+node ../bin.js --code 1 --stderr "error test"
