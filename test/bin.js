@@ -1,10 +1,10 @@
-module.exports = function main (shell = true, argv = null) {
+function main (shell = true, argv = process.argv) {
   const
     args = require('arg')({
       '--code': Number,
       '--stdout': String,
       '--stderr': String,
-    }, { argv: argv || process.argv }),
+    }, { argv }),
     stdout = args['--stdout'],
     stderr = args['--stderr'],
     result = {
@@ -30,4 +30,10 @@ module.exports = function main (shell = true, argv = null) {
     process.stderr.write(result.stderr)
   }
   process.exit(result.code)
-}()
+}
+
+exports.default = main
+
+if (require.main === module) {
+  main(true)
+}
