@@ -25,7 +25,6 @@
     "arg": "3.0.0",
     "consola": "2.3.0",
     "esm": "3.0.84",
-    "lodash.defaultsdeep": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "lodash.template": "4.4.0",
     "read": "1.0.7",
@@ -36,6 +35,8 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
+    "buffer-equal-constant-time": "^1.0.1",
+    "crypto": "^1.0.1",
     "eslint": "^5.9.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
@@ -44,7 +45,10 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^4.7.1",
+    "ip": "^1.1.5",
     "jest": "^23.6.0",
+    "uptimer": "^0.1.2",
+    "util": "^0.11.1",
     "vuepress": "^0.14.8"
   }
 }

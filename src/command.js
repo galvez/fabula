@@ -133,7 +133,7 @@ export default class Command {
       // If failed and in a retry recursion, repeat until retry
       if (result.code && retry) {
         return this.run(conn, logger, retry - 1)
-      // Or, if failed for the first time, and settings.retry is set to 
+      // Or, if failed for the first time, and settings.retry is set to
       // a positive integer, start a new retry chain (recursion)
       } else if (result.code && typeof this.settings.retry === 'number' && this.settings.retry) {
         return this.run(conn, logger, this.settings.retry)
