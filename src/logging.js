@@ -71,8 +71,8 @@ export function createLogger(name, config) {
             logger.getLogger(name, context.log)[prop](...msg)
           }
           // Add  server log entry if enabled
-          if (context.server && logger.ssh[name]) {
-            logger.ssh[name][prop](...msg)
+          if (context.server && logger.loggers.ssh[name]) {
+            logger.loggers.ssh[name][prop](...msg)
           // Or add local log entry if enabled
           } else if (context.local && logger.loggers.local) {
             logger.loggers.local[prop](...msg)

@@ -16,13 +16,11 @@ export function execLocal(cmd, env = {}, cwd = null) {
     stream.on('error', (err) => {
       resolve(err)
     })
-    stream.on('close', (code) => {
+    stream.stdout.on('data', (data) => { stdout += data })
+    stream.stderr.on('data', (data) => { stderr += data })
+    stream.on('exit', (code) => {
       resolve({ stdout, stderr, code })
     })
-    stream.on('data', (data) => { stdout += data })
-    if (stream.stderr) {
-      stream.stderr.on('data', (data) => { stderr += data })
-    }
   })
 }
 

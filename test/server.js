@@ -61,7 +61,7 @@ exports.launchTestSSHServer = async function() {
         const stream = acceptShell()
         stream.on('data', (data) => {
           const argv = parseArgv(data.toString().trim())
-          if (argv[0] === 'bin') {
+          if (argv[0] === 'bin.js') {
             const result = bin(argv)
             if (result.stdout) {
               stream.write(result.stdout)

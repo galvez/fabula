@@ -1,11 +1,14 @@
-function main (shell = true, argv = process.argv) {
-  const
-    args = require('arg')({
+async function main (shell = true, argv = process.argv) {
+  const args = require('arg')({
       '--code': Number,
       '--stdout': String,
       '--stderr': String,
-    }, { argv }),
+    }, { argv })
+
+  const
+    // eslint-disable-next-line no-eval
     stdout = args['--stdout'],
+    // eslint-disable-next-line no-eval
     stderr = args['--stderr'],
     result = {
       code: args['--code'] || 0
@@ -29,11 +32,11 @@ function main (shell = true, argv = process.argv) {
   if (result.stderr || result.code) {
     process.stderr.write(result.stderr)
   }
-  process.exit(result.code)
+  return result
 }
 
 exports.default = main
 
 if (require.main === module) {
-  main(true)
+  main().then() // (result) =>   process.exit(result.code))
 }
