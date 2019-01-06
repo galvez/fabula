@@ -1,10 +1,16 @@
-import fs from 'fs'
-import { resolve } from 'fs'
-import crypto from 'crypto'
-import buffersEqual from 'buffer-equal-constant-time'
-import ssh2 from 'ssh2'
-import ip from 'ip'
-import getPort from 'get-port'
+
+const 
+  fs = require('fs'),
+  { resolve } = require('fs'),
+  crypto = require('crypto'),
+  buffersEqual = require('buffer-equal-constant-time'),
+  ssh2 = require('ssh2'),
+  ip = require('ip'),
+  getPort = require('get-port'),
+  { parseArgv } = require('../src/command'),
+  bin = require('./bin)',
+  privateKey = resolve(__dirname, 'fixtures', 'keys', 'ssh.private'),
+  passphrase = 'fabula'
 
 function genPublicKey() {
   const pubKey = fs.readFileSync(resolve(__dirname, 'fixtures', 'keys', 'ssh.public'))
@@ -81,8 +87,9 @@ function launchTestSSHServer () {
   
   return new Promise((resolve) => {
     server.listen(port, address, () => resolve({
-      privateKey: resolve(__dirname, 'fixtures', 'keys', 'ssh.private'),
       hostname: address,
+      passphrase,
+      privateKey,
       port
     }))
   })
