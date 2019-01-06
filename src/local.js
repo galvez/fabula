@@ -4,14 +4,16 @@ import { spawn } from 'child_process'
 export function execLocal(cmd, env = {}, cwd = null) {
   return new Promise((resolve) => {
     let
-      stdout = '',
-      stderr = ''
-    const 
+      stdout = ''
+
+    let stderr = ''
+    const
       options = {
         env: { ...process.env, ...env },
         cwd: cwd || process.cwd()
-      },
-      stream = spawn(...cmd, options)
+      }
+
+    const stream = spawn(...cmd, options)
 
     stream.on('error', (err) => {
       resolve(err)
