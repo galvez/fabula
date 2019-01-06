@@ -1,4 +1,4 @@
-{"date":"2019-01-06T20:20:18.339Z","args":["[server1]","\"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-06T20:20:18.339Z","args":["[server1]","[OK]","bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-06T20:20:18.345Z","args":["[server1]","\"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-06T20:20:18.345Z","args":["[server1]","[FAIL]","bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-06T20:27:21.268Z","args":["[server1]","\"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T20:27:21.269Z","args":["[server1]","[OK]","bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T20:27:21.271Z","args":["[server1]","\"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-06T20:27:21.271Z","args":["[server1]","[FAIL]","bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
