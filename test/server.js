@@ -1,14 +1,18 @@
-
+ 
 const 
+  // Standard library imports
   fs = require('fs'),
   { resolve } = require('fs'),
   crypto = require('crypto'),
+  // Node module imports
   buffersEqual = require('buffer-equal-constant-time'),
   ssh2 = require('ssh2'),
   ip = require('ip'),
   getPort = require('get-port'),
+  // Local imports
   { parseArgv } = require('../src/command'),
   bin = require('./bin)',
+  // Settings
   privateKey = resolve(__dirname, 'fixtures', 'keys', 'ssh.private'),
   passphrase = 'fabula'
 
@@ -22,9 +26,9 @@ function authenticateSession(ctx) {
   if (ctx.method === 'password') {
     ctx.reject()
   } else if (
-    ctx.method === 'publickey'
-    && ctx.key.algo === pubKey.fulltype
-    && buffersEqual(ctx.key.data, pubKey.public)
+    ctx.method === 'publickey' &&
+    ctx.key.algo === pubKey.fulltype &&
+    buffersEqual(ctx.key.data, pubKey.public)
   ) {
     if (ctx.signature) {
       const verifier = crypto.createVerify(ctx.sigAlgo)
@@ -42,7 +46,7 @@ function authenticateSession(ctx) {
   }
 }
 
-function getServerSession() {
+function getServer() {
   const
     privateKey = resolve(__dirname, 'fixtures', 'keys', 'ssh.private'),
     hostKeys = [fs.readFileSync(privateKey)]
@@ -56,7 +60,7 @@ function getServerSession() {
 }
 
 exports.launchTestSSHServer = function() {
-  const { server, client } = await getServerSession()
+  const { server, client } = await getServer()
 
   client.on('session', (acceptSession) => {
     acceptSession().session.once('shell', (acceptShell) => {
