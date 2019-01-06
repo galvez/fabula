@@ -55,7 +55,7 @@ function getServerSession() {
   })
 }
 
-function launchTestSSHServer () {
+exports.launchTestSSHServer = function() {
   const { server, client } = await getServerSession()
 
   client.on('session', (acceptSession) => {
