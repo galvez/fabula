@@ -33,14 +33,14 @@ function extractLogs(stdout, stderr) {
   }
 }
 
-describe('test cli', () => {
+describe('test logging', () => {
   beforeAll(() => {
     Object.keys(logs).forEach((log) => {
       writeFileSync(logs[log], '')
     })
   })
 
-  test('logging test', async () => {
+  test('all logs', async () => {
     const { stdout, stderr } = spawnFabula('all', 'logging')
     const output = extractLogs(
       stdout.toString().trim(),

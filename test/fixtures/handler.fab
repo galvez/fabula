@@ -7,8 +7,8 @@ module.exports = {
 }
 </fabula>
 
-<commands>
-local touch /parent/doesnt/exist
-local write /tmp/fabula-handler-test vars.touchErrorCode
-local cat /tmp/fabula-handler-test
+<commands local>
+touch /parent/doesnt/exist @handler
+write /tmp/fabula-handler-test vars.touchErrorCode
+cat /tmp/fabula-handler-test
 </commands>
