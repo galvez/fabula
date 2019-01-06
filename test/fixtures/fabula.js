@@ -10,8 +10,14 @@ export default async function() {
   ])
   return {
     ssh: {
-      server1: server1.settings,
-      server2: server2.settings
+      server1: {
+        log: 'logs/server1-log.log',
+        ...server1.settings
+      },
+      server2: {
+        log: 'logs/server2-log.log',
+        ...server2.settings
+      }
     },
     done() {
       server1.server.close()

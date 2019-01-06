@@ -1,7 +1,8 @@
-{"date":"2019-01-06T04:59:37.974Z","args":["[server1]","\"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-06T04:59:37.974Z","args":["[server1]","[OK]","bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-06T04:59:37.990Z","args":["[server1]","\"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-06T04:59:37.992Z","args":["[server1]","[FAIL]","bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-06T04:59:37.996Z","args":["[server2]","\"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-06T04:59:37.996Z","args":["[server2]","[OK]","bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-06T04:59:38.011Z","args":["[server2]","\"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.646Z","args":["[server2]","\"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.646Z","args":["[server2]","[OK]","bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.654Z","args":["[server1]","\"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.654Z","args":["[server1]","[OK]","bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.656Z","args":["[server2]","\"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.657Z","args":["[server2]","[FAIL]","bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.661Z","args":["[server1]","\"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.661Z","args":["[server1]","[FAIL]","bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}

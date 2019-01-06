@@ -1,0 +1,4 @@
+{"date":"2019-01-06T15:55:08.653Z","args":["[server1]","\"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.654Z","args":["[server1]","[OK]","bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.660Z","args":["[server1]","\"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-06T15:55:08.661Z","args":["[server1]","[FAIL]","bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
