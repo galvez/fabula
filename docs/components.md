@@ -58,6 +58,7 @@ The `<fabula>` block should contain an **ES module**. The
 module can either export an object containing all settings, or an 
 optionally async function that returns such an object.
 
+```xml
 <fabula>
 export default async (fabula) => ({
   fail: false,
@@ -67,6 +68,7 @@ export default async (fabula) => ({
   privateKey: await fabula.prompt('Private key:'),
 })
 </fabula>
+```
 
 ## Syntax
 
@@ -181,19 +183,23 @@ fabula . tasks/some-other-task
 When `tasks/another-task` runs, all settings from the caller component will be
 merged with its own settings -- the latter having precedence. 
 
-Alternatively, you may also use the **Fabula** component's settings function, 
-as discussed earlier in this section. The default handler will run before any commands and also allow you to **access its parent settings and current 
-execution state** through its **second and third** arguments:
+Alternatively, you may also use a **Fabula** _component settings function_. 
+If the default export in the `<fabula>` block is a function, it will run before 
+any commands and also allow you to **access its parent settings and current 
+execution state** through its **second** and **third** arguments:
 
 ```xml
 <fabula>
-export default (fabula, settings, commands) => {
-  consola.info('Commands ran so far:', state.commands.length)
-  return { ...settings, newSetting: 'foobar' }
+export default (fabula) => {
+  consola.info('Commands ran so far:', fabula.history.length)
+  return { ...fabula.settings, newSetting: 'foobar' }
 }
 </fabula>
 ```
 
-The `commands` parameter is an Array with the result objects of every command
+The `history` parameter is an Array with the result objects of every command
 executed up to that point. Each result object contains `code`, `stdout`, 
 `stderr` and `cmd` (the **Fabula** object representing the parsed command).
+
+The first parameter contains the **Fabula** helper object, which currently
+only provides access to `settings`, `history` and `abort()`.
