@@ -19,7 +19,8 @@
     "test": "jest",
     "lint": "eslint --fix --ext .js,.vue src",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "source deploy.sh"
+    "docs:build": "source deploy.sh",
+    "postinstal": "yarn link && yarn link fabula"
   },
   "dependencies": {
     "arg": "3.0.0",

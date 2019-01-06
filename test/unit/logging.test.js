@@ -46,6 +46,7 @@ describe('test cli', () => {
       stdout.toString().trim(),
       stderr.toString().trim()
     )
+    console.log(output)
     const compareLogs = (raw, msg) => {
       raw.split(/\n/).forEach((line, i) => {
         expect(msg[i]).toContain(extractMsg(line))
