@@ -1,4 +1,4 @@
 local node ../bin.js --code 0 --stdout "<%= $server.$id %> success test"
 local node ../bin.js --code 1 --stderr "<%= $server.$id %> error test"
 bin.js --code 0 --stdout "<%= $server.$id %> success test"
-bin.js --code 1 --stderr "<%= $server.$id %> error test"
+bin.js --code 1 --stderr "<%= $server.$id %> error test" @handler

@@ -16,7 +16,7 @@
     "src"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "lint": "eslint --fix --ext .js,.vue src",
     "docs:dev": "vuepress dev docs",
     "docs:build": "source deploy.sh",

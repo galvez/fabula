@@ -1,14 +1,12 @@
 <fabula>
 module.exports = {
-  default: {
-    k8s: {
-      clusterName: 'my-cluster'
-    },
-    files: [
-      { name: 'file1', contents: 'Contents \nof file1' },
-      { name: 'file2', contents: 'Contents \' of file2' }
-    ]
-  }
+  k8s: {
+    clusterName: 'my-cluster'
+  },
+  files: [
+    { name: 'file1', contents: 'Contents \nof file1' },
+    { name: 'file2', contents: 'Contents \' of file2' }
+  ]
 }
 </fabula>
 

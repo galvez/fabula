@@ -1,0 +1,14 @@
+<fabula>
+module.exports = {
+  fail: false,
+  handler(result, fabula) {
+    fabula.vars.touchErrorCode = result.code
+  }
+}
+</fabula>
+
+<commands>
+local touch /parent/doesnt/exist
+local write /tmp/fabula-handler-test vars.touchErrorCode
+local cat /tmp/fabula-handler-test
+</commands>

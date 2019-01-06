@@ -135,9 +135,8 @@ function compileComponent(name, source, settings) {
   const { fabula, script, strings, prepend } = compile.loadComponent(source)
   const componentSource = script.join('\n')
 
-  const componentSettings = {
-    ...requireFromString(fabula.join('\n'), name).default
-  }
+  let _componentSettings = requireFromString(fabula.join('\n'))
+  const componentSettings = _componentSettings.default || _componentSettings
 
   const globalEnv = { ...settings.env }
   delete globalEnv.local
@@ -169,6 +168,17 @@ export async function compile(name, source, settings, prepend, env = {}) {
   if (source.match(/^\s*<(?:(?:fabula)|(commands))[^>]*>/g)) {
     return compileComponent(name, source, settings)
   }
+
+  const _vars = {}
+  settings.vars = new Proxy(_vars, {
+    get (obj, prop) {
+      if (prop in obj) {
+        return obj[prop]
+      } else {
+        return settings.strings[prop]
+      }
+    }
+  })
 
   // If no marked section is found, proceed to
   // regular commands compilation
