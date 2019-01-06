@@ -43,7 +43,7 @@ export default class Command {
   registerHandler(line) {
     let match
     // eslint-disable-next-line no-cond-assign
-    if (match = line.match(/^(.+?)(@[\w\d_]+)\s+$/)) {
+    if (match = line.match(/^(.+?)@([\w\d_]+)\s*$/)) {
       this.handler = match[2]
       return match[1]
     } else {
@@ -123,6 +123,7 @@ export default class Command {
     const result = await this.cmd.command.call(this, conn, logger)
     if (this.handler && this.settings[this.handler]) {
       const fabula = {
+        vars: this.settings.vars,
         abort: () => {
           abort = true
         }
@@ -147,7 +148,7 @@ export default class Command {
         logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
       }
     }
-    if (abort || (result.code && this.settings.fail)) {
+    if (abort || (result && result.code && this.settings.fail)) {
       return true
     }
   }

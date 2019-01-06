@@ -116,6 +116,7 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
       }
       match = command.cmd.match.call(command, _line)
       if (match) {
+        command.registerHandler(_line)
         break
       }
     }

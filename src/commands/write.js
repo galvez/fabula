@@ -32,8 +32,14 @@ export default {
       this.params.fileContents = []
       if (this.string) {
         const settingsKey = this.match[2]
-        // eslint-disable-next-line no-eval
-        this.params.fileContents = eval(`this.settings.${settingsKey}`).split(/\n/g)
+        this.params.fileContents = () => {
+          // eslint-disable-next-line no-eval
+          if (settingsKey.startsWith('strings.')) {
+            return eval(`this.settings.${settingsKey}`).split(/\n/g)
+          } else if (settingsKey.startsWith('vars.')) {
+            return eval(`this.settings.${settingsKey}`)
+          }
+        }
         return false
       } else {
         return true
@@ -53,7 +59,9 @@ export default {
   },
   command(conn) {
     const filePath = this.params.filePath
-    const fileContents = this.params.fileContents.join('\n')
+    const fileContents = typeof this.params.fileContents === 'function'
+      ? this.params.fileContents()
+      : this.params.fileContents.join('\n')
     if (this.local) {
       const cmd = ({ write: localWrite, append: localAppend })[this.op]
       return cmd(filePath, fileContents)

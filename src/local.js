@@ -4,9 +4,8 @@ import { spawn } from 'child_process'
 export function execLocal(cmd, env = {}, cwd = null) {
   return new Promise((resolve) => {
     let
-      stdout = ''
-
-    let stderr = ''
+      stdout = '',
+      stderr = ''
     const
       options = {
         env: { ...process.env, ...env },
