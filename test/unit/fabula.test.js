@@ -17,11 +17,13 @@ const
   spawnFabula = (...args) => spawnSync(fabulaBin, args, opts)
 
 describe('test cli', () => {
-
-  test('logging test', async () => {
+  beforeAll(() => {
     for (const log of logs) {
       writeFileSync(log, '')
     }
+  })
+
+  test('logging test', async () => {
     const stream = spawnFabula('logging')
     console.log(stream.stdout.toString())
     console.log(stream.stderr.toString())

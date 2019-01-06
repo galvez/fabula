@@ -90,11 +90,16 @@ exports.launchTestSSHServer = function() {
   const port = await getPort()
   
   return new Promise((resolve) => {
-    server.listen(port, address, () => resolve({
-      hostname: address,
-      passphrase,
-      privateKey,
-      port
-    }))
+    server.listen(port, address, () => {
+      resolve({
+        server,
+        settings: {
+          hostname: address,
+          passphrase,
+          privateKey,
+          port
+        }
+      })
+    })
   })
 }
