@@ -1,13 +1,14 @@
+import { writeFileSync } from 'fs'
 import { spawnSync } from 'child_process'
 import { resolve } from 'path'
 
 const 
   logs = [
-    'global-log.log',
-    'local-log.log',
-    'ssh-log.log',
-    'server1-log.log',
-    'server2-log.log'
+    'global-log',
+    'local-log',
+    'ssh-log',
+    'server1-log',
+    'server2-log'
   ].map((log) => {
     return resolve(__dirname, ...`../fixtures/logs/${log}.log`.split('/'))
   }),
@@ -18,6 +19,9 @@ const
 describe('test cli', () => {
 
   test('logging test', async () => {
+    for (const log of logs) {
+      writeFileSync(log, '')
+    }
     const stream = spawnFabula('logging')
     console.log(stream.stdout.toString())
     console.log(stream.stderr.toString())
@@ -30,8 +34,8 @@ describe('test cli', () => {
     // await new Promise((resolve) => stream.on('exit', () => resolve()))
     // console.log(stdout)
     // console.log(stderr)
-    for (const log in logs) {
-      writeFileSync(log, '')
-    }
+    // for (const log of logs) {
+    //   writeFileSync(log, '')
+    // }
   })
 })

@@ -11,10 +11,10 @@ export async function runLocalSource(name, str, settings, logger) {
     if (!command.local) {
       logger.info('[FAIL]', command.source[0])
       logger.fatal('No servers specified to run this remote command.')
-      process.exit()
+      break
     }
     if (await command.run(null, logger)) {
-      process.exit()
+      break
     }
   }
 }
