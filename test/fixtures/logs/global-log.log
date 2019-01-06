@@ -1,0 +1,35 @@
+{"date":"2019-01-05T23:03:42.520Z","args":["[local]","[ABORT]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:04:43.799Z","args":["[local]","[ABORT]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:05:05.743Z","args":["[local]","[ABORT]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:06:19.727Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:11:38.130Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:13:11.472Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:15:41.763Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:18:48.596Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:19:07.289Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:20:38.553Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:23:32.316Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:23:42.605Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:24:40.926Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:26:44.188Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:27:51.505Z","args":["[local]","[FAIL]","../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:28:14.313Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:28:32.358Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:29:47.770Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:30:11.204Z","args":["[local]","[FAIL]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:32:02.926Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:32:03.045Z","args":["[local]","\"error test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:36:39.623Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:36:39.743Z","args":["[local]","\"error test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:37:51.436Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:37:51.564Z","args":["[local]","\"error test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:38:03.579Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:38:03.721Z","args":["[local]","\"error test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:48:29.059Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:48:29.280Z","args":["[local]","\"error test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:51:20.609Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:51:20.803Z","args":["[local]","\"error test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:51:56.891Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:51:57.053Z","args":["[local]","\"error test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:52:17.143Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
+{"date":"2019-01-05T23:52:17.272Z","args":["[local]","\"error test\""],"type":"info","level":3}

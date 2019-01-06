@@ -4,5 +4,7 @@ export default {
 }
 </fabula>
 
-node ../bin.js --code 0 --stdout "success test"
-node ../bin.js --code 1 --stderr "error test"
+<commands>
+local node ../bin.js --code 0 --stdout "success test"
+local node ../bin.js --code 1 --stderr "error test"
+</commands>
