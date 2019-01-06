@@ -1,6 +1,7 @@
 import { createWriteStream } from 'fs'
 import consola from 'consola'
 
+// eslint-disable-next-line import/no-mutable-exports
 export let active = 0
 
 class Reporter {
