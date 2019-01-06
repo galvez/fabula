@@ -78,6 +78,7 @@ export default async function () {
   if (typeof config.done === 'function') {
     await config.done()
   }
+  process.exit()
 }
 
 process.on('unhandledRejection', (err) => {

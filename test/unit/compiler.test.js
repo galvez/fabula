@@ -9,7 +9,7 @@ const fixture = (f) => resolve(__dirname, '..', 'fixtures', f[0])
 describe('test preprocessor', () => {
 
   beforeAll(async () => {
-    const config = loadConfig(resolve(__dirname, '..', 'fixtures', 'fabula.js'))
+    const config = await loadConfig(resolve(__dirname, '..', 'fixtures', 'fabula.js'))
     results.simple = await compileForTest(fixture`simple`, config)
     results.advanced = await compileForTest(fixture`advanced`, config)
     results.prepend = await compileForTest(fixture`prepend`, config)

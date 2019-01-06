@@ -3,9 +3,7 @@ async function main (shell = true, argv = process.argv) {
       '--code': Number,
       '--stdout': String,
       '--stderr': String,
-    }, { argv })
-
-  const
+    }, { argv }),
     // eslint-disable-next-line no-eval
     stdout = args['--stdout'],
     // eslint-disable-next-line no-eval
@@ -35,7 +33,7 @@ async function main (shell = true, argv = process.argv) {
   return result
 }
 
-exports.default = main
+module.exports = main
 
 if (require.main === module) {
   main().then() // (result) =>   process.exit(result.code))

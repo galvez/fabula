@@ -1,17 +1,21 @@
  
 const 
+
   // Standard library imports
   fs = require('fs'),
   { resolve } = require('path'),
   crypto = require('crypto'),
+
   // Node module imports
   buffersEqual = require('buffer-equal-constant-time'),
   ssh2 = require('ssh2'),
   ip = require('ip'),
   getPort = require('get-port'),
+
   // Local imports
   { parseArgv } = require('../src/command'),
   bin = require('./bin'),
+  
   // Settings
   privateKey = resolve(__dirname, 'fixtures', 'keys', 'ssh.private'),
   passphrase = 'fabula'
@@ -57,26 +61,24 @@ exports.launchTestSSHServer = async function() {
   const server = new ssh2.Server({ hostKeys }, (client) => {
     client.on('authentication', authenticateSession)
     client.on('session', (acceptSession) => {
-      acceptSession().session.once('shell', (acceptShell) => {
-        const stream = acceptShell()
-        stream.on('data', (data) => {
-          const argv = parseArgv(data.toString().trim())
-          if (argv[0] === 'bin.js') {
-            const result = bin(argv)
-            if (result.stdout) {
-              stream.write(result.stdout)
-            }
-            if (result.stderr) {
-              stream.stderr.write(result.stderr)
-            }
-            stream.exit(result.stderr)
-            stream.end()
-          } else {
-            stream.stderr.write('Command not recognized')
-            stream.exit(1)
-            stream.end()
+      acceptSession().once('exec', async (acceptExec, _, execInfo) => {
+        const stream = acceptExec()
+        const argv = parseArgv(execInfo.command.trim())
+        if (argv[0] === 'bin.js') {
+          const result = await bin(false, argv)
+          if (result.stdout) {
+            stream.write(result.stdout)
           }
-        })
+          if (result.stderr) {
+            stream.stderr.write(result.stderr)
+          }
+          stream.exit(result.code)
+          stream.end()
+        } else {
+          stream.stderr.write('Command not recognized')
+          stream.exit(result.code)
+          stream.end()
+        }
       })
     })
   })
