@@ -1,12 +1,17 @@
 import { createWriteStream } from 'fs'
 import consola from 'consola'
 
+export let active = 0
+
 class Reporter {
   constructor(stream) {
     this.stream = stream
   }
   log(logObj) {
-    this.stream.write(JSON.stringify(logObj) + '\n')
+    active += 1
+    this.stream.write(JSON.stringify(logObj) + '\n', () => {
+      active -= 1
+    })
   }
 }
 
@@ -27,15 +32,16 @@ class Logger {
     if (config.ssh) {
       for (const server in config.ssh) {
         if (typeof config.ssh[server].log === 'string') {
-          this.addLogger(`server:${server}`, config.ssh.log)
+          this.addLogger(`server:${server}`, config.ssh[server].log)
         }
       }
     }
   }
   // Creates a logger under a name and path
   addLogger(logger, path) {
+    const stream = createWriteStream(path, { flags: 'a' })
     this.loggers[logger] = consola.create(({
-      reporters: [new Reporter(createWriteStream(path, { flags: 'a' }))]
+      reporters: [new Reporter(stream)]
     }))
     return this.loggers[logger]
   }
@@ -93,3 +99,4 @@ export function createLogger(name, config) {
     }
   })
 }
+

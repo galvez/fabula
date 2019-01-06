@@ -4,9 +4,22 @@ import { resolve } from 'path'
 import consola from 'consola'
 import arg from 'arg'
 import { run } from './run'
+import { active } from './logging'
 
 function resolvePath(path) {
   return resolve(process.cwd(), ...path.split('/'))
+}
+
+function activeStreams() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      if (!active) {
+        resolve()
+      } else {
+        resolve(activeStreams())
+      }
+    }, 1)
+  })
 }
 
 export async function loadConfig(rcFile = null) {
@@ -78,6 +91,8 @@ export default async function () {
   if (typeof config.done === 'function') {
     await config.done()
   }
+
+  await activeStreams()
   process.exit()
 }
 
