@@ -42,7 +42,10 @@ describe('test cli', () => {
 
   test('logging test', async () => {
     const { stdout, stderr } = spawnFabula('all', 'logging')
-    const output = extractLogs(stdout.toString().trim(), stderr.toString().trim())
+    const output = extractLogs(
+      stdout.toString().trim(),
+      stderr.toString().trim()
+    )
     const compareLogs = (raw, msg) => {
       raw.split(/\n/).forEach((line, i) => {
         expect(msg[i]).toContain(extractMsg(line))
