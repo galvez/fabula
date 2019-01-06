@@ -13,8 +13,8 @@ class Reporter {
 class Logger {
   constructor(name, config) {
     this.loggers = {
-      ssh: new Proxy({}, {
-        get(_, prop) {
+      $server: new Proxy({}, {
+        get: (_, prop) => {
           return this.loggers[`server:${prop}`]
         }
       })
@@ -70,12 +70,15 @@ export function createLogger(name, config) {
           if (context && context.log) {
             logger.getLogger(name, context.log)[prop](...msg)
           }
-          // Add  server log entry if enabled
-          if (context.server && logger.loggers.ssh[name]) {
-            logger.loggers.ssh[name][prop](...msg)
-          // Or add local log entry if enabled
-          } else if (context.local && logger.loggers.local) {
+          // Add local log entry if enabled
+          if (context.local && logger.loggers.local) {
             logger.loggers.local[prop](...msg)
+          // Or add  server log entry if enabled
+          } else {
+            if (logger.loggers.$server[context.server]) {
+              logger.loggers.$server[context.server][prop](...msg)
+            }
+            logger.loggers.ssh[prop](...msg)
           }
           // Add global log entry if enabled
           if (logger.loggers.global) {
