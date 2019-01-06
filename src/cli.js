@@ -9,7 +9,7 @@ function resolvePath(path) {
   return resolve(process.cwd(), ...path.split('/'))
 }
 
-export function loadConfig(rcFile = null) {
+export async function loadConfig(rcFile = null) {
   let config
   if (rcFile === null) {
     for (rcFile of ['fabula.js', '.fabularc.js', '.fabularc']) {
@@ -26,7 +26,11 @@ export function loadConfig(rcFile = null) {
     consola.fatal('Fabula configuration file not found.')
     process.exit()
   }
-  return config.default || config
+  config = config.default || config
+  if (typeof config === 'function') {
+    config = await config()
+  }
+  return config
 }
 
 function showHelpAndExit() {
@@ -55,7 +59,7 @@ export default async function () {
   if (args._.length === 0 || args._[0] === 'help') {
     showHelpAndExit()
   }
-  const config = loadConfig()
+  const config = await loadConfig()
   if (args._.length === 2) {
     // Run on remote servers:
     // fabula <server1,server2,..> <script>
@@ -70,6 +74,9 @@ export default async function () {
     await run(source, config)
   } else {
     showHelpAndExit()
+  }
+  if (typeof config.done === 'function') {
+    await config.done()
   }
 }
 

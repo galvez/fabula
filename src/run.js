@@ -31,7 +31,7 @@ export async function runSource(server, conn, name, str, settings, logger) {
   const commands = await compile(name, str, settings)
   for (const command of commands) {
     if (await command.run(conn, logger)) {
-      process.exit()
+      break
     }
   }
 }
