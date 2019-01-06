@@ -1,3 +1,0 @@
-{"date":"2019-01-06T00:45:02.237Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"success test\""],"type":"info","level":3}
-{"date":"2019-01-06T00:45:02.356Z","args":["[local]","\"error test\""],"type":"info","level":3}
-{"date":"2019-01-06T00:45:02.357Z","args":["[local]","[FAIL]","node ../bin.js --code 1 --stderr \"error test\""],"type":"info","level":3}

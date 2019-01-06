@@ -1,23 +1,2 @@
-<fabula>
-import { launchTestSSHServer } from '../server'
-
-export default async function () {
-  const server1 = await launchTestSSHServer()
-  const server2 = await launchTestSSHServer()
-  return {
-  	ssh: {
-      server1: server1.settings,
-      server2: server2.settings
-    },
-    done() {
-      server1.server.close()
-      server2.server.close()
-    }
-  }
-}
-</fabula>
-
-<commands>
 local node ../bin.js --code 0 --stdout "success test"
 local node ../bin.js --code 1 --stderr "error test"
-</commands>
