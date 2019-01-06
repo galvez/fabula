@@ -110,13 +110,12 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
     if (cmd.match) {
       command = new Command(cmd, line, env)
       command.settings = settings
-      let _line = line
+      let _line = command.registerHandler(line)
       if (prepend && !/^\s+/.test(line)) {
         _line = command.prepend(prepend, line)
       }
       match = command.cmd.match.call(command, _line)
       if (match) {
-        command.registerHandler(_line)
         break
       }
     }
