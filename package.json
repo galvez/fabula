@@ -16,7 +16,7 @@
     "src"
   ],
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --runInBand",
     "lint": "eslint --fix --ext .js,.vue src",
     "docs:dev": "vuepress dev docs",
     "docs:build": "source deploy.sh",
