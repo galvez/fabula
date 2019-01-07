@@ -136,7 +136,7 @@ function compileComponent(name, source, settings) {
   const { fabula, script, strings, prepend } = compile.loadComponent(source)
   const componentSource = script.join('\n')
 
-  let _componentSettings = requireFromString(fabula.join('\n'))
+  const _componentSettings = requireFromString(fabula.join('\n'))
   const componentSettings = _componentSettings.default || _componentSettings
 
   const globalEnv = { ...settings.env }
@@ -172,7 +172,7 @@ export async function compile(name, source, settings, prepend, env = {}) {
 
   const _vars = {}
   settings.vars = new Proxy(_vars, {
-    get (obj, prop) {
+    get(obj, prop) {
       if (prop in obj) {
         return obj[prop]
       } else {

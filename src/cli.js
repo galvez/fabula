@@ -22,9 +22,9 @@ function activeStreams() {
   })
 }
 
-const fabulaConfigHelper = () => {
-  
-}
+// const fabulaConfigHelper = () => {
+
+// }
 
 export async function loadConfig(rcFile = null) {
   let config
