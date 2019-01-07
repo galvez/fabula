@@ -32,19 +32,23 @@ export default class Command {
     this.cmd = { ...cmd }
     this.params = {}
     this._env = env
+    this.init(line)
+    this.firstLine = true
+  }
+  init(line) {
     this.argv = parseArgv(line)
     this.local = this.argv[0] === 'local'
     if (this.local) {
       this.argv.shift()
     }
     this.source = [line]
-    this.firstLine = true
   }
   registerHandler(line) {
     let match
     // eslint-disable-next-line no-cond-assign
     if (match = line.match(/^(.+?)@([\w\d_]+)\s*$/)) {
       this.handler = match[2]
+      this.init(match[1])
       return match[1]
     } else {
       return line
@@ -60,12 +64,7 @@ export default class Command {
         .filter(part => part !== 'sudo').join(' ')
     }
     line = `${prepend} ${line}`
-    this.argv = parseArgv(line)
-    this.local = this.argv[0] === 'local'
-    if (this.local) {
-      this.argv.shift()
-    }
-    this.source = [line]
+    this.init(line)
     return line
   }
   handleLine(line) {

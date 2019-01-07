@@ -106,13 +106,14 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
     delete settings.commands
   }
   commandSearchList.push(execCommand)
+  let _line
   for (cmd of commandSearchList) {
     if (cmd.match) {
       command = new Command(cmd, line, env)
       command.settings = settings
-      let _line = command.registerHandler(line)
-      if (prepend && !/^\s+/.test(line)) {
-        _line = command.prepend(prepend, line)
+      _line = command.registerHandler(line)
+      if (prepend && !/^\s+/.test(_line)) {
+        _line = command.prepend(prepend, _line)
       }
       match = command.cmd.match.call(command, _line)
       if (match) {
@@ -123,7 +124,7 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
   if (match) {
     command.match = match
   }
-  if (command.handleLine(line)) {
+  if (command.handleLine(_line)) {
     push(command)
     return command
   } else {
