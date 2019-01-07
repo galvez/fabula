@@ -11,4 +11,5 @@ module.exports = {
 touch /parent/doesnt/exist @handler
 write /tmp/fabula-handler-test vars.touchErrorCode
 cat /tmp/fabula-handler-test
+rm /tmp/fabula-handler-test
 </commands>

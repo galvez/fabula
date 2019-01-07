@@ -106,13 +106,14 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
     delete settings.commands
   }
   commandSearchList.push(execCommand)
+  let _line
   for (cmd of commandSearchList) {
     if (cmd.match) {
       command = new Command(cmd, line, env)
       command.settings = settings
-      let _line = command.registerHandler(line)
-      if (prepend && !/^\s+/.test(line)) {
-        _line = command.prepend(prepend, line)
+      _line = command.registerHandler(line)
+      if (prepend && !/^\s+/.test(_line)) {
+        _line = command.prepend(prepend, _line)
       }
       match = command.cmd.match.call(command, _line)
       if (match) {
@@ -123,7 +124,7 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
   if (match) {
     command.match = match
   }
-  if (command.handleLine(line)) {
+  if (command.handleLine(_line)) {
     push(command)
     return command
   } else {
@@ -135,7 +136,7 @@ function compileComponent(name, source, settings) {
   const { fabula, script, strings, prepend } = compile.loadComponent(source)
   const componentSource = script.join('\n')
 
-  let _componentSettings = requireFromString(fabula.join('\n'))
+  const _componentSettings = requireFromString(fabula.join('\n'))
   const componentSettings = _componentSettings.default || _componentSettings
 
   const globalEnv = { ...settings.env }
@@ -171,7 +172,7 @@ export async function compile(name, source, settings, prepend, env = {}) {
 
   const _vars = {}
   settings.vars = new Proxy(_vars, {
-    get (obj, prop) {
+    get(obj, prop) {
       if (prop in obj) {
         return obj[prop]
       } else {

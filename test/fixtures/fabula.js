@@ -1,5 +1,9 @@
 import { launchTestSSHServer } from '../server'
 
+function reporter (info) {
+  return `${info.args.join(' ')}\n`
+}
+
 export default async function() {
   const [
     server1,
@@ -11,11 +15,11 @@ export default async function() {
   return {
     ssh: {
       server1: {
-        log: 'logs/server1-log.log',
+        log: { path: 'logs/server1-log.log', reporter },
         ...server1.settings
       },
       server2: {
-        log: 'logs/server2-log.log',
+        log: { path: 'logs/server2-log.log', reporter },
         ...server2.settings
       }
     },
@@ -24,9 +28,9 @@ export default async function() {
       server2.server.close()
     },
     logs: {
-      global: 'logs/global-log.log',
-      local: 'logs/local-log.log',
-      ssh: 'logs/ssh-log.log'
+      global: { path: 'logs/global-log.log', reporter },
+      local: { path: 'logs/local-log.log', reporter },
+      ssh: { path: 'logs/ssh-log.log', reporter }
     },
     env: {
       GLOBAL_VAR: 'GLOBAL_VAR',

@@ -1,6 +1,6 @@
 {
   "name": "fabula",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Minimalist server configuration and task management",
   "author": "Jonas Galvez <jonasgalvez@gmail.com>",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "src"
   ],
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --runInBand",
     "lint": "eslint --fix --ext .js,.vue src",
     "docs:dev": "vuepress dev docs",
     "docs:build": "source deploy.sh",
@@ -37,7 +37,6 @@
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "buffer-equal-constant-time": "^1.0.1",
-    "crypto": "^1.0.1",
     "eslint": "^5.9.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",

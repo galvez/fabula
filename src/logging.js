@@ -5,12 +5,15 @@ import consola from 'consola'
 export let active = 0
 
 class Reporter {
-  constructor(stream) {
+  constructor(stream, reporter = null) {
     this.stream = stream
+    this.reporter = reporter || function (logObj) {
+      return `${JSON.stringify(logObj)}\n`
+    }
   }
   log(logObj) {
     active += 1
-    this.stream.write(JSON.stringify(logObj) + '\n', () => {
+    this.stream.write(this.reporter(logObj), () => {
       active -= 1
     })
   }
@@ -32,18 +35,18 @@ class Logger {
     }
     if (config.ssh) {
       for (const server in config.ssh) {
-        if (typeof config.ssh[server].log === 'string') {
+        if (config.ssh[server].log) {
           this.addLogger(`server:${server}`, config.ssh[server].log)
         }
       }
     }
   }
   // Creates a logger under a name and path
-  addLogger(logger, path) {
+  addLogger(logger, loggerInfo) {
+    const path = loggerInfo.path || loggerInfo
     const stream = createWriteStream(path, { flags: 'a' })
-    this.loggers[logger] = consola.create(({
-      reporters: [new Reporter(stream)]
-    }))
+    const reporters = [new Reporter(stream, loggerInfo.reporter)]    
+    this.loggers[logger] = consola.create(({ reporters }))
     return this.loggers[logger]
   }
   // Returns a logger by name

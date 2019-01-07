@@ -22,6 +22,10 @@ function activeStreams() {
   })
 }
 
+// const fabulaConfigHelper = () => {
+
+// }
+
 export async function loadConfig(rcFile = null) {
   let config
   if (rcFile === null) {

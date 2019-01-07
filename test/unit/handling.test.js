@@ -10,7 +10,7 @@ const
 describe('test handling', () => {
 
   test('single handler', async () => {
-    const { stdout, stderr } = spawnFabula('handler')
-    console.log(stdout)
+    const { stdout } = spawnFabula('handler')
+    expect(stdout.toString().replace(/\[[\d:]+\] /g, '')).toMatchSnapshot()
   })
 })
