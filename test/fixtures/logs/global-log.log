@@ -1,21 +1,21 @@
-{"date":"2019-01-07T03:24:44.188Z","args":["[local]","\"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.192Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.197Z","args":["[local]","\"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.197Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.308Z","args":["[local]","\"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.308Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.318Z","args":["[local]","\"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.319Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.321Z","args":["[server1]","\"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.322Z","args":["[server1]","[OK]","bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.332Z","args":["[server2]","\"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.333Z","args":["[server2]","[OK]","bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.334Z","args":["[server1]","\"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.334Z","args":["[server1]","[FAIL]","bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.339Z","args":["[server2]","\"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.339Z","args":["[server2]","[FAIL]","bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.800Z","args":["[local]","touch: /parent/doesnt/exist: No such file or directory"],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.804Z","args":["[local]","[FAIL]","touch /parent/doesnt/exist"],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.812Z","args":["[local]","1"],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.812Z","args":["[local]","[OK]","cat /tmp/fabula-handler-test"],"type":"info","level":3}
-{"date":"2019-01-07T03:24:44.817Z","args":["[local]","[OK]","rm /tmp/fabula-handler-test"],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.234Z","args":["[local]","\"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.257Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.261Z","args":["[local]","\"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.261Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.400Z","args":["[local]","\"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.401Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.407Z","args":["[local]","\"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.408Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.416Z","args":["[server2]","\"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.416Z","args":["[server2]","[OK]","bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.421Z","args":["[server1]","\"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.422Z","args":["[server1]","[OK]","bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.426Z","args":["[server2]","\"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.427Z","args":["[server2]","[FAIL]","bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.431Z","args":["[server1]","\"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.431Z","args":["[server1]","[FAIL]","bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.937Z","args":["[local]","touch: /parent/doesnt/exist: No such file or directory"],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.943Z","args":["[local]","[FAIL]","touch /parent/doesnt/exist"],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.954Z","args":["[local]","1"],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.954Z","args":["[local]","[OK]","cat /tmp/fabula-handler-test"],"type":"info","level":3}
+{"date":"2019-01-07T03:38:43.961Z","args":["[local]","[OK]","rm /tmp/fabula-handler-test"],"type":"info","level":3}
