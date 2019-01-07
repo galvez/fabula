@@ -1,13 +1,13 @@
-{"date":"2019-01-07T03:38:43.231Z","args":["[local]","\"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.256Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.261Z","args":["[local]","\"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.261Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.400Z","args":["[local]","\"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.401Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.407Z","args":["[local]","\"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.408Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.935Z","args":["[local]","touch: /parent/doesnt/exist: No such file or directory"],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.943Z","args":["[local]","[FAIL]","touch /parent/doesnt/exist"],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.954Z","args":["[local]","1"],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.954Z","args":["[local]","[OK]","cat /tmp/fabula-handler-test"],"type":"info","level":3}
-{"date":"2019-01-07T03:38:43.960Z","args":["[local]","[OK]","rm /tmp/fabula-handler-test"],"type":"info","level":3}
+[local] "server1 success test"
+[local] [OK] node ../bin.js --code 0 --stdout "server1 success test"
+[local] "server2 success test"
+[local] [OK] node ../bin.js --code 0 --stdout "server2 success test"
+[local] "server1 error test"
+[local] [OK] node ../bin.js --code 1 --stderr "server1 error test"
+[local] "server2 error test"
+[local] [OK] node ../bin.js --code 1 --stderr "server2 error test"
+[local] touch: /parent/doesnt/exist: No such file or directory
+[local] [FAIL] touch /parent/doesnt/exist
+[local] 1
+[local] [OK] cat /tmp/fabula-handler-test
+[local] [OK] rm /tmp/fabula-handler-test

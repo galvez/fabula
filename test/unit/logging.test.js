@@ -17,10 +17,6 @@ const
   fabulaBin = resolve(__dirname, '../../bin/fabula.js'),
   spawnFabula = (...args) => spawnSync(fabulaBin, args, opts)
 
-function extractMsg(line) {
-  return JSON.parse(line).args.join(' ')
-}
-
 function extractLogs(stdout, stderr) {
   stdout = stdout.split(/\n/)
   stderr = stderr.split(/\n/)
@@ -34,7 +30,6 @@ function extractLogs(stdout, stderr) {
 }
 
 describe('test logging', () => {
-
   test('all logs', async () => {
     await Promise.all(
       Object.keys(logs).map((log) => new Promise((resolve) => {
@@ -49,7 +44,7 @@ describe('test logging', () => {
     )
     const compareLogs = (raw, msg) => {
       raw.split(/\n/).forEach((line, i) => {
-        expect(msg[i]).toContain(extractMsg(line))
+        expect(msg[i]).toContain(line)
       })
     }
     for (const log in logs) { 
