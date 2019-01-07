@@ -33,11 +33,14 @@ export default {
       if (this.string) {
         const settingsKey = this.match[2]
         this.params.fileContents = () => {
-          // eslint-disable-next-line no-eval
-          if (settingsKey.startsWith('strings.')) {
-            return eval(`this.settings.${settingsKey}`).split(/\n/g)
-          } else if (settingsKey.startsWith('vars.')) {
+          // If it's a variable, return raw value
+          if (settingsKey.startsWith('vars.')) {
+            // eslint-disable-next-line no-eval
             return eval(`this.settings.${settingsKey}`)
+          // Treat everything else as a string
+          } else {
+            // eslint-disable-next-line no-eval
+            return eval(`this.settings.${settingsKey}`).split(/\n/g)
           }
         }
         return false
