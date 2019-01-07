@@ -1,13 +1,8 @@
-{"date":"2019-01-07T02:08:12.698Z","args":["[local]","\"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:12.706Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:12.710Z","args":["[local]","\"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:12.711Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:12.841Z","args":["[local]","\"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:12.842Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:12.849Z","args":["[local]","\"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:12.849Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
-{"date":"2019-01-07T02:08:13.703Z","args":["[local]","touch: /parent/doesnt/exist: No such file or directory"],"type":"info","level":3}
-{"date":"2019-01-07T02:08:13.709Z","args":["[local]","[FAIL]","touch /parent/doesnt/exist @handler"],"type":"info","level":3}
-{"date":"2019-01-07T02:08:13.725Z","args":["[local]","1"],"type":"info","level":3}
-{"date":"2019-01-07T02:08:13.726Z","args":["[local]","[OK]","cat /tmp/fabula-handler-test"],"type":"info","level":3}
-{"date":"2019-01-07T02:08:13.731Z","args":["[local]","[OK]","rm /tmp/fabula-handler-test"],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.177Z","args":["[local]","\"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.183Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server1 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.188Z","args":["[local]","\"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.188Z","args":["[local]","[OK]","node ../bin.js --code 0 --stdout \"server2 success test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.292Z","args":["[local]","\"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.292Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server1 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.303Z","args":["[local]","\"server2 error test\""],"type":"info","level":3}
+{"date":"2019-01-07T03:14:35.303Z","args":["[local]","[OK]","node ../bin.js --code 1 --stderr \"server2 error test\""],"type":"info","level":3}
