@@ -68,7 +68,7 @@ describe('test preprocessor', () => {
     expect(results.advanced[5].local).toBe(true)
     expect(results.advanced[5].source[0]).toBe('local write /tmp/file2 files[1].contents')
     expect(results.advanced[5].params.filePath).toBe('/tmp/file2')
-    expect(results.advanced[5].params.fileContents).toMatchObject(['Contents \' of file2'])
+    expect(results.advanced[5].params.fileContents.toString()).toMatchSnapshot()
   })
 
   test('local echo <string-with-newline> > /tmp/file1"', () => {

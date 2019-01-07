@@ -34,13 +34,14 @@ function extractLogs(stdout, stderr) {
 }
 
 describe('test logging', () => {
-  beforeAll(() => {
-    Object.keys(logs).forEach((log) => {
-      writeFileSync(logs[log], '')
-    })
-  })
 
   test('all logs', async () => {
+    await Promise.all(
+      Object.keys(logs).map((log) => new Promise((resolve) => {
+        writeFileSync(logs[log], '')
+        resolve()
+      }))
+    )
     const { stdout, stderr } = spawnFabula('all', 'logging')
     const output = extractLogs(
       stdout.toString().trim(),

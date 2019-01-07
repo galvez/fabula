@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test preprocessor write /tmp/file2 <ref> 1`] = `
+"function () {
+          // eslint-disable-next-line no-eval
+          if (settingsKey.startsWith('strings.')) {
+            return eval('this.settings.' + settingsKey).split(/\\\\n/g);
+          } else if (settingsKey.startsWith('vars.')) {
+            return eval('this.settings.' + settingsKey);
+          }
+        }"
+`;
