@@ -21,21 +21,15 @@ function extractMsg(line) {
   return JSON.parse(line).args.join(' ')
 }
 
-function filterAndSummarize(lines, re) {
-  return lines
-    .filter(line => line.match(re))
-    .map(line => line.replace(/\[[\d:]+\] /g, ''))
-}
-
 function extractLogs(stdout, stderr) {
   stdout = stdout.split(/\n/)
   stderr = stderr.split(/\n/)
   return {
-    global: stdout.map(line => line.replace(/\[[\d:]+\] /g, '')),
-    local: filterAndSummarize(stdout, /\[local\]/),
-    ssh: filterAndSummarize(stdout, /\[server\d\]/),
-    server1: filterAndSummarize(stdout, /\[server1\]/),
-    server2:  filterAndSummarize(stdout, /\[server2\]/),
+    global: stdout,
+    local: stdout.filter(line => line.match(/\[local\]/)),
+    ssh: stdout.filter(line => line.match(/\[server\d\]/)),
+    server1: stdout.filter(line => line.match(/\[server1\]/)),
+    server2:  stdout.filter(line => line.match(/\[server2\]/)),
   }
 }
 
