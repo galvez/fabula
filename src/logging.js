@@ -45,7 +45,7 @@ class Logger {
   addLogger(logger, loggerInfo) {
     const path = loggerInfo.path || loggerInfo
     const stream = createWriteStream(path, { flags: 'a' })
-    const reporters = [new Reporter(stream, loggerInfo.reporter)]    
+    const reporters = [new Reporter(stream, loggerInfo.reporter)]
     this.loggers[logger] = consola.create(({ reporters }))
     return this.loggers[logger]
   }
