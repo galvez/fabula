@@ -45,7 +45,13 @@ export default {
     }
   },
   async command(conn, logger) {
-    const settings = { ...this.settings, $cwd: this.params.cwd }
+    const settings = {
+      ...this.settings,
+      $cwd: resolve(
+        this.settings.$cwd || process.cwd(),
+        this.params.cwd
+      )
+    }
     const commands = this.params.commands.map((cmd) => {
       if (this.local && !/^\s+/.test(cmd)) {
         cmd = `local ${cmd}`
