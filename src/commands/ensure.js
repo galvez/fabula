@@ -48,7 +48,11 @@ export default {
     const settings = {
       ...this.settings,
       fail: true,
-      $cwd: this.params.cwd }
+      $cwd: resolve(
+        this.settings.$cwd || process.cwd(),
+        this.params.cwd
+      )
+    }
     const commands = this.params.commands.map((cmd) => {
       if (this.local && !/^\s+/.test(cmd)) {
         cmd = `local ${cmd}`
