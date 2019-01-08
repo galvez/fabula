@@ -14,10 +14,7 @@ export function execLocal(cmd, env = {}, cwd = null) {
       }
 
     const stream = spawn(...cmd, options)
-
-    stream.on('error', (err) => {
-      resolve(err)
-    })
+    stream.on('error', (err) => resolve(err))
     stream.stdout.on('data', (data) => { stdout += data })
     stream.stderr.on('data', (data) => { stderr += data })
     stream.on('exit', (code) => {
@@ -27,9 +24,19 @@ export function execLocal(cmd, env = {}, cwd = null) {
 }
 
 export function localWrite(filePath, fileContents) {
-  writeFileSync(filePath, fileContents)
+  try {
+    writeFileSync(filePath, fileContents)
+    return { code: 0 }
+  } catch (err) {
+    return { code: 1, stderr: err.message || err.toString() }
+  }
 }
 
 export function localAppend(filePath, fileContents) {
-  appendFileSync(filePath, fileContents)
+  try {
+    appendFileSync(filePath, fileContents)
+    return { code: 0 }
+  } catch (err) {
+    return { code: 1, stderr: err.message || err.toString() }
+  }
 }
