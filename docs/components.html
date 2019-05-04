@@ -7,8 +7,8 @@
     <meta name="description" content="Minimalist server configuration and task management.">
     
     
-    <link rel="preload" href="/fabula/assets/css/0.styles.22f05657.css" as="style"><link rel="preload" href="/fabula/assets/js/app.91767546.js" as="script"><link rel="preload" href="/fabula/assets/js/6.47681b1e.js" as="script"><link rel="prefetch" href="/fabula/assets/js/10.87366a9d.js"><link rel="prefetch" href="/fabula/assets/js/11.7e4316f2.js"><link rel="prefetch" href="/fabula/assets/js/2.faeb1fcf.js"><link rel="prefetch" href="/fabula/assets/js/3.54dc6eca.js"><link rel="prefetch" href="/fabula/assets/js/4.cb120cc3.js"><link rel="prefetch" href="/fabula/assets/js/5.401b6b6e.js"><link rel="prefetch" href="/fabula/assets/js/7.16234a24.js"><link rel="prefetch" href="/fabula/assets/js/8.6e09d1a7.js"><link rel="prefetch" href="/fabula/assets/js/9.1df760de.js">
-    <link rel="stylesheet" href="/fabula/assets/css/0.styles.22f05657.css">
+    <link rel="preload" href="/fabula/assets/css/0.styles.949fba0d.css" as="style"><link rel="preload" href="/fabula/assets/js/app.9c9741e2.js" as="script"><link rel="preload" href="/fabula/assets/js/6.4571c76f.js" as="script"><link rel="prefetch" href="/fabula/assets/js/10.94ab74aa.js"><link rel="prefetch" href="/fabula/assets/js/11.28002d60.js"><link rel="prefetch" href="/fabula/assets/js/2.d8f505d4.js"><link rel="prefetch" href="/fabula/assets/js/3.595188cd.js"><link rel="prefetch" href="/fabula/assets/js/4.9602ac92.js"><link rel="prefetch" href="/fabula/assets/js/5.798c9afc.js"><link rel="prefetch" href="/fabula/assets/js/7.e7d4a4a6.js"><link rel="prefetch" href="/fabula/assets/js/8.391f9b93.js"><link rel="prefetch" href="/fabula/assets/js/9.dca480d7.js">
+    <link rel="stylesheet" href="/fabula/assets/css/0.styles.949fba0d.css">
   </head>
   <body>
     <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/fabula/" class="home-link router-link-active"><!----> <span class="site-name">Fabula</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/nuxt/fabula" target="_blank" rel="noopener noreferrer" class="repo-link">
@@ -119,7 +119,9 @@ fabula . tasks/another-task
 fabula . tasks/some-other-task
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>commands</span><span class="token punctuation">&gt;</span></span>
 </code></pre></div><p>When <code>tasks/another-task</code> runs, all settings from the caller component will be
-merged with its own settings -- the latter having precedence.</p> <p>Alternatively, you may also use a <strong>Fabula</strong> <em>component settings function</em>.
+merged with its own settings -- the latter having precedence.</p> <blockquote><p>The following refers to an unimplemented Fabula feature. Work has
+already started for these features to work and the next bits of
+documentation are currently serving as a specification.</p></blockquote> <p>Alternatively, you may also use a <strong>Fabula</strong> <em>component settings function</em>.
 If the default export in the <code>&lt;fabula&gt;</code> block is a function, it will run before
 any commands and also allow you to <strong>access its parent settings and current
 execution state</strong> through its <strong>second</strong> and <strong>third</strong> arguments:</p> <div class="language-xml extra-class"><pre class="language-xml"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>fabula</span><span class="token punctuation">&gt;</span></span>
@@ -140,6 +142,6 @@ only provides access to <code>settings</code>, <code>history</code> and <code>ab
         </a>
         →
       </span></p></div> </div> <!----></div></div>
-    <script src="/fabula/assets/js/app.91767546.js" defer></script><script src="/fabula/assets/js/6.47681b1e.js" defer></script>
+    <script src="/fabula/assets/js/app.9c9741e2.js" defer></script><script src="/fabula/assets/js/6.4571c76f.js" defer></script>
   </body>
 </html>
