@@ -1,51 +1,11 @@
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist
-[local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
+[local] "server1 success test"
+[local] [OK] node ../bin.js --code 0 --stdout "server1 success test"
+[local] "server2 success test"
+[local] [OK] node ../bin.js --code 0 --stdout "server2 success test"
+[local] "server1 error test"
+[local] [OK] node ../bin.js --code 1 --stderr "server1 error test"
+[local] "server2 error test"
+[local] [OK] node ../bin.js --code 1 --stderr "server2 error test"
 [local] touch: /parent/doesnt/exist: No such file or directory
 [local] [FAIL] touch /parent/doesnt/exist
 [local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode

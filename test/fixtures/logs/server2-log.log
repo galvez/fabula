@@ -1,0 +1,4 @@
+[server2] "server2 success test"
+[server2] [OK] bin.js --code 0 --stdout "server2 success test"
+[server2] "server2 error test"
+[server2] [FAIL] bin.js --code 1 --stderr "server2 error test"
