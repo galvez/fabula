@@ -183,8 +183,8 @@ fabula . tasks/some-other-task
 When `tasks/another-task` runs, all settings from the caller component will be
 merged with its own settings -- the latter having precedence. 
 
-> The following refers to an unimplemented Fabula feature. Work has 
-> already started for these features to work and the next bits of 
+> **The rest of this page refers to an unimplemented Fabula feature**. Work 
+> has already started for these features to work and the following bits of
 > documentation are currently serving as a specification.
 
 Alternatively, you may also use a **Fabula** _component settings function_. 
