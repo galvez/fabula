@@ -1,10 +1,10 @@
-import { launchTestSSHServer } from '../server'
+const { launchTestSSHServer } = require('../server')
 
 function reporter (info) {
   return `${info.args.join(' ')}\n`
 }
 
-export default async function() {
+module.exports = async function() {
   const [
     server1,
     server2

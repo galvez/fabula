@@ -1,16 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test handling single handler 1`] = `
-"Error: Cannot find module 'fabula'
-    at new <anonymous> (/Users/jonas/Repos/fabula/node_modules/esm/esm.js:1)
-    at el (/Users/jonas/Repos/fabula/node_modules/esm/esm.js:1)
-    at /Users/jonas/Repos/fabula/node_modules/esm/esm.js:1
-    at Su (/Users/jonas/Repos/fabula/node_modules/esm/esm.js:1)
-    at qa (/Users/jonas/Repos/fabula/node_modules/esm/esm.js:1)
-    at Eu (/Users/jonas/Repos/fabula/node_modules/esm/esm.js:1)
-    at Module.<anonymous> (/Users/jonas/Repos/fabula/node_modules/esm/esm.js:1)
-    at require (/Users/jonas/Repos/fabula/node_modules/esm/esm.js:1)
-    at Object.<anonymous> (/Users/jonas/Code/Next/fabula/bin/fabula.js:6:1)
-    at Module._compile (internal/modules/cjs/loader.js:816:30)
+"[05:08:56] [INFO] [local] touch: /parent/doesnt/exist: No such file or directory
+[05:08:56] [INFO] [local] [FAIL] touch /parent/doesnt/exist
+[05:08:56] [INFO] [local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
+[05:08:56] [INFO] [local] 1
+[05:08:56] [INFO] [local] [OK] cat /tmp/fabula-handler-test
+[05:08:56] [INFO] [local] [OK] rm /tmp/fabula-handler-test
 "
 `;

@@ -8,7 +8,7 @@ const spawnFabula = (...args) => spawnSync(fabulaBin, args, opts)
 
 describe('test handling', () => {
   test('single handler', async () => {
-    const { stderr } = spawnFabula('handler')
-    expect(stderr.toString()).toMatchSnapshot()
+    const { stdout } = spawnFabula('handler')
+    expect(stdout.toString()).toMatchSnapshot()
   })
 })

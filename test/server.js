@@ -11,7 +11,7 @@ const ip = require('ip')
 const getPort = require('get-port')
 
 // Local imports
-const { parseArgv } = require('../src/command')
+const { parseArgv } = require('../dist/fabula')
 const bin = require('./bin')
   
 // Settings
