@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test handling single handler 1`] = `
-"[05:08:56] [INFO] [local] touch: /parent/doesnt/exist: No such file or directory
-[05:08:56] [INFO] [local] [FAIL] touch /parent/doesnt/exist
-[05:08:56] [INFO] [local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
-[05:08:56] [INFO] [local] 1
-[05:08:56] [INFO] [local] [OK] cat /tmp/fabula-handler-test
-[05:08:56] [INFO] [local] [OK] rm /tmp/fabula-handler-test
+"[INFO] [local] touch: /parent/doesnt/exist: No such file or directory
+[INFO] [local] [FAIL] touch /parent/doesnt/exist
+[INFO] [local] [OK] write /tmp/fabula-handler-test vars.touchErrorCode
+[INFO] [local] 1
+[INFO] [local] [OK] cat /tmp/fabula-handler-test
+[INFO] [local] [OK] rm /tmp/fabula-handler-test
 "
 `;
