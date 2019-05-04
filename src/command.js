@@ -1,3 +1,4 @@
+import merge from 'lodash.merge'
 
 export function parseArgv(line) {
   // Yes, I did write my own argv parser.
@@ -7,14 +8,14 @@ export function parseArgv(line) {
   const tokens = []
   let token = ''
   let quote = false
-  let escape = false
+  let _escape = false
   for (let i = 0; i < line.length; i++) {
-    if (line[i] === ' ' && !quote && !escape) {
+    if (line[i] === ' ' && !quote && !_escape) {
       tokens.push(token)
       token = ''
     } else if (line[i].match(/\\/)) {
-      escape = true
-    } else if (line[i].match(/['"`]/) && !escape) {
+      _escape = true
+    } else if (line[i].match(/['"`]/) && !_escape) {
       quote = !quote
       token += line[i]
     } else {
@@ -119,14 +120,21 @@ export default class Command {
   }
   async run(conn, logger, retry = null) {
     let abort = false
+    const fabula = {
+      vars: this.settings.vars,
+      abort: () => {
+        abort = true
+      }
+    }
+    if (this.settings.$setter) {
+      const setterResult = await this.settings.$setter(fabula)
+      merge(this.settings, setterResult)
+      if (abort) {
+        return true
+      }
+    }
     const result = await this.cmd.command.call(this, conn, logger)
     if (this.handler && this.settings[this.handler]) {
-      const fabula = {
-        vars: this.settings.vars,
-        abort: () => {
-          abort = true
-        }
-      }
       await this.settings[this.handler](result, fabula)
     }
     if (result) {

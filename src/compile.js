@@ -137,7 +137,13 @@ function compileComponent(name, source, settings) {
   const componentSource = script.join('\n')
 
   const _componentSettings = requireFromString(fabula.join('\n'))
-  const componentSettings = _componentSettings.default || _componentSettings
+  let componentSettings = _componentSettings.default || _componentSettings
+
+  if (typeof componentSettings === 'function') {
+    componentSettings = {
+      $setter: componentSettings
+    }
+  }
 
   const globalEnv = { ...settings.env }
   delete globalEnv.local
