@@ -1,24 +1,22 @@
- 
-const 
 
-  // Standard library imports
-  fs = require('fs'),
-  { resolve } = require('path'),
-  crypto = require('crypto'),
+// Standard library imports
+const fs = require('fs')
+const { resolve } = require('path')
+const crypto = require('crypto')
 
-  // Node module imports
-  buffersEqual = require('buffer-equal-constant-time'),
-  ssh2 = require('ssh2'),
-  ip = require('ip'),
-  getPort = require('get-port'),
+// Node module imports
+const buffersEqual = require('buffer-equal-constant-time')
+const ssh2 = require('ssh2')
+const ip = require('ip')
+const getPort = require('get-port')
 
-  // Local imports
-  { parseArgv } = require('../src/command'),
-  bin = require('./bin'),
+// Local imports
+const { parseArgv } = require('../src/command')
+const bin = require('./bin')
   
-  // Settings
-  privateKey = resolve(__dirname, 'fixtures', 'keys', 'ssh.private'),
-  passphrase = 'fabula'
+// Settings
+const privateKey = resolve(__dirname, 'fixtures', 'keys', 'ssh.private')
+const passphrase = 'fabula'
 
 function genPublicKey() {
   const pubKey = fs.readFileSync(resolve(__dirname, 'fixtures', 'keys', 'ssh.public'))
@@ -51,13 +49,11 @@ function authenticateSession(ctx) {
 }
 
 exports.launchTestSSHServer = async function() {
-
   const privateKey = resolve(__dirname, 'fixtures', 'keys', 'ssh.private')
   const hostKeys = [{
     key: fs.readFileSync(privateKey),
     passphrase
   }]
-
   const server = new ssh2.Server({ hostKeys }, (client) => {
     client.on('authentication', authenticateSession)
     client.on('session', (acceptSession) => {
