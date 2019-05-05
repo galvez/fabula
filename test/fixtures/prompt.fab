@@ -1,0 +1,9 @@
+<fabula>
+export default async ({ prompt }) => ({
+  configOption: await prompt('Config option:')
+})
+</fabula>
+
+<commands>
+local echo <%= configOption %>
+</commands>

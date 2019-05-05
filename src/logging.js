@@ -28,9 +28,11 @@ class Logger {
         }
       })
     }
-    for (const logContext of ['global', 'local', 'ssh']) {
-      if (logContext in config.logs) {
-        this.addLogger(logContext, config.logs[logContext])
+    if (config.logs) {
+      for (const logContext of ['global', 'local', 'ssh']) {
+        if (logContext in config.logs) {
+          this.addLogger(logContext, config.logs[logContext])
+        }
       }
     }
     if (config.ssh) {
@@ -85,13 +87,18 @@ export function createLogger(name, config) {
             logger.loggers.local[prop](...msg)
           // Or add  server log entry if enabled
           } else {
-            if (logger.loggers.$server[context.server]) {
+            if (
+              logger.loggers.$server[context.server] &&
+              logger.loggers.$server[context.server][prop]
+            ) {
               logger.loggers.$server[context.server][prop](...msg)
             }
-            logger.loggers.ssh[prop](...msg)
+            if (logger.loggers.ssh && logger.loggers.ssh[prop]) {
+              logger.loggers.ssh[prop](...msg)
+            }
           }
           // Add global log entry if enabled
-          if (logger.loggers.global) {
+          if (logger.loggers.global && logger.loggers.global[prop]) {
             logger.loggers.global[prop](...msg)
           }
         }

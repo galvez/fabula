@@ -3,7 +3,7 @@
 const consola = require('consola')
 
 try {
-  require('../dist/fabula').cli()
+  require('esm')(module)('../dist/fabula').cli()
 } catch (err) {
   consola.fatal(err)
   process.exit(1)

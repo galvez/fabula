@@ -1,15 +1,15 @@
 <fabula>
-module.exports = {
+export default {
   fail: false,
-  handler(result, fabula) {
-    fabula.vars.touchErrorCode = result.code
-  }
+  handle: (result) => ({
+    touchErrorCode: result.code
+  })
 }
 </fabula>
 
 <commands local>
-touch /parent/doesnt/exist @handler
-write /tmp/fabula-handler-test vars.touchErrorCode
+touch /parent/doesnt/exist @handle:
+  write /tmp/fabula-handler-test <%= touchErrorCode %>
 cat /tmp/fabula-handler-test
 rm /tmp/fabula-handler-test
 </commands>

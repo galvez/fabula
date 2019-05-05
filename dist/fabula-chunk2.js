@@ -9,7 +9,25 @@ const __chunk_1 = require('./fabula-chunk.js');
 const Module = _interopDefault(require('module'));
 const template = _interopDefault(require('lodash.template'));
 const merge = _interopDefault(require('lodash.merge'));
+const prompts = _interopDefault(require('prompts'));
 const __chunk_3 = require('./fabula-chunk3.js');
+
+async function simplePrompt(message) {
+  const result = await prompts({
+    name: 'value',
+    type: 'text',
+    message
+  });
+  return result.value
+}
+
+function prompt(params) {
+  if (typeof params === 'string') {
+    return simplePrompt(params)
+  } else if (typeof params === 'object') {
+    return prompts(params)
+  }
+}
 
 function parseArgv(line) {
   // Yes, I did write my own argv parser.
@@ -19,14 +37,14 @@ function parseArgv(line) {
   const tokens = [];
   let token = '';
   let quote = false;
-  let escape = false;
+  let _escape = false;
   for (let i = 0; i < line.length; i++) {
-    if (line[i] === ' ' && !quote && !escape) {
+    if (line[i] === ' ' && !quote && !_escape) {
       tokens.push(token);
       token = '';
     } else if (line[i].match(/\\/)) {
-      escape = true;
-    } else if (line[i].match(/['"`]/) && !escape) {
+      _escape = true;
+    } else if (line[i].match(/['"`]/) && !_escape) {
       quote = !quote;
       token += line[i];
     } else {
@@ -108,12 +126,12 @@ class Command {
   get env() {
     if (this.local) {
       return {
-        ...this.settings.env.local,
+        ...this.settings.env && this.settings.env.local,
         ...this._env
       }
     } else {
       return {
-        ...this.settings.env.ssh,
+        ...this.settings.env && this.settings.env.ssh,
         ...this._env
       }
     }
@@ -131,14 +149,22 @@ class Command {
   }
   async run(conn, logger, retry = null) {
     let abort = false;
+    const fabula = {
+      prompt,
+      vars: this.settings.vars,
+      abort: () => {
+        abort = true;
+      }
+    };
+    if (this.settings.$setter) {
+      const setterResult = await this.settings.$setter(fabula);
+      merge(this.settings, setterResult);
+      if (abort) {
+        return true
+      }
+    }
     const result = await this.cmd.command.call(this, conn, logger);
     if (this.handler && this.settings[this.handler]) {
-      const fabula = {
-        vars: this.settings.vars,
-        abort: () => {
-          abort = true;
-        }
-      };
       await this.settings[this.handler](result, fabula);
     }
     if (result) {
@@ -337,7 +363,13 @@ function compileComponent(name, source, settings) {
   const componentSource = script.join('\n');
 
   const _componentSettings = requireFromString(fabula.join('\n'));
-  const componentSettings = _componentSettings.default || _componentSettings;
+  let componentSettings = _componentSettings.default || _componentSettings;
+
+  if (typeof componentSettings === 'function') {
+    componentSettings = {
+      $setter: componentSettings
+    };
+  }
 
   const globalEnv = { ...settings.env };
   delete globalEnv.local;
@@ -437,9 +469,11 @@ class Logger {
         }
       })
     };
-    for (const logContext of ['global', 'local', 'ssh']) {
-      if (logContext in config.logs) {
-        this.addLogger(logContext, config.logs[logContext]);
+    if (config.logs) {
+      for (const logContext of ['global', 'local', 'ssh']) {
+        if (logContext in config.logs) {
+          this.addLogger(logContext, config.logs[logContext]);
+        }
       }
     }
     if (config.ssh) {
@@ -494,13 +528,18 @@ function createLogger(name, config) {
             logger.loggers.local[prop](...msg);
           // Or add  server log entry if enabled
           } else {
-            if (logger.loggers.$server[context.server]) {
+            if (
+              logger.loggers.$server[context.server] &&
+              logger.loggers.$server[context.server][prop]
+            ) {
               logger.loggers.$server[context.server][prop](...msg);
             }
-            logger.loggers.ssh[prop](...msg);
+            if (logger.loggers.ssh && logger.loggers.ssh[prop]) {
+              logger.loggers.ssh[prop](...msg);
+            }
           }
           // Add global log entry if enabled
-          if (logger.loggers.global) {
+          if (logger.loggers.global && logger.loggers.global[prop]) {
             logger.loggers.global[prop](...msg);
           }
         }

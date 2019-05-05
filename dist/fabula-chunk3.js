@@ -5,15 +5,12 @@ const child_process = require('child_process');
 
 function execLocal(cmd, env = {}, cwd = null) {
   return new Promise((resolve) => {
-    let
-      stdout = '';
-
+    let stdout = '';
     let stderr = '';
-    const
-      options = {
-        env: { ...process.env, ...env },
-        cwd: cwd || process.cwd()
-      };
+    const options = {
+      env: { ...process.env, ...env },
+      cwd: cwd || process.cwd()
+    };
 
     const stream = child_process.spawn(...cmd, options);
     stream.on('error', (err) => resolve(err));

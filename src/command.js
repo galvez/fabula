@@ -115,12 +115,12 @@ export default class Command {
   get env() {
     if (this.local) {
       return {
-        ...this.settings.env.local,
+        ...this.settings.env && this.settings.env.local,
         ...this._env
       }
     } else {
       return {
-        ...this.settings.env.ssh,
+        ...this.settings.env && this.settings.env.ssh,
         ...this._env
       }
     }

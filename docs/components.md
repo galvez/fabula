@@ -61,13 +61,13 @@ optionally async function that returns such an object.
 ```xml
 <fabula>
 export default async (fabula) => ({
-  fail: false,
-  host: 'server',
-  hostname: '1.2.3.4',
-  username: await fabula.prompt('Username:'),
-  privateKey: await fabula.prompt('Private key:'),
+  configOption: await fabula.prompt('Config option:'),
 })
 </fabula>
+
+<commands>
+local echo <%= configOption %>
+</commands>
 ```
 
 ## Syntax
