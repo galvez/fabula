@@ -13,6 +13,7 @@ require('read');
 require('ssh2');
 require('./fabula-chunk.js');
 require('module');
+require('os');
 require('lodash.template');
 require('lodash.merge');
 require('prompts');

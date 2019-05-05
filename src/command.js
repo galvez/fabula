@@ -140,7 +140,6 @@ export default class Command {
     let abort = false
     const fabula = {
       prompt,
-      vars: this.settings.vars,
       abort: () => {
         abort = true
       }

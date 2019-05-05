@@ -1,5 +1,6 @@
 
 import Module from 'module'
+import { EOL } from 'os'
 
 import template from 'lodash.template'
 import merge from 'lodash.merge'
@@ -17,7 +18,7 @@ function requireFromString(code, name) {
   return m.exports
 }
 
-compile.loadComponent = function (source) {
+function loadComponent(source) {
   source = source.split(/\n/g)
     .filter(line => !line.startsWith('#'))
 
@@ -67,15 +68,40 @@ compile.loadComponent = function (source) {
   return { fabula, script, strings, prepend }
 }
 
-compile.compileTemplate = function (cmd, settings) {
-  const cmdTemplate = template(cmd, {
-    imports: { quote },
-    interpolate: /<%=([\s\S]+?)%>/g
-  })
-  return cmdTemplate(settings)
+function compileTemplate(cmd, settings) {
+  const blocks = []
+  const lines = cmd.split(EOL)
+  let rawBlock = false 
+  for (const line of lines) {
+    if (line.match(/@[^@]+:\s*$/)) {
+      rawBlock = true
+      blocks.push([false, line])
+    } else if (rawBlock && line.match(/^\s+/)) {
+      blocks.push([false, line])
+    } else {
+      rawBlock = false
+      blocks.push([true, line])
+    }
+  }
+  let buffer = ''
+  let compiled = ''
+  for (const line of blocks) {
+    if (line[0]) {
+      buffer += `${line[1]}${EOL}`
+    } else if (buffer.length) {
+      compiled += template(buffer, {
+        imports: { quote },
+        interpolate: /<%=([\s\S]+?)%>/g
+      })(settings)
+      compiled += `${line[1]}${EOL}`
+    } else {
+      compiled += `${line[1]}${EOL}`
+    }
+  }
+  return compiled
 }
 
-compile.splitMultiLines = function (source) {
+function splitMultiLines(source) {
   let multiline
   return source.split(/\n/g).reduce((_lines, line) => {
     if (multiline) {
@@ -133,7 +159,7 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
 }
 
 function compileComponent(name, source, settings) {
-  const { fabula, script, strings, prepend } = compile.loadComponent(source)
+  const { fabula, script, strings, prepend } = loadComponent(source)
   const componentSource = script.join('\n')
 
   const _componentSettings = requireFromString(fabula.join('\n'))
@@ -162,7 +188,7 @@ function compileComponent(name, source, settings) {
   merge(settings, componentSettings)
 
   settings.strings = strings.reduce((hash, string) => {
-    const compiledString = compile.compileTemplate(string.lines.join('\n'), settings)
+    const compiledString = compileTemplate(string.lines.join('\n'), settings)
     return { ...hash, [string.id]: quote(compiledString, true) }
   }, {})
 
@@ -176,24 +202,13 @@ export async function compile(name, source, settings, prepend, env = {}) {
     return compileComponent(name, source, settings)
   }
 
-  const _vars = {}
-  settings.vars = new Proxy(_vars, {
-    get(obj, prop) {
-      if (prop in obj) {
-        return obj[prop]
-      } else {
-        return settings.strings[prop]
-      }
-    }
-  })
-
   // If no marked section is found, proceed to
   // regular commands compilation
-  source = compile.compileTemplate(source, settings)
+  source = compileTemplate(source, settings)
 
   // splitMultiLines() will merge lines ending in `\`
   // with the subsequent one, preserving Bash's behaviour
-  const lines = compile.splitMultiLines(source)
+  const lines = splitMultiLines(source)
     .filter(Boolean)
     .filter(line => !line.startsWith('#'))
 
