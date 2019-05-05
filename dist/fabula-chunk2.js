@@ -416,33 +416,37 @@ async function compile(name, source, settings, prepend, env = {}) {
     return compileComponent(name, source, settings)
   }
 
-  // If no marked section is found, proceed to
-  // regular commands compilation
-  source = compileTemplate(source, settings);
+  async function getCommands(settings) {
+    // If no marked section is found, proceed to
+    // regular commands compilation
+    source = compileTemplate(source, settings);
 
-  // splitMultiLines() will merge lines ending in `\`
-  // with the subsequent one, preserving Bash's behaviour
-  const lines = splitMultiLines(source)
-    .filter(Boolean)
-    .filter(line => !line.startsWith('#'));
+    // splitMultiLines() will merge lines ending in `\`
+    // with the subsequent one, preserving Bash's behaviour
+    const lines = splitMultiLines(source)
+      .filter(Boolean)
+      .filter(line => !line.startsWith('#'));
 
-  const _commands = await Promise.all(
-    commands.map(cmd => cmd().then(c => c.default))
-  );
+    const _commands = await Promise.all(
+      commands.map(cmd => cmd().then(c => c.default))
+    );
 
-  let currentCommand;
-  const parsedCommands = [];
+    let currentCommand;
+    const parsedCommands = [];
 
-  for (const line of lines) {
-    // If a component's line() handler returns true,
-    // the same command object will be returned, allowing
-    // parsing of custom mult-line special commands
-    currentCommand = parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
-      parsedCommands.push(command);
-    });
+    for (const line of lines) {
+      // If a component's line() handler returns true,
+      // the same command object will be returned, allowing
+      // parsing of custom mult-line special commands
+      currentCommand = parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
+        parsedCommands.push(command);
+      });
+    }
+
+    return parsedCommands
   }
 
-  return parsedCommands
+  return [ getCommands, settings ]
 }
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -557,23 +561,26 @@ function createLogger(name, config) {
 
 async function runLocalSource(name, str, settings, logger) {
   settings = { ...settings, $name: name };
+  const [
+    commands,
+    componentSettings
+  ] = await compile(name, str, settings);
+  console.log('componentSettings', componentSettings);
   let abort = false;
-  if (settings.$setter) {
+  if (componentSettings.$setter) {
     const fabula = {
       prompt,
       abort: () => {
         abort = true;
       }
     };
-    const setterResult = await settings.$setter(fabula);
+    const setterResult = await componentSettings.$setter(fabula);
     merge(settings, setterResult);
-    delete settings.$setter;
     if (abort) {
       return
     }
   }
-  const commands = await compile(name, str, settings);
-  for (const command of commands) {
+  for (const command of await commands(settings)) {
     if (!command.local) {
       logger.info('[FAIL]', command.source[0]);
       logger.fatal('No servers specified to run this remote command.');
@@ -594,23 +601,25 @@ async function runSource(server, conn, name, str, settings, logger) {
     $name: name,
     ...settings
   };
+  const [
+    commands,
+    componentSettings
+  ] = await compile(name, str, settings);
   let abort = false;
-  if (settings.$setter) {
+  if (componentSettings.$setter) {
     const fabula = {
       prompt,
       abort: () => {
         abort = true;
       }
     };
-    const setterResult = await settings.$setter(fabula);
+    const setterResult = await componentSettings.$setter(fabula);
     merge(settings, setterResult);
-    delete settings.$setter;
     if (abort) {
       return
     }
   }
-  const commands = await compile(name, str, settings);
-  for (const command of commands) {
+  for (const command of await commands(settings)) {
     if (await command.run(conn, logger)) {
       break
     }

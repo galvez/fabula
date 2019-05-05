@@ -1,7 +1,7 @@
 'use strict';
 
 require('fs');
-require('path');
+const path = require('path');
 require('consola');
 require('lodash.merge');
 require('util');
@@ -64,7 +64,7 @@ const ensure = {
     const settings = {
       ...this.settings,
       fail: true,
-      $cwd: resolve(
+      $cwd: path.resolve(
         this.settings.$cwd || process.cwd(),
         this.params.cwd
       )

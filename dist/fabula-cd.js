@@ -1,7 +1,7 @@
 'use strict';
 
 require('fs');
-require('path');
+const path = require('path');
 require('consola');
 require('lodash.merge');
 require('util');
@@ -63,7 +63,7 @@ const cd = {
   async command(conn, logger) {
     const settings = {
       ...this.settings,
-      $cwd: resolve(
+      $cwd: path.resolve(
         this.settings.$cwd || process.cwd(),
         this.params.cwd
       )
