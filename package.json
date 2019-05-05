@@ -29,6 +29,7 @@
     "esm": "3.0.84",
     "lodash.merge": "^4.6.1",
     "lodash.template": "4.4.0",
+    "prompts": "^2.0.4",
     "read": "1.0.7",
     "ssh2": "0.6.1"
   },
@@ -46,6 +47,8 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^4.7.1",
+    "ip": "^1.1.5",
+    "jest": "^23.6.0",
     "rollup": "^1.10.0",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-babel": "^4.3.2",
@@ -54,8 +57,6 @@
     "rollup-plugin-license": "^0.8.1",
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-replace": "^2.2.0",
-    "ip": "^1.1.5",
-    "jest": "^23.6.0",
     "vuepress": "^0.14.8"
   }
 }

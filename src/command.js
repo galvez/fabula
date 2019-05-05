@@ -1,4 +1,22 @@
+import prompts from 'prompts'
 import merge from 'lodash.merge'
+
+async function simplePrompt(message) {
+  const result = await prompts({
+    name: 'value',
+    type: 'text',
+    message
+  })
+  return result.value
+}
+
+function prompt(params) {
+  if (typeof params === 'string') {
+    return simplePrompt(params)
+  } else if (typeof params === 'object') {
+    return prompts(params)
+  }
+}
 
 export function parseArgv(line) {
   // Yes, I did write my own argv parser.
@@ -121,6 +139,7 @@ export default class Command {
   async run(conn, logger, retry = null) {
     let abort = false
     const fabula = {
+      prompt,
       vars: this.settings.vars,
       abort: () => {
         abort = true
