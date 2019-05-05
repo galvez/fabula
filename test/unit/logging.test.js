@@ -2,20 +2,20 @@ import { writeFileSync, readFileSync } from 'fs'
 import { spawnSync } from 'child_process'
 import { resolve } from 'path'
 
-const 
-  logs = [
-    'global',
-    'local',
-    'ssh',
-    'server1',
-    'server2'
-  ].reduce((obj, log) => {
-    const logPath = `../fixtures/logs/${log}-log.log`.split('/')
-    return { ...obj, [log]: resolve(__dirname, ...logPath) }
-  }, {}),
-  opts = { cwd: resolve(__dirname, '../fixtures') },
-  fabulaBin = resolve(__dirname, '../../bin/fabula.js'),
-  spawnFabula = (...args) => spawnSync(fabulaBin, args, opts)
+const logs = [
+  'global',
+  'local',
+  'ssh',
+  'server1',
+  'server2'
+].reduce((obj, log) => {
+  const logPath = `../fixtures/logs/${log}-log.log`.split('/')
+  return { ...obj, [log]: resolve(__dirname, ...logPath) }
+}, {})
+
+const opts = { cwd: resolve(__dirname, '../fixtures') }
+const fabulaBin = resolve(__dirname, '../../bin/fabula.js')
+const spawnFabula = (...args) => spawnSync(fabulaBin, args, opts)
 
 function extractLogs(stdout, stderr) {
   stdout = stdout.split(/\n/)

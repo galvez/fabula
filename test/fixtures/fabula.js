@@ -4,7 +4,7 @@ function reporter (info) {
   return `${info.args.join(' ')}\n`
 }
 
-module.exports = async function() {
+export default async function() {
   const [
     server1,
     server2
