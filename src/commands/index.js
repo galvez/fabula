@@ -1,5 +1,6 @@
 
 export default [
+  () => import('./handle'),
   () => import('./fabula'),
   () => import('./ensure'),
   () => import('./get'),

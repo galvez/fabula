@@ -94,9 +94,16 @@ function compileTemplate(cmd, settings) {
         interpolate: /<%=([\s\S]+?)%>/g
       })(settings)
       compiled += `${line[1]}${EOL}`
+      buffer = ''
     } else {
       compiled += `${line[1]}${EOL}`
     }
+  }
+  if (buffer.length) {
+    compiled += template(buffer, {
+      imports: { quote },
+      interpolate: /<%=([\s\S]+?)%>/g
+    })(settings)
   }
   return compiled
 }
@@ -116,7 +123,7 @@ function splitMultiLines(source) {
   }, [])
 }
 
-compile.parseLine = function (commands, command, line, prepend, settings, env, push) {
+function parseLine(commands, command, line, prepend, settings, env, push) {
   let cmd
   if (command) {
     if (command.handleLine(line)) {
@@ -137,7 +144,7 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
     if (cmd.match) {
       command = new Command(cmd, line, env)
       command.settings = settings
-      _line = command.registerHandler(line)
+      _line = command.init(line)
       if (prepend && !/^\s+/.test(_line)) {
         _line = command.prepend(prepend, _line)
       }
@@ -223,10 +230,11 @@ export async function compile(name, source, settings, prepend, env = {}) {
     // If a component's line() handler returns true,
     // the same command object will be returned, allowing
     // parsing of custom mult-line special commands
-    currentCommand = compile.parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
+    currentCommand = parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
       parsedCommands.push(command)
     })
   }
 
   return parsedCommands
 }
+

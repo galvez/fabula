@@ -5,11 +5,11 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 const fs = require('fs');
 const path = require('path');
 const consola = _interopDefault(require('consola'));
+const merge = _interopDefault(require('lodash.merge'));
 const __chunk_1 = require('./fabula-chunk.js');
 const Module = _interopDefault(require('module'));
 const os = require('os');
 const template = _interopDefault(require('lodash.template'));
-const merge = _interopDefault(require('lodash.merge'));
 const prompts = _interopDefault(require('prompts'));
 const __chunk_3 = require('./fabula-chunk3.js');
 
@@ -73,17 +73,7 @@ class Command {
       this.argv.shift();
     }
     this.source = [line];
-  }
-  registerHandler(line) {
-    let match;
-    // eslint-disable-next-line no-cond-assign
-    if (match = line.match(/^(.+?)@([\w\d_]+)\s*$/)) {
-      this.handler = match[2];
-      this.init(match[1]);
-      return match[1]
-    } else {
-      return line
-    }
+    return line
   }
   prepend(prepend, line) {
     if (this.cmd.prepend) {
@@ -94,9 +84,7 @@ class Command {
       prepend = parseArgv(prepend)
         .filter(part => part !== 'sudo').join(' ');
     }
-    line = `${prepend} ${line}`;
-    this.init(line);
-    return line
+    return this.init(`${prepend} ${line}`)
   }
   handleLine(line) {
     if (!this.cmd.line) {
@@ -150,21 +138,13 @@ class Command {
   }
   async run(conn, logger, retry = null) {
     let abort = false;
+    const result = await this.cmd.command.call(this, conn, logger);
     const fabula = {
       prompt,
-      vars: this.settings.vars,
       abort: () => {
         abort = true;
       }
     };
-    if (this.settings.$setter) {
-      const setterResult = await this.settings.$setter(fabula);
-      merge(this.settings, setterResult);
-      if (abort) {
-        return true
-      }
-    }
-    const result = await this.cmd.command.call(this, conn, logger);
     if (this.handler && this.settings[this.handler]) {
       await this.settings[this.handler](result, fabula);
     }
@@ -215,6 +195,7 @@ const execCommand = {
 };
 
 const commands = [
+  () => Promise.resolve(require('./fabula-handle.js')),
   () => Promise.resolve(require('./fabula-fabula.js')),
   () => Promise.resolve(require('./fabula-ensure.js')),
   () => Promise.resolve(require('./fabula-get.js')),
@@ -320,9 +301,16 @@ function compileTemplate(cmd, settings) {
         interpolate: /<%=([\s\S]+?)%>/g
       })(settings);
       compiled += `${line[1]}${os.EOL}`;
+      buffer = '';
     } else {
       compiled += `${line[1]}${os.EOL}`;
     }
+  }
+  if (buffer.length) {
+    compiled += template(buffer, {
+      imports: { quote },
+      interpolate: /<%=([\s\S]+?)%>/g
+    })(settings);
   }
   return compiled
 }
@@ -342,7 +330,7 @@ function splitMultiLines(source) {
   }, [])
 }
 
-compile.parseLine = function (commands, command, line, prepend, settings, env, push) {
+function parseLine(commands, command, line, prepend, settings, env, push) {
   let cmd;
   if (command) {
     if (command.handleLine(line)) {
@@ -363,7 +351,7 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
     if (cmd.match) {
       command = new Command(cmd, line, env);
       command.settings = settings;
-      _line = command.registerHandler(line);
+      _line = command.init(line);
       if (prepend && !/^\s+/.test(_line)) {
         _line = command.prepend(prepend, _line);
       }
@@ -382,7 +370,7 @@ compile.parseLine = function (commands, command, line, prepend, settings, env, p
   } else {
     push(command);
   }
-};
+}
 
 function compileComponent(name, source, settings) {
   const { fabula, script, strings, prepend } = loadComponent(source);
@@ -428,17 +416,6 @@ async function compile(name, source, settings, prepend, env = {}) {
     return compileComponent(name, source, settings)
   }
 
-  const _vars = {};
-  settings.vars = new Proxy(_vars, {
-    get(obj, prop) {
-      if (prop in obj) {
-        return obj[prop]
-      } else {
-        return settings.strings[prop]
-      }
-    }
-  });
-
   // If no marked section is found, proceed to
   // regular commands compilation
   source = compileTemplate(source, settings);
@@ -460,7 +437,7 @@ async function compile(name, source, settings, prepend, env = {}) {
     // If a component's line() handler returns true,
     // the same command object will be returned, allowing
     // parsing of custom mult-line special commands
-    currentCommand = compile.parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
+    currentCommand = parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
       parsedCommands.push(command);
     });
   }
@@ -580,6 +557,21 @@ function createLogger(name, config) {
 
 async function runLocalSource(name, str, settings, logger) {
   settings = { ...settings, $name: name };
+  let abort = false;
+  if (settings.$setter) {
+    const fabula = {
+      prompt,
+      abort: () => {
+        abort = true;
+      }
+    };
+    const setterResult = await settings.$setter(fabula);
+    merge(settings, setterResult);
+    delete settings.$setter;
+    if (abort) {
+      return
+    }
+  }
   const commands = await compile(name, str, settings);
   for (const command of commands) {
     if (!command.local) {
@@ -602,6 +594,21 @@ async function runSource(server, conn, name, str, settings, logger) {
     $name: name,
     ...settings
   };
+  let abort = false;
+  if (settings.$setter) {
+    const fabula = {
+      prompt,
+      abort: () => {
+        abort = true;
+      }
+    };
+    const setterResult = await settings.$setter(fabula);
+    merge(settings, setterResult);
+    delete settings.$setter;
+    if (abort) {
+      return
+    }
+  }
   const commands = await compile(name, str, settings);
   for (const command of commands) {
     if (await command.run(conn, logger)) {

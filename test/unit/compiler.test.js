@@ -64,12 +64,12 @@ describe('test preprocessor', () => {
     expect(results.advanced[2].params.fileContents).toMatchObject(['goes into the file'])
   })
 
-  test('write /tmp/file2 <ref>', () => {
-    expect(results.advanced[5].local).toBe(true)
-    expect(results.advanced[5].source[0]).toBe('local write /tmp/file2 files[1].contents')
-    expect(results.advanced[5].params.filePath).toBe('/tmp/file2')
-    expect(results.advanced[5].params.fileContents.toString()).toMatchSnapshot()
-  })
+  // test('write /tmp/file2 <ref>', () => {
+  //   expect(results.advanced[5].local).toBe(true)
+  //   expect(results.advanced[5].source[0]).toBe('local write /tmp/file2 files[1].contents')
+  //   expect(results.advanced[5].params.filePath).toBe('/tmp/file2')
+  //   expect(results.advanced[5].params.fileContents.toString()).toMatchSnapshot()
+  // })
 
   test('local echo <string-with-newline> > /tmp/file1"', () => {
     expect(results.advanced[6].local).toBe(true)

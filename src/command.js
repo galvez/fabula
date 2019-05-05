@@ -1,22 +1,4 @@
-import prompts from 'prompts'
-import merge from 'lodash.merge'
-
-async function simplePrompt(message) {
-  const result = await prompts({
-    name: 'value',
-    type: 'text',
-    message
-  })
-  return result.value
-}
-
-function prompt(params) {
-  if (typeof params === 'string') {
-    return simplePrompt(params)
-  } else if (typeof params === 'object') {
-    return prompts(params)
-  }
-}
+import prompt from './prompt'
 
 export function parseArgv(line) {
   // Yes, I did write my own argv parser.
@@ -61,17 +43,7 @@ export default class Command {
       this.argv.shift()
     }
     this.source = [line]
-  }
-  registerHandler(line) {
-    let match
-    // eslint-disable-next-line no-cond-assign
-    if (match = line.match(/^(.+?)@([\w\d_]+)\s*$/)) {
-      this.handler = match[2]
-      this.init(match[1])
-      return match[1]
-    } else {
-      return line
-    }
+    return line
   }
   prepend(prepend, line) {
     if (this.cmd.prepend) {
@@ -82,9 +54,7 @@ export default class Command {
       prepend = parseArgv(prepend)
         .filter(part => part !== 'sudo').join(' ')
     }
-    line = `${prepend} ${line}`
-    this.init(line)
-    return line
+    return this.init(`${prepend} ${line}`)
   }
   handleLine(line) {
     if (!this.cmd.line) {
@@ -138,20 +108,13 @@ export default class Command {
   }
   async run(conn, logger, retry = null) {
     let abort = false
+    const result = await this.cmd.command.call(this, conn, logger)
     const fabula = {
       prompt,
       abort: () => {
         abort = true
       }
     }
-    if (this.settings.$setter) {
-      const setterResult = await this.settings.$setter(fabula)
-      merge(this.settings, setterResult)
-      if (abort) {
-        return true
-      }
-    }
-    const result = await this.cmd.command.call(this, conn, logger)
     if (this.handler && this.settings[this.handler]) {
       await this.settings[this.handler](result, fabula)
     }

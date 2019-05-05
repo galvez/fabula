@@ -16,25 +16,25 @@ const __chunk_2 = require('./fabula-chunk2.js');
 require('child_process');
 require('./fabula-chunk3.js');
 
-const ensure = {
-  name: 'ensure',
+const handle = {
+  name: 'handle',
   patterns: {
-    block: /^(?:local\s*)?ensure\s+(.+?):\s*$/,
-    global: /^(?:local\s*)?ensure\s+([^ :]+?)\s*$/
+    block: /^(?:local\s*)?(.+?)@([\w\d_]+):\s*$/,
+    global: /^(?:local\s*)?(.+?)@([\w\d_]+)\s*$/
   },
   match(line) {
     this.dedent = 0;
-    if (this.argv[0] === 'ensure') {
-      let match;
-      // eslint-disable-next-line no-cond-assign
-      if (match = line.match(this.cmd.patterns.block)) {
-        this.block = true;
-        return match
-      // eslint-disable-next-line no-cond-assign
-      } else if (match = line.match(this.cmd.patterns.global)) {
-        this.global = true;
-        return match
-      }
+    let match;
+    // eslint-disable-next-line no-cond-assign
+    if (match = line.match(this.cmd.patterns.block)) {
+      this.block = true;
+      this.handler = match[2];
+      return match
+    // eslint-disable-next-line no-cond-assign
+    } else if (match = line.match(this.cmd.patterns.global)) {
+      this.global = true;
+      this.handler = match[2];
+      return match
     }
   },
   line(line) {
@@ -83,4 +83,4 @@ const ensure = {
   }
 };
 
-exports.default = ensure;
+exports.default = handle;

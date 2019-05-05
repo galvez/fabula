@@ -3,6 +3,7 @@
 const fs = require('fs');
 require('path');
 require('consola');
+require('lodash.merge');
 require('util');
 require('read');
 require('ssh2');
@@ -10,7 +11,6 @@ require('./fabula-chunk.js');
 require('module');
 require('os');
 require('lodash.template');
-require('lodash.merge');
 require('prompts');
 const __chunk_2 = require('./fabula-chunk2.js');
 require('child_process');

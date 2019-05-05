@@ -1,16 +1,2 @@
-[local] "server1 success test"
-[local] [OK] node ../bin.js --code 0 --stdout "server1 success test"
-[local] "server2 success test"
-[local] [OK] node ../bin.js --code 0 --stdout "server2 success test"
-[local] "server1 error test"
-[local] [OK] node ../bin.js --code 1 --stderr "server1 error test"
-[local] "server2 error test"
-[local] [OK] node ../bin.js --code 1 --stderr "server2 error test"
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist @handle:
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist @handle:
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist @handle:
-[local] touch: /parent/doesnt/exist: No such file or directory
-[local] [FAIL] touch /parent/doesnt/exist @handle:
+[local] [FAIL] node ../bin.js --code 0 --stdout "server1 success test"
+[local] [FAIL] node ../bin.js --code 0 --stdout "server2 success test"

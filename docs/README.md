@@ -149,7 +149,6 @@ same realm (`puppet`, `ansible`, `chef`, `terraform` etc) also require larger
 packages and a foreign architecture to be able to perform these operations. In
 my case, I'd always need my `node_modules` **and** a [pip][pip] installation.
 
-
 Granted, these other packages are rather full-blown abstractions for server 
 management and deployment, in contrast to Fabric which is architected more 
 closely to the metal (SSH), _so to speak_. Fabric avoids abstracting too much, 
@@ -161,7 +160,7 @@ convenience transport layer independent from `ssh-agent`.
 [Flightplan][fp] is an awesome Node.js project very similar to Fabric, that is,
 it offers a somewhat low-level abstraction for commands on top of SSH2. 
 
-Its API requires you to separate `local` and `remote` tasks, and never mix them:
+Its API requires you to separate `local` and `remote` tasks:
 
 ```js
 plan.target('production', {

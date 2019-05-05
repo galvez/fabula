@@ -1,11 +1,28 @@
 import { readFileSync } from 'fs'
 import { parse } from 'path'
+import merge from 'lodash.merge'
 import { getConnection } from './ssh'
 import { compile } from './compile'
 import { createLogger } from './logging'
+import prompt from './prompt'
 
 export async function runLocalSource(name, str, settings, logger) {
   settings = { ...settings, $name: name }
+  let abort = false
+  if (settings.$setter) {
+    const fabula = {
+      prompt,
+      abort: () => {
+        abort = true
+      }
+    }
+    const setterResult = await settings.$setter(fabula)
+    merge(settings, setterResult)
+    delete settings.$setter
+    if (abort) {
+      return
+    }
+  }
   const commands = await compile(name, str, settings)
   for (const command of commands) {
     if (!command.local) {
@@ -27,6 +44,21 @@ export async function runSource(server, conn, name, str, settings, logger) {
     },
     $name: name,
     ...settings
+  }
+  let abort = false
+  if (settings.$setter) {
+    const fabula = {
+      prompt,
+      abort: () => {
+        abort = true
+      }
+    }
+    const setterResult = await settings.$setter(fabula)
+    merge(settings, setterResult)
+    delete settings.$setter
+    if (abort) {
+      return
+    }
   }
   const commands = await compile(name, str, settings)
   for (const command of commands) {
