@@ -1,9 +1,12 @@
 <fabula>
 export default {
   fail: false,
-  handle: (result) => ({
-    touchErrorCode: result.code
-  })
+  handle: (result) => {
+    console.log('result', result)
+    return {
+      touchErrorCode: result.code
+    }
+  }
 }
 </fabula>
 

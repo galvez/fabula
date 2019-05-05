@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import { runSource, runLocalSource } from '../run'
 
 export default {

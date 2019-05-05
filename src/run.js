@@ -8,23 +8,25 @@ import prompt from './prompt'
 
 export async function runLocalSource(name, str, settings, logger) {
   settings = { ...settings, $name: name }
+  const [
+    commands,
+    componentSettings
+  ] = await compile(name, str, settings)
   let abort = false
-  if (settings.$setter) {
+  if (componentSettings.$setter) {
     const fabula = {
       prompt,
       abort: () => {
         abort = true
       }
     }
-    const setterResult = await settings.$setter(fabula)
+    const setterResult = await componentSettings.$setter(fabula)
     merge(settings, setterResult)
-    delete settings.$setter
     if (abort) {
       return
     }
   }
-  const commands = await compile(name, str, settings)
-  for (const command of commands) {
+  for (const command of await commands(settings)) {
     if (!command.local) {
       logger.info('[FAIL]', command.source[0])
       logger.fatal('No servers specified to run this remote command.')
@@ -45,23 +47,25 @@ export async function runSource(server, conn, name, str, settings, logger) {
     $name: name,
     ...settings
   }
+  const [
+    commands,
+    componentSettings
+  ] = await compile(name, str, settings)
   let abort = false
-  if (settings.$setter) {
+  if (componentSettings.$setter) {
     const fabula = {
       prompt,
       abort: () => {
         abort = true
       }
     }
-    const setterResult = await settings.$setter(fabula)
+    const setterResult = await componentSettings.$setter(fabula)
     merge(settings, setterResult)
-    delete settings.$setter
     if (abort) {
       return
     }
   }
-  const commands = await compile(name, str, settings)
-  for (const command of commands) {
+  for (const command of await commands(settings)) {
     if (await command.run(conn, logger)) {
       break
     }

@@ -209,32 +209,36 @@ export async function compile(name, source, settings, prepend, env = {}) {
     return compileComponent(name, source, settings)
   }
 
-  // If no marked section is found, proceed to
-  // regular commands compilation
-  source = compileTemplate(source, settings)
+  async function getCommands(settings) {
+    // If no marked section is found, proceed to
+    // regular commands compilation
+    source = compileTemplate(source, settings)
 
-  // splitMultiLines() will merge lines ending in `\`
-  // with the subsequent one, preserving Bash's behaviour
-  const lines = splitMultiLines(source)
-    .filter(Boolean)
-    .filter(line => !line.startsWith('#'))
+    // splitMultiLines() will merge lines ending in `\`
+    // with the subsequent one, preserving Bash's behaviour
+    const lines = splitMultiLines(source)
+      .filter(Boolean)
+      .filter(line => !line.startsWith('#'))
 
-  const _commands = await Promise.all(
-    commands.map(cmd => cmd().then(c => c.default))
-  )
+    const _commands = await Promise.all(
+      commands.map(cmd => cmd().then(c => c.default))
+    )
 
-  let currentCommand
-  const parsedCommands = []
+    let currentCommand
+    const parsedCommands = []
 
-  for (const line of lines) {
-    // If a component's line() handler returns true,
-    // the same command object will be returned, allowing
-    // parsing of custom mult-line special commands
-    currentCommand = parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
-      parsedCommands.push(command)
-    })
+    for (const line of lines) {
+      // If a component's line() handler returns true,
+      // the same command object will be returned, allowing
+      // parsing of custom mult-line special commands
+      currentCommand = parseLine(_commands, currentCommand, line, prepend, settings, env, (command) => {
+        parsedCommands.push(command)
+      })
+    }
+
+    return parsedCommands
   }
 
-  return parsedCommands
+  return [ getCommands, settings ]
 }
 
