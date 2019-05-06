@@ -55,8 +55,8 @@ async function loadConfig(rcFile = null) {
     config = require(rcFile);
   }
   if (rcFile === null) {
-    consola.fatal('Fabula configuration file not found.');
-    process.exit();
+    consola.warn('No Fabula configuration file found.');
+    config = {};
   }
   config = config.default || config;
   if (typeof config === 'function') {
