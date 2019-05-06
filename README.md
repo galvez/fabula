@@ -1,8 +1,6 @@
-<img src="https://user-images.githubusercontent.com/12291/50539530-e780e800-0b68-11e9-9453-e066015d0c2a.png">
-
 <p align="center">
   <h1>Fabula 
-  <a href="http://npmjs.com/package/fabula"><img src="https://badge.fury.io/js/fabula.svg?0.1.7"></a>
+  <a href="http://npmjs.com/package/fabula"><img src="https://badge.fury.io/js/fabula.svg?0.2.0"></a>
   <a href="https://github.com/nuxt/fabula/actions"><img src="https://img.shields.io/badge/build-passing-47c11f.svg"></a></h1>
   <span>Minimalist server configuration and task management.</span>
 </p>
