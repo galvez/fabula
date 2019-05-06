@@ -4,8 +4,8 @@ import { runSource, runLocalSource } from '../run'
 export default {
   name: 'handle',
   patterns: {
-    block: /^(?:local\s*)?(.+?)@([\w\d_]+):\s*$/,
-    global: /^(?:local\s*)?(.+?)@([\w\d_]+)\s*$/
+    block: /^(?:local\s*)?(.+?)\s*@([\w\d_]+):\s*$/,
+    global: /^(?:local\s*)?(.+?)\s*@([\w\d_]+)\s*$/
   },
   match(line) {
     this.dedent = 0
@@ -25,10 +25,8 @@ export default {
   line(line) {
     if (this.firstLine) {
       if (this.global) {
-        this.settings.$cwd = this.match[1]
         return false
       } else {
-        this.params.cwd = this.match[1]
         this.params.commands = []
         return true
       }
@@ -48,11 +46,7 @@ export default {
   async command(conn, logger) {
     const settings = {
       ...this.settings,
-      fail: true,
-      $cwd: resolve(
-        this.settings.$cwd || process.cwd(),
-        this.params.cwd
-      )
+      fail: true
     }
     const commands = this.params.commands.map((cmd) => {
       if (this.local && !/^\s+/.test(cmd)) {
