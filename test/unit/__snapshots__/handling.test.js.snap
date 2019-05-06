@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test handling single handler 1`] = `
-"result { stdout: '',
-  stderr: 'touch: /parent/doesnt/exist: No such file or directory\\\\n',
-  code: 1 }
-[INFO] [local] [OK] write /tmp/fabula-handler-test:
+"[INFO] [local] [OK] write /tmp/fabula-handler-test:
 [INFO] [local] 1
 [INFO] [local] [OK] cat /tmp/fabula-handler-test
 [INFO] [local] [OK] rm /tmp/fabula-handler-test

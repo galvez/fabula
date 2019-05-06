@@ -2,7 +2,6 @@
 export default {
   fail: false,
   handle: (result) => {
-    console.log('result', result)
     return {
       touchErrorCode: result.code
     }

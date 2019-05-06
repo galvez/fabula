@@ -10,10 +10,10 @@
   "bin": {
     "fabula": "./bin/fabula.js"
   },
-  "main": "src/index.js",
+  "main": "dist/fabula.js",
   "files": [
     "bin",
-    "src"
+    "dist"
   ],
   "scripts": {
     "build": "rollup -c build/rollup.config.js",
