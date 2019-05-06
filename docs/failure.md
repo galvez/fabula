@@ -66,6 +66,43 @@ code), `stdout`, `stdin` and also `cmd` -- a reference to the Fabula object
 representing the parsed command. The second parameter is the **Fabula** context, 
 which provides access to `settings` and `abort()`.
 
+
+You can also provide a block of commands to run after the handler. This allows
+you to add or change properties in **Fabula**'s settings object prior to the
+JavaScript preprocessing. 
+
+Take [this example][handler-example] from the test suite fixtures.
+
+[handler-example]: https://github.com/nuxt/fabula/blob/master/test/fixtures/handler.fab
+
+```xml
+<fabula>
+export default {
+  fail: false,
+  handle: (result) => {
+    return {
+      touchErrorCode: result.code
+    }
+  }
+}
+</fabula>
+
+<commands local>
+touch /parent/doesnt/exist @handle:
+  local write /tmp/fabula-handler-test:
+    <%= touchErrorCode %>
+cat /tmp/fabula-handler-test
+rm /tmp/fabula-handler-test
+</commands>
+```
+
+The block after `@handle` is only compiled after the current command has been
+executed and you've had a chance to **handle** it. The handling function (which
+must match the `@name` you use to tag the command) can return an object which
+is then merged back into **Fabula** settings object. The snippet above will
+result in `1` being written to the test file (which is then removed so no 
+testing files are left behind).
+
 ## Ensure
 
 For the sole purpose of ensuring that a specific command runs successfully in 
