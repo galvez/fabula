@@ -1,3 +1,6 @@
+<p align="center"><img align="center" style="width:600px" 
+src="https://user-images.githubusercontent.com/12291/57233474-16b2d480-6ff5-11e9-8198-a0f5a2dc7392.png"/></p><br/>
+
 <p align="center">
   <h1>Fabula 
   <a href="http://npmjs.com/package/fabula"><img src="https://badge.fury.io/js/fabula.svg?0.2.0"></a>
