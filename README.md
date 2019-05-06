@@ -1,5 +1,5 @@
 <p><img 
-src="https://user-images.githubusercontent.com/904724/57233651-55f61b00-701f-11e9-96b0-da8337f6d630.png"/></p>
+src="https://user-images.githubusercontent.com/904724/57233916-e2084280-701f-11e9-894b-585d563dc7d8.png"/></p>
 
 <p align="center">
   <h1>Fabula 
