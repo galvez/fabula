@@ -7,6 +7,10 @@
 
 Go straight to the [full documentation][docs] if you'd like.
 
+Or read the [introductory blog post][post].
+
+[post]: https://hire.jonasgalvez.com.br/2019/may/05/a-vuejs-inspired-task-runner/
+
 # Introduction
 
 At its core, **Fabula** is a simple Bash script preprocessor and runner. It lets
