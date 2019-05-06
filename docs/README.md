@@ -130,70 +130,8 @@ See more about Fabula components [in its dedicated section](/components.html).
 
 ## Motivation
 
-For the longest time, I have packaged my Node applications together with a 
-[Fabric]() installation for running SSH tasks. For 
-those who don't know, Fabric allows you to write Python scripts for running 
-commands [both locally and remote][f-ops], by specifying external servers 
-and keys for SSH access. Below is a sample `Fabric` task:
-
-
-```py
-@task
-def my_task():
-    local('touch foobar')
-    put('toobar', '/remote/path/foobar')
-```
-
-Fabric is my reference example, but nearly all other popular solutions in the 
-same realm (`puppet`, `ansible`, `chef`, `terraform` etc) also require larger 
-packages and a foreign architecture to be able to perform these operations. In
-my case, I'd always need my `node_modules` **and** a [pip][pip] installation.
-
-Granted, these other packages are rather full-blown abstractions for server 
-management and deployment, in contrast to Fabric which is architected more 
-closely to the metal (SSH), _so to speak_. Fabric avoids abstracting too much, 
-it just lets you compose low-level commands with easier configuration and a 
-convenience transport layer independent from `ssh-agent`.
-
-### Why not Flightplan?
-
-[Flightplan][fp] is an awesome Node.js project very similar to Fabric, that is,
-it offers a somewhat low-level abstraction for commands on top of SSH2. 
-
-Its API requires you to separate `local` and `remote` tasks:
-
-```js
-plan.target('production', {
-  host: 'www2.example.com',
-  username: 'pstadler',
-  agent: process.env.SSH_AUTH_SOCK
-})
-
-plan.local((local) => {
-})
-
-plan.remote((remote) => {
-})
-```
-
-Like Fabric, it also requires you to use the underlying language to write 
-commands (in this case, JavaScript), and also requires you to put all tasks
-into a single file. **Fabula** requires each task to be in its own file, even
-though one **Fabula** task can run as many other external **Fabula** tasks as you want.
-
-I personally never used Flightplan because I felt Python's syntax always made
-for simpler, easier to maintain scripts, but the real reason **Fabula** was born
-is that I felt I could avoid writing Python or JavaScript for most operations
-if I just made Bash scripts a little smarter. 
-
-That's how **Fabula**'s preprocessor came to be, as an intermediate layer 
-between these full-blown abstraction layers and pure Bash scripts.
+Please refer to [this introductory blog post][post].
 
 [f]: https://www.fabfile.org/
-[fp]: https://github.com/pstadler/flightplan
 [lodash]: https://lodash.com/docs/4.17.11#template
-[f-ops]: http://docs.fabfile.org/en/1.14/api/core/operations.html
-[pip]: https://pypi.org/project/pip/
-[ssh2]: https://github.com/mscdex/ssh2
-
-
+[post]: https://hire.jonasgalvez.com.br/2019/may/05/a-vuejs-inspired-task-runner
