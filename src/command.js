@@ -1,4 +1,3 @@
-import prompt from './prompt'
 
 export function parseArgv(line) {
   // Yes, I did write my own argv parser.

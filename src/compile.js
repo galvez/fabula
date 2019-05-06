@@ -71,7 +71,7 @@ function loadComponent(source) {
 function compileTemplate(cmd, settings) {
   const blocks = []
   const lines = cmd.split(EOL)
-  let rawBlock = false 
+  let rawBlock = false
   for (const line of lines) {
     if (line.match(/@[^@]+:\s*$/)) {
       rawBlock = true
@@ -202,7 +202,7 @@ function compileComponent(name, source, settings) {
   return compile(name, componentSource, settings, prepend, env)
 }
 
-export async function compile(name, source, settings, prepend, env = {}) {
+export function compile(name, source, settings, prepend, env = {}) {
   // If <fabula> or at least <commands> is detected,
   // process as a component and return
   if (source.match(/^\s*<(?:(?:fabula)|(commands))[^>]*>/g)) {
@@ -241,4 +241,3 @@ export async function compile(name, source, settings, prepend, env = {}) {
 
   return [ getCommands, settings ]
 }
-

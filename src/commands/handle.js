@@ -1,5 +1,4 @@
 
-import { resolve } from 'path' 
 import merge from 'lodash.merge'
 import prompt from '../prompt'
 import { exec } from '../ssh'
@@ -51,7 +50,7 @@ export default {
     }
   },
   async command(conn, logger) {
-    let settings = { ...this.settings }
+    const settings = { ...this.settings }
     let result
     if (this.local) {
       this.argv.pop()
@@ -77,6 +76,6 @@ export default {
       await runSource(this.context.server, conn, this.settings.$name, commands, settings, logger)
     } else {
       await runLocalSource(this.settings.$name, commands, settings, logger)
-    } 
+    }
   }
 }

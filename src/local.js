@@ -11,7 +11,7 @@ export function execLocal(cmd, env = {}, cwd = null) {
     }
 
     const stream = spawn(...cmd, options)
-    stream.on('error', (err) => resolve(err))
+    stream.on('error', err => resolve(err))
     stream.stdout.on('data', (data) => { stdout += data })
     stream.stderr.on('data', (data) => { stderr += data })
     stream.on('exit', (code) => {
