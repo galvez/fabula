@@ -20,8 +20,7 @@
     "test": "jest --detectOpenHandles --runInBand",
     "lint": "eslint --fix --ext .js,.vue src",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "source deploy.sh",
-    "postinstall": "yarn link && yarn link fabula"
+    "docs:build": "source deploy.sh"
   },
   "dependencies": {
     "arg": "3.0.0",
