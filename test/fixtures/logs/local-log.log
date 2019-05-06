@@ -7,19 +7,6 @@
 [local] "server2 error test"
 [local] [OK] node ../bin.js --code 1 --stderr "server2 error test"
 [local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] [OK] write /tmp/fabula-handler-test:
-[local] 1
-[local] [OK] cat /tmp/fabula-handler-test
-[local] [OK] rm /tmp/fabula-handler-test
-[local] [OK] write /tmp/fabula-handler-test:
 [local] 1
 [local] [OK] cat /tmp/fabula-handler-test
 [local] [OK] rm /tmp/fabula-handler-test

@@ -52,14 +52,9 @@ export default {
   },
   async command(conn, logger) {
     let settings = { ...this.settings }
-    // const commands = this.params.commands.map((cmd) => {
-    //   if (this.local && !/^\s+/.test(cmd)) {
-    //     cmd = `local ${cmd}`
-    //   }
-    //   return cmd
-    // }).join('\n')
     let result
     if (this.local) {
+      this.argv.pop()
       result = await execLocal([this.argv[0], this.argv.slice(1)], this.env, this.settings.$cwd)
     } else {
       result = await exec(conn, this.params.cmd, this.env, this.settings.$cwd)

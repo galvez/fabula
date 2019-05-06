@@ -153,7 +153,7 @@ class Command {
       this.logLines(result.stdout, line => logger.info(this.context, line));
       this.logLines(result.stderr, line => logger.info(this.context, line));
       if (result.code && this.settings.fail) {
-        logger.info(this.context, abort ? '[ABORT]' : '[FAIL]', this.argv.join(' '));
+        logger.info(this.context, '[FAIL]', this.argv.join(' '));
         return true
       } else {
         logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '));
