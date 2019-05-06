@@ -13,10 +13,10 @@ const __chunk_1 = require('./fabula-chunk.js');
 require('module');
 require('os');
 require('lodash.template');
-require('prompts');
 const __chunk_2 = require('./fabula-chunk2.js');
 require('child_process');
 const __chunk_3 = require('./fabula-chunk3.js');
+require('prompts');
 
 const handle = {
   name: 'handle',
@@ -63,7 +63,7 @@ const handle = {
     }
   },
   async command(conn, logger) {
-    let settings = { ...this.settings };
+    const settings = { ...this.settings };
     let result;
     if (this.local) {
       this.argv.pop();
@@ -89,7 +89,7 @@ const handle = {
       await __chunk_2.runSource(this.context.server, conn, this.settings.$name, commands, settings, logger);
     } else {
       await __chunk_2.runLocalSource(this.settings.$name, commands, settings, logger);
-    } 
+    }
   }
 };
 

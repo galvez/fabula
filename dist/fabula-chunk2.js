@@ -10,25 +10,8 @@ const __chunk_1 = require('./fabula-chunk.js');
 const Module = _interopDefault(require('module'));
 const os = require('os');
 const template = _interopDefault(require('lodash.template'));
-const prompts = _interopDefault(require('prompts'));
 const __chunk_3 = require('./fabula-chunk3.js');
-
-async function simplePrompt(message) {
-  const result = await prompts({
-    name: 'value',
-    type: 'text',
-    message
-  });
-  return result.value
-}
-
-function prompt(params) {
-  if (typeof params === 'string') {
-    return simplePrompt(params)
-  } else if (typeof params === 'object') {
-    return prompts(params)
-  }
-}
+const prompts = _interopDefault(require('prompts'));
 
 function parseArgv(line) {
   // Yes, I did write my own argv parser.
@@ -271,7 +254,7 @@ function loadComponent(source) {
 function compileTemplate(cmd, settings) {
   const blocks = [];
   const lines = cmd.split(os.EOL);
-  let rawBlock = false; 
+  let rawBlock = false;
   for (const line of lines) {
     if (line.match(/@[^@]+:\s*$/)) {
       rawBlock = true;
@@ -402,7 +385,7 @@ function compileComponent(name, source, settings) {
   return compile(name, componentSource, settings, prepend, env)
 }
 
-async function compile(name, source, settings, prepend, env = {}) {
+function compile(name, source, settings, prepend, env = {}) {
   // If <fabula> or at least <commands> is detected,
   // process as a component and return
   if (source.match(/^\s*<(?:(?:fabula)|(commands))[^>]*>/g)) {
@@ -550,6 +533,23 @@ function createLogger(name, config) {
       }
     }
   })
+}
+
+async function simplePrompt(message) {
+  const result = await prompts({
+    name: 'value',
+    type: 'text',
+    message
+  });
+  return result.value
+}
+
+function prompt(params) {
+  if (typeof params === 'string') {
+    return simplePrompt(params)
+  } else if (typeof params === 'object') {
+    return prompts(params)
+  }
 }
 
 async function runLocalSource(name, str, settings, logger) {

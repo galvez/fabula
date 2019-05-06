@@ -16,10 +16,10 @@ require('./fabula-chunk.js');
 require('module');
 require('os');
 require('lodash.template');
-require('prompts');
 const __chunk_2 = require('./fabula-chunk2.js');
 require('child_process');
 require('./fabula-chunk3.js');
+require('prompts');
 
 function resolvePath(path$1) {
   return path.resolve(process.cwd(), ...path$1.split('/'))
