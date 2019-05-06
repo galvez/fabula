@@ -1,4 +1,9 @@
+
 import { resolve } from 'path' 
+import merge from 'lodash.merge'
+import prompt from '../prompt'
+import { exec } from '../ssh'
+import { execLocal } from '../local'
 import { runSource, runLocalSource } from '../run'
 
 export default {
@@ -13,11 +18,13 @@ export default {
     // eslint-disable-next-line no-cond-assign
     if (match = line.match(this.cmd.patterns.block)) {
       this.block = true
+      this.params.cmd = match[1]
       this.handler = match[2]
       return match
     // eslint-disable-next-line no-cond-assign
     } else if (match = line.match(this.cmd.patterns.global)) {
       this.global = true
+      this.params.cmd = match[1]
       this.handler = match[2]
       return match
     }
@@ -44,20 +51,37 @@ export default {
     }
   },
   async command(conn, logger) {
-    const settings = {
-      ...this.settings,
-      fail: true
-    }
-    const commands = this.params.commands.map((cmd) => {
-      if (this.local && !/^\s+/.test(cmd)) {
-        cmd = `local ${cmd}`
-      }
-      return cmd
-    }).join('\n')
+    let settings = { ...this.settings }
+    // const commands = this.params.commands.map((cmd) => {
+    //   if (this.local && !/^\s+/.test(cmd)) {
+    //     cmd = `local ${cmd}`
+    //   }
+    //   return cmd
+    // }).join('\n')
+    let result
     if (this.local) {
-      await runLocalSource(this.settings.$name, commands, settings, logger)
+      result = await execLocal([this.argv[0], this.argv.slice(1)], this.env, this.settings.$cwd)
     } else {
-      await runSource(this.context.server, conn, this.settings.$name, commands, settings, logger)
+      result = await exec(conn, this.params.cmd, this.env, this.settings.$cwd)
     }
+    let abort = false
+    const fabula = {
+      prompt,
+      abort: () => {
+        abort = true
+      }
+    }
+    if (this.handler && this.settings[this.handler]) {
+      merge(settings, await this.settings[this.handler](result, fabula))
+    }
+    if (abort) {
+      return false
+    }
+    const commands = this.params.commands.join('\n')
+    if (this.context.server) {
+      await runSource(this.context.server, conn, this.settings.$name, commands, settings, logger)
+    } else {
+      await runLocalSource(this.settings.$name, commands, settings, logger)
+    } 
   }
 }

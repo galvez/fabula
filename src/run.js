@@ -26,7 +26,8 @@ export async function runLocalSource(name, str, settings, logger) {
       return
     }
   }
-  for (const command of await commands(settings)) {
+  const x = await commands(settings)
+  for (const command of x) {
     if (!command.local) {
       logger.info('[FAIL]', command.source[0])
       logger.fatal('No servers specified to run this remote command.')

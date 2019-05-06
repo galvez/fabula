@@ -12,7 +12,8 @@ export default {
 
 <commands local>
 touch /parent/doesnt/exist @handle:
-  local write /tmp/fabula-handler-test <%= touchErrorCode %>
+  local write /tmp/fabula-handler-test:
+    <%= touchErrorCode %>
 cat /tmp/fabula-handler-test
 rm /tmp/fabula-handler-test
 </commands>

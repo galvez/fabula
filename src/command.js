@@ -107,16 +107,9 @@ export default class Command {
     return ctx
   }
   async run(conn, logger, retry = null) {
-    let abort = false
     const result = await this.cmd.command.call(this, conn, logger)
-    const fabula = {
-      prompt,
-      abort: () => {
-        abort = true
-      }
-    }
-    if (this.handler && this.settings[this.handler]) {
-      await this.settings[this.handler](result, fabula)
+    if (!result) {
+      return false
     }
     if (result) {
       // If failed and in a retry recursion, repeat until retry
@@ -129,14 +122,14 @@ export default class Command {
       }
       this.logLines(result.stdout, line => logger.info(this.context, line))
       this.logLines(result.stderr, line => logger.info(this.context, line))
-      if (abort || (result.code && this.settings.fail)) {
+      if (result.code && this.settings.fail) {
         logger.info(this.context, abort ? '[ABORT]' : '[FAIL]', this.argv.join(' '))
         return true
       } else {
         logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '))
       }
     }
-    if (abort || (result && result.code && this.settings.fail)) {
+    if (result && result.code && this.settings.fail) {
       return true
     }
   }

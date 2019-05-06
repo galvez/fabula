@@ -137,16 +137,9 @@ class Command {
     return ctx
   }
   async run(conn, logger, retry = null) {
-    let abort = false;
     const result = await this.cmd.command.call(this, conn, logger);
-    const fabula = {
-      prompt,
-      abort: () => {
-        abort = true;
-      }
-    };
-    if (this.handler && this.settings[this.handler]) {
-      await this.settings[this.handler](result, fabula);
+    if (!result) {
+      return false
     }
     if (result) {
       // If failed and in a retry recursion, repeat until retry
@@ -159,14 +152,14 @@ class Command {
       }
       this.logLines(result.stdout, line => logger.info(this.context, line));
       this.logLines(result.stderr, line => logger.info(this.context, line));
-      if (abort || (result.code && this.settings.fail)) {
+      if (result.code && this.settings.fail) {
         logger.info(this.context, abort ? '[ABORT]' : '[FAIL]', this.argv.join(' '));
         return true
       } else {
         logger.info(this.context, result.code ? '[FAIL]' : '[OK]', this.argv.join(' '));
       }
     }
-    if (abort || (result && result.code && this.settings.fail)) {
+    if (result && result.code && this.settings.fail) {
       return true
     }
   }
@@ -565,7 +558,6 @@ async function runLocalSource(name, str, settings, logger) {
     commands,
     componentSettings
   ] = await compile(name, str, settings);
-  console.log('componentSettings', componentSettings);
   let abort = false;
   if (componentSettings.$setter) {
     const fabula = {
@@ -580,7 +572,8 @@ async function runLocalSource(name, str, settings, logger) {
       return
     }
   }
-  for (const command of await commands(settings)) {
+  const x = await commands(settings);
+  for (const command of x) {
     if (!command.local) {
       logger.info('[FAIL]', command.source[0]);
       logger.fatal('No servers specified to run this remote command.');
@@ -668,6 +661,7 @@ async function run(source, config, servers = [], logger = null) {
 
 exports.compile = compile;
 exports.parseArgv = parseArgv;
+exports.prompt = prompt;
 exports.run = run;
 exports.runLocalSource = runLocalSource;
 exports.runSource = runSource;
