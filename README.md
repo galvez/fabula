@@ -46,6 +46,4 @@ Please refer to the [full documentation][docs] to learn more.
 
 Created by [Jonas Galvez][jg].
 
-<img width="80" alt="screen shot 2018-12-24 at 8 35 05 pm" src="https://user-images.githubusercontent.com/12291/50407303-987b3180-07bb-11e9-80b8-9609f99023dc.png">
-
 [jg]: http://hire.jonasgalvez.com.br
