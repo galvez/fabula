@@ -1,10 +1,7 @@
-<p><img 
-src="https://user-images.githubusercontent.com/904724/57233916-e2084280-701f-11e9-894b-585d563dc7d8.png"/></p>
-
 <p align="center">
   <h1>Fabula 
   <a href="http://npmjs.com/package/fabula"><img src="https://badge.fury.io/js/fabula.svg?0.2.0"></a>
-  <a href="https://github.com/nuxt/fabula/actions"><img src="https://img.shields.io/badge/build-passing-47c11f.svg"></a></h1>
+  <a href="https://github.com/galvez/fabula/actions"><img src="https://img.shields.io/badge/build-passing-47c11f.svg"></a></h1>
   <span>Minimalist server configuration and task management.</span>
 </p>
 
@@ -43,15 +40,12 @@ Inspired by Vue, it lets you keep settings and commands in concise **single-file
 
 Please refer to the [full documentation][docs] to learn more.
 
-[docs]: https://nuxt.github.io/fabula/
+[docs]: https://galvez.github.io/fabula/
 
 ## Meta
 
-Created and maintained by [Jonas Galvez][jg] with the help of the **Nuxt Core Team**.
+Created by [Jonas Galvez][jg].
 
 <img width="80" alt="screen shot 2018-12-24 at 8 35 05 pm" src="https://user-images.githubusercontent.com/12291/50407303-987b3180-07bb-11e9-80b8-9609f99023dc.png">
 
-Proudly sponsored by [STORED][stored], which provides state-of-the-art e-commerce solutions in Brazil.
-
 [jg]: http://hire.jonasgalvez.com.br
-[stored]: http://stored.com.br
